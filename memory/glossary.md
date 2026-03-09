@@ -46,3 +46,4 @@ Workplace shorthand, acronyms, and internal language for Vance/Aspora.
 | Nickname | Person |
 |----------|--------|
 | Paul | iOS code reviewer — reviews Gold module PRs |
+| Sergei | Android code reviewer — reviews Gold module PRs |

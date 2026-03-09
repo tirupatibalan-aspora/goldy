@@ -271,30 +271,53 @@ Every commit and major change triggers a memory update. This means the knowledge
 
 ### Human-in-the-Loop: The Approval Gate
 
-Goldy does not auto-pilot. It requires human approval at every critical milestone:
+**This is the most important section of this README.**
+
+Goldy is a helping hand — not an autopilot. It writes code, runs tests, generates reports. But it does **not** ship anything. Every line of code Goldy produces must pass through a human before it reaches a user. This is non-negotiable and by design.
+
+The approval gate works like this:
 
 ```
-Module 1 (Gold Foundation)
+Milestone 1 (Gold Foundation)
     │
     ▼
-Build iOS ──→ PR #1465 ──→ Paul reviews ──→ Approved ✅
+Goldy builds iOS code ──→ PR #1465 raised
     │
     ▼
-Learnings captured in memory
+Paul (iOS Tech Lead) reviews PR ──→ Catches issues, suggests patterns ──→ Approved ✅
     │
     ▼
-Build Android ──→ (uses iOS learnings) ──→ PR submitted
+Review learnings captured in Goldy's memory
     │
     ▼
-Module 2 (Gold Landing Page)      ← DOES NOT START until Module 1 PR approved
+Goldy builds Android code ──→ (applies iOS learnings automatically) ──→ PR raised
     │
     ▼
-Build iOS ──→ New PR ──→ Paul reviews ──→ ...
+Sergei (Android Tech Lead) reviews PR ──→ Approved ✅
+    │
+    ▼
+QA build sent for testing
+    │
+    ▼
+Milestone 2 (Gold Landing Page)      ← BLOCKED until Milestone 1 PRs approved + QA passed
+    │
+    ▼
+Goldy builds iOS ──→ New PR ──→ Paul reviews ──→ ...
+Goldy builds Android ──→ New PR ──→ Sergei reviews ──→ ...
 ```
 
-**No module starts until the previous module's PR is approved.** This is by design. Goldy accelerates development, but it doesn't bypass code review. The human touch — Paul reviewing the architecture, catching edge cases, suggesting better patterns — feeds back into Goldy's memory and makes the next module better.
+**Why this matters:**
 
-This creates a virtuous cycle: human review improves AI memory → better AI output → cleaner PR → faster review → more learnings captured → even better output.
+The tech lead sees every change through code review. They know exactly what Goldy produced, what patterns it followed, what shortcuts it took (if any), and whether it matches the team's standards. QA sees every change through a build. They test the actual user experience — not just whether the code compiles, but whether it works.
+
+Goldy doesn't get to skip this. No matter how good the AI gets, the human gate stays. Because:
+
+- **Tech leads need to own the codebase.** If Paul or Sergei approve a PR, they're saying "I understand this code and I'm comfortable with it shipping." Goldy can't make that call.
+- **PR review teaches Goldy.** When Paul caught that `GoldPriceFormatter` should be separate from the model, that learning went into memory and was applied to every subsequent module — on both platforms. Without human review, Goldy would keep repeating the same mistakes.
+- **QA catches what code review can't.** A test can pass while the UI looks broken. A flow can compile while the user journey makes no sense. QA is the reality check.
+- **No milestone starts until the previous one is approved.** This prevents Goldy from building on top of code that hasn't been verified. If Module 1 has a fundamental architecture issue, you want to catch it before Module 2 inherits it.
+
+This creates a virtuous cycle: human review improves AI memory → better AI output → cleaner PR → faster review → more learnings captured → even better output. Over time, Goldy's code gets closer to what the tech lead would write themselves — because it's literally learning from their feedback.
 
 ## Live Dashboard
 
@@ -324,11 +347,11 @@ But the same intelligence shouldn't pay for the same knowledge twice.
 
 Goldy believes:
 
-1. **Shared knowledge > duplicated effort** — Every design decision should be made once and applied everywhere. AI agents working on different platforms should share a brain, not start from scratch.
-2. **Human approval is non-negotiable** — AI accelerates, humans verify. No module ships without PR approval. No feature starts until the previous one passes review.
-3. **Memory is the moat** — The longer Goldy runs on your project, the more it knows. PR review patterns, architecture preferences, product decisions, team glossary — all compounding over time.
+1. **Humans ship, AI assists** — Goldy is a helping hand, not an autopilot. Every PR needs a tech lead's approval. Every build needs QA sign-off. The human gate is permanent and non-negotiable.
+2. **Shared knowledge > duplicated effort** — Every design decision should be made once and applied everywhere. AI agents working on different platforms should share a brain, not start from scratch.
+3. **Memory is the moat** — The longer Goldy runs on your project, the more it knows. PR review patterns, architecture preferences, product decisions, team glossary — all compounding over time. But only because humans keep feeding it quality decisions.
 4. **Clarity is a competitive advantage** — The team that sees clearest, ships fastest.
-5. **AI should augment, not replace** — Goldy doesn't make decisions. Goldy makes sure the right people have the right information to make great decisions.
+5. **AI should augment, not replace** — Goldy doesn't make decisions. Goldy makes sure the right people have the right information to make great decisions. The tech lead, the PM, and QA are irreplaceable.
 6. **Reports should be beautiful** — Because when stakeholders can actually read the status, they stop interrupting developers to ask for it.
 
 ## Currently Tracking
@@ -345,6 +368,7 @@ Goldy is currently serving the **Gold/Wealth Module** at **Vance (Aspora)** — 
 | **Completion** | **40%** | **28%** |
 | Source files | 64 | 19 |
 | Tests | 117 | 25 |
+| PR Reviewer | **Paul** (Tech Lead) | **Sergei** (Tech Lead) |
 | PR Status | #1465 Approved by Paul ✅ | Pending |
 
 ## Setup
@@ -409,6 +433,28 @@ goldy/
 | `memory/context/company.md` | Company tools, payment providers, feature areas | When integrations change |
 
 Both platform agents read these files at session start. When one agent makes a decision or learns something from a PR review, it updates the memory files. The next agent — on either platform — picks up those learnings automatically. This is how 27 Figma decisions get made once and applied twice.
+
+## What Goldy Is Not
+
+Goldy is a helping hand. It's important to be clear about what it doesn't do — because the value of Goldy comes precisely from knowing where the AI stops and the human starts.
+
+**Goldy does not replace your tech lead.**
+It writes code. Your tech lead decides if that code is good enough. Goldy can follow patterns, match Figma, write tests — but it cannot judge whether an architectural decision will scale, whether a pattern fits your team's long-term direction, or whether a shortcut today will cost you six months from now. That's what Paul and Sergei are for.
+
+**Goldy does not ship code.**
+Nothing Goldy produces reaches a user without passing through PR review and QA. Goldy raises the PR. A human approves it. QA tests the build. Only then does it move forward. There is no "auto-merge" mode. There never will be.
+
+**Goldy does not make product decisions.**
+It records them. When Product decides the "Buy Digital Gold" button should route to KYC first, Goldy writes it down and makes sure both platforms implement it consistently. But Goldy never decides what the product should do — it only ensures that what was decided gets built correctly on both sides.
+
+**Goldy does not handle sensitive operations.**
+It doesn't push to production branches, doesn't merge PRs, doesn't deploy builds, doesn't manage secrets or API keys. These are human-only operations that require judgment and accountability Goldy cannot provide.
+
+**Goldy is not a project manager.**
+It gives your PM the data — file counts, test counts, completion percentages, blockers, risks. But it doesn't set priorities, negotiate deadlines, or manage stakeholder expectations. That's still a human skill. Goldy makes the PM faster and better informed, not redundant.
+
+**Goldy's memory is only as good as what you feed it.**
+If a critical design decision happens in a hallway conversation and nobody tells Goldy, both platform agents will make their own (possibly different) assumptions. Goldy only knows what's in its memory files. Garbage in, garbage out — just like any tool.
 
 ## Roadmap
 
