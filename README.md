@@ -488,5 +488,5 @@ If a critical design decision happens in a hallway conversation and nobody tells
 <p align="center">
   <strong>Goldy</strong> — Your AI Hand in Product Development<br>
   <em>One brain. Two codebases. Zero wasted tokens.</em><br><br>
-  Built by <a href="https://github.com/tirupatibalan-aspora">Tirupati Balan</a> at <a href="https://aspora.com">Aspora</a>
+  Imagined by <a href="https://github.com/tirupatibalan-aspora">Tirupati Balan</a> · Built by the power of <a href="https://claude.ai">Claude Cowork</a>
 </p>

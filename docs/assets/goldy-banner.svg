@@ -38,7 +38,7 @@
   <text x="190" y="165" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="600" fill="#71717a" letter-spacing="3">AI PROJECT MANAGER</text>
 
   <!-- Tagline -->
-  <text x="190" y="200" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#a1a1aa">Track the speed of your vibe. Ship with confidence.</text>
+  <text x="190" y="200" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#a1a1aa">One brain. Two codebases. Zero wasted tokens.</text>
 
   <!-- Connection chips -->
   <rect x="700" y="115" width="80" height="28" rx="14" fill="#1a1a24" stroke="#2a2a3a" stroke-width="1"/>
@@ -55,6 +55,6 @@
   <text x="987" y="134" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" fill="#4ade80" text-anchor="middle">Live</text>
 
   <!-- Bottom description -->
-  <text x="700" y="170" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#52525b">Modern project management for solo developers.</text>
-  <text x="700" y="190" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#52525b">You code. Goldy reports. Your team stays informed.</text>
+  <text x="700" y="170" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#52525b">AI helping hand for multi-platform development.</text>
+  <text x="700" y="190" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#52525b">You review. You approve. Goldy builds and reports.</text>
 </svg>
