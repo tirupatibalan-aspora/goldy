@@ -2,28 +2,40 @@
 
 **Status**: Active development on both platforms
 **Purpose**: Buy, sell, and manage gold investments within Vance app
+**Completion**: iOS 40% | Android 28% (of full Gold module scope)
+**Scope**: Foundation + Landing Page + Buy/Sell + KYC + Portfolio + Certificates + Tests
 
-## iOS (PR #1465 — `feature/wealth-module-gold-onboarding`)
+## iOS (`feature/wealth-module-gold-onboarding`)
+- **PR #1465**: Approved by Paul ✅ (review feedback addressed — CacheableService, formatters, Decimal, race conditions)
+- **PR URL**: https://github.com/Vance-Club/vance-ios/pull/1465
+- **Next**: Landing Page built → new PR for Paul to review
 - **Reviewer**: Paul
 - **Branch**: `feature/wealth-module-gold-onboarding` → `dev`
 - **Architecture**: Clean Architecture with UseCases, Actor-based repositories, SwiftUI views
+- **Stats**: 64 Swift files, 10 test files, 117 tests
 
-### Completed
+### Completed (iOS)
 - Domain models: GoldPrice, GoldPortfolio, GoldTransaction, GoldChart, GoldKYCStatus, GoldPaymentMethod, GoldCertificate
 - Use cases: FetchGoldPrice, FetchGoldPortfolio, FetchGoldTransactionHistory, FetchGoldChartData, BuyGold, SellGold
 - Repository: Actor-based GoldRepository
 - Network layer: Network+Gold models
 - DI: Container+GoldUseCases, Container+GoldRepositories
 - Views: Buy, Sell, Portfolio, PriceChart, Lander, Transactions, GoldHome, Placeholder
-- Unit tests: 102 tests passing
+- Unit tests: 102 tests passing (foundation) + 15 Lander ViewModel tests
 - UI component standards: gold-ui-component-standards.md
+- Gold Landing Page: GoldLanderView replaced with Figma-matched design (7 sections)
+  - Hero, Trust Badges, Returns Calculator, Value Cards, Comparison, FAQ, Partners
+- GoldLanderViewModel: calculator logic (step 500, min 500, max 1M)
 
-### Pending
+### Pending (iOS)
 - ~66-81 additional tests (config, KYC, payment methods, mocked use cases, mocked repo, utilities)
 - API timing tracking for Gold endpoints
 - Remaining placeholder views (sell flow details, certificates)
+- Wire Landing Page to real API data (gains percent, returns)
+- Partner logos (pending Figma export)
+- Disclaimer copy (pending legal review)
 
-## Gold Lander — Decided Answers
+## Gold Lander — Decided Answers (27 decisions — shared across both platforms)
 
 ### Platform-Specific
 | Question | Answer |
@@ -54,6 +66,7 @@
 | Amount min/max | Min 500, Max 1,000,000 |
 | Amount field tappable? | Yes — manual text input supported |
 | Bar chart animation | Animated on appear |
+| Return rates (conservative) | 1Y ~8%, 3Y ~30%, 5Y ~60% |
 
 ### Content Sections
 | Question | Answer |
@@ -100,16 +113,30 @@
 - No `.singleton` on use cases (stateless)
 - Cache with TTL for polled data (price cache = 30 seconds)
 
-## Android (early development)
+### Key Patterns (Android Gold)
+- MVI: GoldHomeFeature with State/Event/Command triple
+- BaseMviViewModel with `state`, `accept()`, `output()`
+- Compose inside Fragment via ComposeView
+- Theme tokens: `Theme.typography.*`, `Theme.colors.*`
+- GoldColors object for shared accent colors (#D4AF37)
+
+## Android (`feature/wealth-module-gold-onboarding`)
 - **Branch**: `feature/wealth-module-gold-onboarding`
 - **Pattern**: MVI (GoldHomeFeature with State/Event/Command)
+- **Stats**: 19 Kotlin source files, 8 test files, 25 MVI tests
 
-### Structure
-- **App layer** (12 files): GoldColors, GoldHomeFragment, GoldHomeViewModel, GoldHomeFeature, GoldHomeScreen (Compose), 6 use cases, GoldAmountValidator
-- **Data layer** (16 files): GoldService (Retrofit), GoldRemoteDataSource, GoldRepository, model files (GoldPrice, GoldPortfolio, etc.)
-- **Tests**: 4 test files (~25% coverage)
+### Completed (Android)
+- **App layer**: GoldColors, GoldHomeFragment, GoldHomeViewModel, GoldHomeFeature (expanded MVI), GoldHomeScreen (Compose), 6 use cases, GoldAmountValidator
+- **Data layer**: GoldService (Retrofit), GoldRemoteDataSource, GoldRepository, model files
+- **Gold Landing Page**: 7 section composables (Hero, Trust Badges, Returns Calculator, Value Cards, Comparison, FAQ, Partners)
+- **MVI expansion**: 7 new Events, 3 new Commands (FetchGoldPrice, CalculateReturns, NavigateToKycOnboarding)
+- **Tests**: 25 MVI tests (BuyGoldClick, Calculator clamping, FAQ toggle, price loading, error handling)
 
-### Test Gaps (Android)
-- Most data layer, repository, and use case classes untested
-- Service layer and remote data source untested
+### Pending (Android)
+- Data layer, repository, and use case tests
+- Service layer and remote data source tests
+- Wire Landing Page to real API data
+- Partner logos (pending Figma export)
+- Disclaimer copy (pending legal review)
+- Chart library decision (YCharts vs Vico)
 - Priority: Config → KYC/Payment → UseCases → Repository → Utilities

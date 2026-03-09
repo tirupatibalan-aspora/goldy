@@ -55,9 +55,11 @@ Gold (Buy, Sell, Portfolio, PriceChart, Lander, Transactions, Placeholder), Canv
 4. R.swift needs build to regenerate after adding strings
 
 ## Current Active Work
-- **Gold Module PR #1465** (`feature/wealth-module-gold-onboarding` → `dev`) — under review by Paul
-- Full Gold module: domain models, use cases, repository, network layer, views, DI, 102 tests
-- Pending: ~66-81 additional tests, API timing tracking, sell/portfolio placeholder views
+- **Gold Module PR #1465** (`feature/wealth-module-gold-onboarding` → `dev`) — Approved by Paul ✅
+- Full Gold module: domain models, use cases, repository, network layer, views, DI, 117 tests (64 Swift files)
+- Gold Landing Page: built (GoldLanderView replaced, 7 sections, GoldLanderViewModel, 15 new tests)
+- Next: New PR for Landing Page → Paul to review
+- Pending: ~66-81 additional tests, API timing tracking, sell/portfolio placeholder views, wire to real API data
 
 ## Testing
 - Framework: Swift Testing (@Suite, @Test, #expect)

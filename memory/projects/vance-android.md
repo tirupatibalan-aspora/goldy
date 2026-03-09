@@ -34,9 +34,11 @@
 ## Gold Module (Android)
 - **Location**: app/ui/gold/ + data-layer/network/gold/
 - **Pattern**: MVI (GoldHomeFeature with State/Event/Command)
-- **Files**: GoldHomeFragment, GoldHomeViewModel, GoldHomeScreen (Compose), GoldHomeFeature, 6 use cases, GoldAmountValidator
+- **Files**: 19 Kotlin source files (GoldHomeFragment, GoldHomeViewModel, GoldHomeScreen, GoldHomeFeature, 6 use cases, GoldAmountValidator, 7 section composables)
 - **Data layer**: GoldService (Retrofit), GoldRemoteDataSource, GoldRepository, 8+ model files
-- **Test coverage**: ~25% (4 test files for ~28 source files)
+- **Landing Page**: Built — 7 section composables (Hero, Trust Badges, Returns Calculator, Value Cards, Comparison, FAQ, Partners)
+- **MVI expansion**: 7 new Events, 3 new Commands for Landing Page interactions
+- **Tests**: 8 test files, 25 MVI tests (up from 4 files/8 tests)
 
 ## Build Variants
 - debug, dev_test (minified debug), release (ProGuard/R8), release_test
