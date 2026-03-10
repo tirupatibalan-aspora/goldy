@@ -699,6 +699,8 @@
       <div class="target">Target: March 17</div>
     </div>
   </div>
+  <div style="font-size:11px;color:#52525b;text-align:right;max-width:1200px;margin:0 auto;padding:8px 40px 0;">Last updated: March 10, 2026</div>
+  </div>
 </div>
 
 <div class="content">
@@ -706,29 +708,29 @@
   <!-- Goldy Insight -->
   <div class="goldy-insight">
     <div class="g-avatar">G</div>
-    <p>Hey Tirupati. Both repos have been quiet for <strong>3 days</strong>. I know you're planning the sprint, but code needs to start flowing today if we're hitting March 17. The good news? Your architecture is rock solid on both platforms. iOS has 102 tests passing and Android's MVI is wired up. This week is pure execution. I've mapped out exactly what to do below.</p>
+    <p>Hey Tirupati. <strong>Big day.</strong> Both repos got commits today and the numbers tell the story: iOS jumped from 117 to <strong>203 tests</strong> and Android from 25 to <strong>138 tests</strong>. Gold Landing Page is now built on both platforms with section components, ViewModel logic, and calculator wiring. You've gone from 40% to roughly 55% on iOS and 28% to 45% on Android in one push. 7 days left — the heavy lifting is the API integration and the remaining test gaps. Stay on this pace and March 17 is very much in play.</p>
   </div>
 
   <!-- Stats -->
   <div class="stat-row">
-    <div class="stat-card danger">
-      <div class="stat-value">3d</div>
+    <div class="stat-card success">
+      <div class="stat-value">0d</div>
       <div class="stat-label">Commit Gap</div>
     </div>
     <div class="stat-card success">
-      <div class="stat-value">102</div>
+      <div class="stat-value">203</div>
       <div class="stat-label">iOS Tests</div>
     </div>
     <div class="stat-card warning">
-      <div class="stat-value">~25%</div>
-      <div class="stat-label">Android Cov.</div>
+      <div class="stat-value">138</div>
+      <div class="stat-label">Android Tests</div>
     </div>
     <div class="stat-card info">
       <div class="stat-value">5</div>
       <div class="stat-label">Open Qs</div>
     </div>
     <div class="stat-card gold">
-      <div class="stat-value">117</div>
+      <div class="stat-value">121</div>
       <div class="stat-label">Total Files</div>
     </div>
   </div>
@@ -744,31 +746,32 @@
       </div>
       <div class="p-body">
         <div class="commit-line">
-          <span class="commit-dot stale"></span>
-          Mar 6 — <code>docs: add Gold UI component standards</code>
+          <span class="commit-dot ok"></span>
+          Mar 10 — <code>feat(gold): extract Gold Landing Page into section components</code>
         </div>
         <div class="mini-stats">
-          <div class="mini-stat"><div class="n">63</div><div class="l">Swift Files</div></div>
-          <div class="mini-stat"><div class="n">8</div><div class="l">Test Files</div></div>
-          <div class="mini-stat"><div class="n">102</div><div class="l">Tests Pass</div></div>
+          <div class="mini-stat"><div class="n">67</div><div class="l">Swift Files</div></div>
+          <div class="mini-stat"><div class="n">11</div><div class="l">Test Files</div></div>
+          <div class="mini-stat"><div class="n">203</div><div class="l">Tests Pass</div></div>
         </div>
         <div class="prog">
           <div class="prog-row"><span class="name">Core Architecture</span><span class="pct">100%</span></div>
           <div class="prog-bar"><div class="prog-fill g100" style="width:100%"></div></div>
-          <div class="prog-row"><span class="name">Views & UI</span><span class="pct">85%</span></div>
-          <div class="prog-bar"><div class="prog-fill b85"></div></div>
-          <div class="prog-row"><span class="name">Test Coverage</span><span class="pct">55%</span></div>
-          <div class="prog-bar"><div class="prog-fill a55"></div></div>
-          <div class="prog-row"><span class="name">Gold Lander (Figma)</span><span class="pct">0%</span></div>
-          <div class="prog-bar"><div class="prog-fill r0"></div></div>
+          <div class="prog-row"><span class="name">Views & UI</span><span class="pct">90%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:90%;background:linear-gradient(90deg,#3b82f6,#60a5fa);height:100%;border-radius:3px;"></div></div>
+          <div class="prog-row"><span class="name">Test Coverage</span><span class="pct">~65%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:65%;background:linear-gradient(90deg,#f59e0b,#fbbf24);height:100%;border-radius:3px;"></div></div>
+          <div class="prog-row"><span class="name">Gold Lander (Figma)</span><span class="pct">95%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:95%;background:linear-gradient(90deg,#22c55e,#4ade80);height:100%;border-radius:3px;"></div></div>
         </div>
         <ul class="task-list">
           <li><span class="t-icon done">&#10003;</span>Domain models, use cases, repositories</li>
           <li><span class="t-icon done">&#10003;</span>All primary views (Buy, Sell, Portfolio, Chart)</li>
-          <li><span class="t-icon done">&#10003;</span>DI containers, network layer</li>
-          <li><span class="t-icon todo">&#9679;</span>Replace GoldLanderView with Figma design</li>
-          <li><span class="t-icon todo">&#9679;</span>66-81 additional unit tests</li>
-          <li><span class="t-icon warn">!</span>PR #1465 awaiting Paul's review</li>
+          <li><span class="t-icon done">&#10003;</span>Gold Lander — 7 section components + ViewModel + 15 tests</li>
+          <li><span class="t-icon done">&#10003;</span>PR #1465 approved by Paul</li>
+          <li><span class="t-icon todo">&#9679;</span>Wire Landing Page to real API data</li>
+          <li><span class="t-icon todo">&#9679;</span>Remaining test gaps (~65 more tests)</li>
+          <li><span class="t-icon warn">!</span>Partner logos + disclaimer pending</li>
         </ul>
       </div>
     </div>
@@ -782,31 +785,31 @@
       </div>
       <div class="p-body">
         <div class="commit-line">
-          <span class="commit-dot stale"></span>
-          Mar 6 — <code>docs(gold): add UI patterns guide</code>
+          <span class="commit-dot ok"></span>
+          Mar 10 — <code>feat(gold): add Gold Landing Page sections with MVI logic</code>
         </div>
         <div class="mini-stats">
-          <div class="mini-stat"><div class="n">54</div><div class="l">Kotlin Files</div></div>
+          <div class="mini-stat"><div class="n">35</div><div class="l">Kotlin Files</div></div>
           <div class="mini-stat"><div class="n">8</div><div class="l">Test Files</div></div>
-          <div class="mini-stat"><div class="n">~25%</div><div class="l">Coverage</div></div>
+          <div class="mini-stat"><div class="n">138</div><div class="l">Tests Pass</div></div>
         </div>
         <div class="prog">
-          <div class="prog-row"><span class="name">Core Architecture</span><span class="pct">80%</span></div>
-          <div class="prog-bar"><div class="prog-fill g80"></div></div>
-          <div class="prog-row"><span class="name">Views & UI</span><span class="pct">40%</span></div>
-          <div class="prog-bar"><div class="prog-fill a40"></div></div>
-          <div class="prog-row"><span class="name">Test Coverage</span><span class="pct">25%</span></div>
-          <div class="prog-bar"><div class="prog-fill r25"></div></div>
-          <div class="prog-row"><span class="name">Gold Lander (Figma)</span><span class="pct">0%</span></div>
-          <div class="prog-bar"><div class="prog-fill r0"></div></div>
+          <div class="prog-row"><span class="name">Core Architecture</span><span class="pct">85%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:85%;background:linear-gradient(90deg,#3b82f6,#60a5fa);height:100%;border-radius:3px;"></div></div>
+          <div class="prog-row"><span class="name">Views & UI</span><span class="pct">65%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:65%;background:linear-gradient(90deg,#f59e0b,#fbbf24);height:100%;border-radius:3px;"></div></div>
+          <div class="prog-row"><span class="name">Test Coverage</span><span class="pct">~50%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:50%;background:linear-gradient(90deg,#f59e0b,#fbbf24);height:100%;border-radius:3px;"></div></div>
+          <div class="prog-row"><span class="name">Gold Lander (Figma)</span><span class="pct">90%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:90%;background:linear-gradient(90deg,#22c55e,#4ade80);height:100%;border-radius:3px;"></div></div>
         </div>
         <ul class="task-list">
-          <li><span class="t-icon done">&#10003;</span>MVI pattern (State/Event/Command)</li>
-          <li><span class="t-icon done">&#10003;</span>GoldHomeFragment + ViewModel + Screen</li>
-          <li><span class="t-icon done">&#10003;</span>6 use cases, Retrofit service, data models</li>
-          <li><span class="t-icon todo">&#9679;</span>GoldHomeScreen pixel-match Figma</li>
-          <li><span class="t-icon todo">&#9679;</span>Returns calculator + real API</li>
-          <li><span class="t-icon warn">!</span>Chart library undecided</li>
+          <li><span class="t-icon done">&#10003;</span>MVI expanded — 7 Events, 3 Commands for Landing Page</li>
+          <li><span class="t-icon done">&#10003;</span>7 section composables (Hero, Trust, Calculator, etc.)</li>
+          <li><span class="t-icon done">&#10003;</span>138 tests covering MVI + data layer + use cases</li>
+          <li><span class="t-icon todo">&#9679;</span>Wire to real API data</li>
+          <li><span class="t-icon todo">&#9679;</span>Remaining data layer tests</li>
+          <li><span class="t-icon warn">!</span>Chart library still undecided</li>
         </ul>
       </div>
     </div>
@@ -825,12 +828,12 @@
         <tr><td>Use Cases (6)</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
         <tr><td>Repository Layer</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
         <tr><td>Network / API</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
-        <tr><td>Gold Home Screen</td><td><span class="badge done">Done</span></td><td><span class="badge wip">WIP</span></td></tr>
-        <tr><td>Gold Lander (Figma)</td><td><span class="badge todo">Not Started</span></td><td><span class="badge todo">Not Started</span></td></tr>
-        <tr><td>Returns Calculator</td><td><span class="badge todo">Not Started</span></td><td><span class="badge todo">Not Started</span></td></tr>
+        <tr><td>Gold Home Screen</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Gold Lander (Figma)</td><td><span class="badge done">Built</span></td><td><span class="badge done">Built</span></td></tr>
+        <tr><td>Returns Calculator</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
         <tr><td>Buy/Sell Views</td><td><span class="badge done">Done</span></td><td><span class="badge todo">Not Started</span></td></tr>
         <tr><td>Portfolio View</td><td><span class="badge done">Done</span></td><td><span class="badge todo">Not Started</span></td></tr>
-        <tr><td>Unit Tests</td><td><span class="badge wip">102/~170</span></td><td><span class="badge wip">~25%</span></td></tr>
+        <tr><td>Unit Tests</td><td><span class="badge wip">203/~270</span></td><td><span class="badge wip">138 tests</span></td></tr>
         <tr><td>Comparison Table</td><td><span class="badge blocked">Blocked</span></td><td><span class="badge blocked">Blocked</span></td></tr>
         <tr><td>FAQ Section</td><td><span class="badge blocked">Blocked</span></td><td><span class="badge blocked">Blocked</span></td></tr>
       </tbody>
@@ -854,38 +857,38 @@
   <div class="ai-box">
     <div class="s-title">
       <span class="s-icon" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);">&#9889;</span>
-      Goldy's Sprint Plan — 7 Days
+      Goldy's Sprint Plan — 7 Days to March 17
     </div>
     <div class="tl-item">
       <div class="tl-dot now">1</div>
       <div class="tl-body">
-        <h4>Today — Restart Momentum</h4>
+        <h4>Today — Momentum Restored</h4>
         <div class="dates">March 10 (Day 1 of 7)</div>
-        <p>iOS: Start GoldLanderView Figma replacement. Check with Paul on PR #1465. Android: Pick chart library today (YCharts recommended). Start returns calculator UI with hardcoded data.</p>
+        <p>Landing Page built on both platforms. Today: start wiring iOS lander to real API (gains percent, returns data). Android: decide chart library (stop deferring). Submit new iOS PR for Paul.</p>
       </div>
     </div>
     <div class="tl-item">
       <div class="tl-dot sprint">2</div>
       <div class="tl-body">
-        <h4>UI Sprint</h4>
-        <div class="dates">March 10-12 (Days 1-3)</div>
-        <p>Full parallel execution. iOS: Figma lander replacement. Android: Pixel-match Figma, chart integration. Zero cross-platform dependencies.</p>
+        <h4>API Integration Sprint</h4>
+        <div class="dates">March 11-13 (Days 2-4)</div>
+        <p>iOS: Wire all lander sections to real API, replace hardcoded data, add API timing tracking. Android: Real API integration, chart library wiring, pixel-match final polish.</p>
       </div>
     </div>
     <div class="tl-item">
       <div class="tl-dot sprint">3</div>
       <div class="tl-body">
-        <h4>Integration + Tests</h4>
-        <div class="dates">March 13-14 (Days 4-5)</div>
-        <p>iOS: Wire APIs, write 66-81 missing tests. Android: Connect MVI to real data, add comprehensive tests.</p>
+        <h4>Test Coverage Push</h4>
+        <div class="dates">March 14-15 (Days 5-6)</div>
+        <p>iOS: Fill remaining ~65 test gaps (config, KYC, payment methods, mocked layers). Android: Data layer tests, service layer coverage, edge cases.</p>
       </div>
     </div>
     <div class="tl-item">
       <div class="tl-dot done">4</div>
       <div class="tl-body">
-        <h4>Polish + Buffer</h4>
-        <div class="dates">March 15-16 (Days 6-7)</div>
-        <p>Edge cases, error states, placeholder swaps. March 16 = final review. No new features.</p>
+        <h4>Polish + Ship</h4>
+        <div class="dates">March 16-17 (Days 7-8)</div>
+        <p>Error states, placeholder swaps, final PR review. March 16 = code freeze. March 17 = target merge.</p>
       </div>
     </div>
   </div>
@@ -897,10 +900,10 @@
       Quick Wins — Next 48 Hours
     </div>
     <div class="wins">
-      <div class="win"><div class="win-n">1</div><div><h5>iOS: Config + Utility Tests</h5><p>Simplest tests, biggest coverage jump.</p></div></div>
-      <div class="win"><div class="win-n">2</div><div><h5>Android: MVI Mock Wiring</h5><p>Wire State/Event/Command with mock data.</p></div></div>
-      <div class="win"><div class="win-n">3</div><div><h5>Both: Export Partner Logos</h5><p>5 minutes now prevents blocks later.</p></div></div>
-      <div class="win"><div class="win-n">4</div><div><h5>Both: Calculator Hardcoded Data</h5><p>Build UI while waiting for real API.</p></div></div>
+      <div class="win"><div class="win-n">1</div><div><h5>iOS: Wire Lander to Real API</h5><p>Replace hardcoded gains/returns with live data. Biggest remaining gap.</p></div></div>
+      <div class="win"><div class="win-n">2</div><div><h5>Android: Decide Chart Library</h5><p>Pick YCharts or Vico today. Every day deferred = integration risk.</p></div></div>
+      <div class="win"><div class="win-n">3</div><div><h5>iOS: Submit New PR for Paul</h5><p>Landing page + section components ready for review.</p></div></div>
+      <div class="win"><div class="win-n">4</div><div><h5>Both: Export Partner Logos</h5><p>5 minutes from Figma now prevents blocks later.</p></div></div>
     </div>
   </div>
 
@@ -911,9 +914,9 @@
       Risk Watch
     </div>
     <div class="risks">
-      <div class="risk high"><h5>3-Day Commit Gap</h5><p>Both repos silent since March 6. Another day makes March 17 unrealistic.</p></div>
-      <div class="risk med"><h5>Chart Library Undecided</h5><p>Every day of indecision blocks Android calculator UI.</p></div>
-      <div class="risk med"><h5>External Dependencies</h5><p>FAQ, disclaimer, partner logos. Use placeholders and ship.</p></div>
+      <div class="risk med"><h5>API Integration Not Started</h5><p>Both platforms have lander UI but still on hardcoded data. Real API wiring is the critical path.</p></div>
+      <div class="risk med"><h5>Chart Library Still Undecided</h5><p>Day 7 of deferral. Android calculator chart needs this resolved immediately.</p></div>
+      <div class="risk med"><h5>External Dependencies</h5><p>FAQ content, disclaimer copy, partner logos still pending. Use placeholders — don't let these block merge.</p></div>
     </div>
   </div>
 
@@ -933,7 +936,7 @@
   <!-- Goldy Close -->
   <div class="goldy-close">
     <div class="g-avatar">G</div>
-    <p>The architecture is solid on both platforms. This week is about execution speed, not design decisions. Focus on parallel tracks, flag blockers immediately, and ship incrementally. You've got this. — Goldy</p>
+    <p>Tirupati, today was a turning point. Both platforms jumped significantly in test coverage and the Landing Page is built everywhere. The remaining work is integration (API wiring) and filling test gaps — pure execution, no architecture decisions left. Keep the commit streak going tomorrow. — Goldy</p>
   </div>
 
   <!-- Footer -->

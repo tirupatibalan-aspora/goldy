@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold Module Status Report — March 10, 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* Hero Header */
+  .hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 48px 40px 36px;
+    border-bottom: 1px solid rgba(255,215,0,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,215,0,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .hero-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fbbf24;
+    margin-bottom: 8px;
+  }
+  .hero h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .hero h1 span { color: #fbbf24; }
+  .hero-date {
+    font-size: 14px;
+    color: #9ca3af;
+  }
+  .deadline-badge {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 120px;
+  }
+  .deadline-number {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .deadline-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+    opacity: 0.9;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 32px 40px; }
+
+  /* Stat Cards Row */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .stat-card {
+    background: #1a1a24;
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-card .stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .stat-card .stat-label {
+    font-size: 12px;
+    color: #71717a;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .stat-card.warning .stat-value { color: #f59e0b; }
+  .stat-card.danger .stat-value { color: #ef4444; }
+  .stat-card.success .stat-value { color: #22c55e; }
+  .stat-card.info .stat-value { color: #60a5fa; }
+
+  /* Platform Sections */
+  .platforms {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .platform-card {
+    background: #1a1a24;
+    border: 1px solid #2a2a3a;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .platform-header {
+    padding: 20px 24px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #2a2a3a;
+  }
+  .platform-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .platform-icon.ios { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+  .platform-icon.android { background: linear-gradient(135deg, #22c55e, #15803d); }
+  .platform-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .platform-header .branch {
+    font-size: 11px;
+    color: #71717a;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    background: #0f0f13;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-left: auto;
+  }
+  .platform-body { padding: 20px 24px; }
+
+  /* Progress Bars */
+  .progress-section { margin-bottom: 18px; }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .progress-label span:first-child { color: #a1a1aa; }
+  .progress-label span:last-child { color: #fff; font-weight: 700; }
+  .progress-bar {
+    height: 8px;
+    background: #27272a;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s ease;
+  }
+  .progress-fill.blue { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .progress-fill.green { background: linear-gradient(90deg, #22c55e, #4ade80); }
+  .progress-fill.amber { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .progress-fill.red { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+  /* File Stats */
+  .file-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .file-stat {
+    background: #0f0f13;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .file-stat .num {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+  }
+  .file-stat .label {
+    font-size: 10px;
+    color: #71717a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  /* Last commit */
+  .last-commit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #71717a;
+    padding: 10px 12px;
+    background: #0f0f13;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  .last-commit .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot.stale { background: #ef4444; }
+  .dot.recent { background: #22c55e; }
+  .last-commit code {
+    color: #a78bfa;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11px;
+  }
+
+  /* Checklist */
+  .checklist { list-style: none; }
+  .checklist li {
+    padding: 8px 0;
+    font-size: 13px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    border-bottom: 1px solid #1f1f2e;
+    line-height: 1.5;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .check-icon {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .check-icon.done { background: #15803d; color: #4ade80; }
+  .check-icon.pending { background: #27272a; color: #71717a; border: 1.5px solid #3f3f46; }
+  .check-icon.alert { background: #7f1d1d; color: #fca5a5; }
+
+  /* Open Questions */
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .open-questions {
+    background: #1a1a24;
+    border: 1px solid #2a2a3a;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+  .question-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #1f1f2e;
+  }
+  .question-item:last-child { border-bottom: none; }
+  .q-number {
+    width: 24px; height: 24px;
+    background: #f59e0b20;
+    color: #fbbf24;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .q-text { font-size: 13px; line-height: 1.5; color: #d4d4d8; }
+  .q-tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+  .q-tag.product { background: #7c3aed20; color: #a78bfa; }
+  .q-tag.eng { background: #0ea5e920; color: #67e8f9; }
+  .q-tag.legal { background: #dc262620; color: #fca5a5; }
+
+  /* AI Recommendations */
+  .ai-section {
+    background: linear-gradient(135deg, #1a1a2e, #1e1b4b);
+    border: 1px solid #312e81;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ai-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .ai-section .section-title .icon {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  }
+
+  /* Timeline */
+  .timeline { margin-top: 16px; }
+  .timeline-item {
+    display: flex;
+    gap: 16px;
+    padding-bottom: 20px;
+    position: relative;
+  }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 32px;
+    bottom: 0;
+    width: 2px;
+    background: #2a2a3a;
+  }
+  .timeline-item:last-child::before { display: none; }
+  .timeline-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .timeline-dot.today { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+  .timeline-dot.sprint { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .timeline-dot.polish { background: linear-gradient(135deg, #22c55e, #16a34a); }
+  .timeline-content h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .timeline-content .date-range {
+    font-size: 11px;
+    color: #71717a;
+    margin-bottom: 6px;
+  }
+  .timeline-content p {
+    font-size: 13px;
+    color: #a1a1aa;
+    line-height: 1.6;
+  }
+
+  /* Risk Cards */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .risk-card {
+    background: #0f0f13;
+    border-radius: 10px;
+    padding: 16px;
+    border-left: 3px solid;
+  }
+  .risk-card.high { border-color: #ef4444; }
+  .risk-card.medium { border-color: #f59e0b; }
+  .risk-card.low { border-color: #22c55e; }
+  .risk-card h5 {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .risk-card p { font-size: 12px; color: #71717a; line-height: 1.5; }
+
+  /* Quick Wins */
+  .quick-wins {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .win-card {
+    background: #0f0f13;
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .win-number {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .win-card h5 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .win-card p { font-size: 12px; color: #71717a; line-height: 1.5; }
+
+  /* Waiting On */
+  .waiting-section {
+    background: #1a1a24;
+    border: 1px solid #2a2a3a;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+  .waiting-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 12px;
+  }
+  .waiting-item {
+    background: #0f0f13;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .waiting-item .wi-icon { font-size: 24px; margin-bottom: 8px; }
+  .waiting-item .wi-title { font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .waiting-item .wi-owner { font-size: 11px; color: #71717a; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 24px 0;
+    border-top: 1px solid #1f1f2e;
+    color: #3f3f46;
+    font-size: 11px;
+  }
+
+  /* Motivational bar */
+  .motivation {
+    background: linear-gradient(90deg, #15803d, #166534);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .motivation p {
+    font-size: 15px;
+    color: #dcfce7;
+    font-weight: 500;
+    line-height: 1.6;
+  }
+
+  /* Comparison table */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+  }
+  .compare-table th {
+    background: #0f0f13;
+    padding: 10px 16px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #71717a;
+    text-align: left;
+    font-weight: 600;
+  }
+  .compare-table td {
+    padding: 10px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid #1f1f2e;
+    color: #d4d4d8;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .badge.done { background: #15803d30; color: #4ade80; }
+  .badge.wip { background: #f59e0b20; color: #fbbf24; }
+  .badge.todo { background: #3b82f620; color: #60a5fa; }
+  .badge.blocked { background: #ef444420; color: #fca5a5; }
+</style>
+</head>
+<body>
+
+<!-- Hero Header -->
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-label">Gold Module Feature Agent</div>
+      <h1><span>Gold Module</span> Status Report</h1>
+      <div class="hero-date">Tuesday, March 10, 2026 &mdash; Vance (Aspora)</div>
+    </div>
+    <div class="deadline-badge">
+      <div class="deadline-number">7</div>
+      <div class="deadline-label">Days Left</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Key Stats -->
+  <div class="stat-row">
+    <div class="stat-card danger">
+      <div class="stat-value">3 days</div>
+      <div class="stat-label">Since Last Commit</div>
+    </div>
+    <div class="stat-card success">
+      <div class="stat-value">102</div>
+      <div class="stat-label">iOS Tests Passing</div>
+    </div>
+    <div class="stat-card warning">
+      <div class="stat-value">~25%</div>
+      <div class="stat-label">Android Test Coverage</div>
+    </div>
+    <div class="stat-card info">
+      <div class="stat-value">5</div>
+      <div class="stat-label">Open Questions</div>
+    </div>
+  </div>
+
+  <!-- Platform Cards -->
+  <div class="platforms">
+    <!-- iOS -->
+    <div class="platform-card">
+      <div class="platform-header">
+        <div class="platform-icon ios">i</div>
+        <h3>iOS</h3>
+        <span class="branch">PR #1465</span>
+      </div>
+      <div class="platform-body">
+        <div class="last-commit">
+          <span class="dot stale"></span>
+          Last commit: Mar 6 &mdash; <code>docs: add Gold UI component standards</code>
+        </div>
+
+        <div class="file-stats">
+          <div class="file-stat"><div class="num">63</div><div class="label">Swift Files</div></div>
+          <div class="file-stat"><div class="num">8</div><div class="label">Test Files</div></div>
+          <div class="file-stat"><div class="num">102</div><div class="label">Tests Pass</div></div>
+        </div>
+
+        <div class="progress-section">
+          <div class="progress-label"><span>Core Architecture</span><span>100%</span></div>
+          <div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div>
+        </div>
+        <div class="progress-section">
+          <div class="progress-label"><span>Views & UI</span><span>85%</span></div>
+          <div class="progress-bar"><div class="progress-fill blue" style="width:85%"></div></div>
+        </div>
+        <div class="progress-section">
+          <div class="progress-label"><span>Test Coverage</span><span>55%</span></div>
+          <div class="progress-bar"><div class="progress-fill amber" style="width:55%"></div></div>
+        </div>
+        <div class="progress-section">
+          <div class="progress-label"><span>Gold Lander (Figma)</span><span>0%</span></div>
+          <div class="progress-bar"><div class="progress-fill red" style="width:0%"></div></div>
+        </div>
+
+        <ul class="checklist">
+          <li><span class="check-icon done">&#10003;</span>Domain models, use cases, repositories</li>
+          <li><span class="check-icon done">&#10003;</span>All primary views (Buy, Sell, Portfolio, Chart)</li>
+          <li><span class="check-icon done">&#10003;</span>DI containers, network layer</li>
+          <li><span class="check-icon done">&#10003;</span>UI component standards documented</li>
+          <li><span class="check-icon pending">&#9679;</span>Replace GoldLanderView with Figma design</li>
+          <li><span class="check-icon pending">&#9679;</span>66-81 additional unit tests needed</li>
+          <li><span class="check-icon pending">&#9679;</span>API timing tracking for Gold endpoints</li>
+          <li><span class="check-icon alert">!</span>PR #1465 awaiting Paul's review</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Android -->
+    <div class="platform-card">
+      <div class="platform-header">
+        <div class="platform-icon android">A</div>
+        <h3>Android</h3>
+        <span class="branch">early dev</span>
+      </div>
+      <div class="platform-body">
+        <div class="last-commit">
+          <span class="dot stale"></span>
+          Last commit: Mar 6 &mdash; <code>docs(gold): add UI patterns guide</code>
+        </div>
+
+        <div class="file-stats">
+          <div class="file-stat"><div class="num">54</div><div class="label">Kotlin Files</div></div>
+          <div class="file-stat"><div class="num">8</div><div class="label">Test Files</div></div>
+          <div class="file-stat"><div class="num">~25%</div><div class="label">Coverage</div></div>
+        </div>
+
+        <div class="progress-section">
+          <div class="progress-label"><span>Core Architecture</span><span>80%</span></div>
+          <div class="progress-bar"><div class="progress-fill green" style="width:80%"></div></div>
+        </div>
+        <div class="progress-section">
+          <div class="progress-label"><span>Views & UI</span><span>40%</span></div>
+          <div class="progress-bar"><div class="progress-fill amber" style="width:40%"></div></div>
+        </div>
+        <div class="progress-section">
+          <div class="progress-label"><span>Test Coverage</span><span>25%</span></div>
+          <div class="progress-bar"><div class="progress-fill red" style="width:25%"></div></div>
+        </div>
+        <div class="progress-section">
+          <div class="progress-label"><span>Gold Lander (Figma)</span><span>0%</span></div>
+          <div class="progress-bar"><div class="progress-fill red" style="width:0%"></div></div>
+        </div>
+
+        <ul class="checklist">
+          <li><span class="check-icon done">&#10003;</span>MVI pattern (State/Event/Command)</li>
+          <li><span class="check-icon done">&#10003;</span>GoldHomeFragment + ViewModel + Screen</li>
+          <li><span class="check-icon done">&#10003;</span>6 use cases, Retrofit service, data models</li>
+          <li><span class="check-icon done">&#10003;</span>BigDecimal monetary handling</li>
+          <li><span class="check-icon pending">&#9679;</span>GoldHomeScreen pixel-match Figma</li>
+          <li><span class="check-icon pending">&#9679;</span>Returns calculator + real API</li>
+          <li><span class="check-icon pending">&#9679;</span>MVI wiring with real data (not mock)</li>
+          <li><span class="check-icon alert">!</span>Chart library undecided (YCharts vs Vico)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Comparison Table -->
+  <div class="open-questions" style="margin-bottom:32px;">
+    <div class="section-title">
+      <span class="icon" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);">&#9776;</span>
+      Feature Completion Matrix
+    </div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Feature</th><th>iOS</th><th>Android</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Domain Models</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Use Cases (6)</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Repository Layer</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Network / API Layer</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Gold Home Screen</td><td><span class="badge done">Done</span></td><td><span class="badge wip">WIP</span></td></tr>
+        <tr><td>Gold Lander (Figma)</td><td><span class="badge todo">Not Started</span></td><td><span class="badge todo">Not Started</span></td></tr>
+        <tr><td>Returns Calculator</td><td><span class="badge todo">Not Started</span></td><td><span class="badge todo">Not Started</span></td></tr>
+        <tr><td>Buy/Sell Views</td><td><span class="badge done">Done</span></td><td><span class="badge todo">Not Started</span></td></tr>
+        <tr><td>Portfolio View</td><td><span class="badge done">Done</span></td><td><span class="badge todo">Not Started</span></td></tr>
+        <tr><td>Unit Tests</td><td><span class="badge wip">102 / ~170</span></td><td><span class="badge wip">~25%</span></td></tr>
+        <tr><td>Comparison Table</td><td><span class="badge blocked">Blocked</span></td><td><span class="badge blocked">Blocked</span></td></tr>
+        <tr><td>FAQ Section</td><td><span class="badge blocked">Blocked</span></td><td><span class="badge blocked">Blocked</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Open Questions -->
+  <div class="open-questions">
+    <div class="section-title">
+      <span class="icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);">?</span>
+      Open Design Questions
+    </div>
+    <div class="question-item">
+      <div class="q-number">1</div>
+      <div class="q-text">Hero section &mdash; should it be sticky or collapsible on scroll?</div>
+      <span class="q-tag product">Product</span>
+    </div>
+    <div class="question-item">
+      <div class="q-number">2</div>
+      <div class="q-text">Comparison table &mdash; Remote Config vs hardcoded data source? Tradeoffs to discuss.</div>
+      <span class="q-tag eng">Engineering</span>
+    </div>
+    <div class="question-item">
+      <div class="q-number">3</div>
+      <div class="q-text">Comparison table &mdash; static grid vs reusable component?</div>
+      <span class="q-tag eng">Engineering</span>
+    </div>
+    <div class="question-item">
+      <div class="q-number">4</div>
+      <div class="q-text">Android chart library &mdash; YCharts or Vico?</div>
+      <span class="q-tag eng">Engineering</span>
+    </div>
+    <div class="question-item">
+      <div class="q-number">5</div>
+      <div class="q-text">Disclaimer text &mdash; pending legal review</div>
+      <span class="q-tag legal">Legal</span>
+    </div>
+  </div>
+
+  <!-- AI Recommendations -->
+  <div class="ai-section">
+    <div class="section-title">
+      <span class="icon">&#9889;</span>
+      AI Recommendations &mdash; 7-Day Sprint Plan
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot today">&#9656;</div>
+        <div class="timeline-content">
+          <h4>Today &mdash; Restart Momentum</h4>
+          <div class="date-range">March 10 (Day 1 of 7)</div>
+          <p>3-day commit gap needs to end now. iOS: start GoldLanderView replacement with Figma design. Check with Paul on PR #1465 status. Android: make chart library decision today (YCharts recommended), start returns calculator UI with hardcoded data.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot sprint">&#9632;</div>
+        <div class="timeline-content">
+          <h4>UI Sprint</h4>
+          <div class="date-range">March 10&ndash;12 (Days 1&ndash;3)</div>
+          <p>Full parallel execution. iOS: GoldLanderView Figma replacement (hero, calculator, comparison, FAQ sections). Android: GoldHomeScreen pixel-match Figma, chart integration, calculator UI. Zero cross-platform dependencies &mdash; both can move independently.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot sprint">&#9632;</div>
+        <div class="timeline-content">
+          <h4>Integration + Tests</h4>
+          <div class="date-range">March 13&ndash;14 (Days 4&ndash;5)</div>
+          <p>iOS: wire new lander to real APIs, write 66-81 missing tests (start with config + utilities for quick wins). Android: connect MVI states to real API data, add tests for data source, use cases, and repository.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot polish">&#10003;</div>
+        <div class="timeline-content">
+          <h4>Polish + Buffer</h4>
+          <div class="date-range">March 15&ndash;16 (Days 6&ndash;7)</div>
+          <p>Fix edge cases, handle empty/error states, swap placeholder text when legal/product delivers content. March 16 = final review day before deadline. Do not introduce new features here.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Wins -->
+  <div class="ai-section">
+    <div class="section-title">
+      <span class="icon" style="background:linear-gradient(135deg,#22c55e,#16a34a);">&#10003;</span>
+      Quick Wins &mdash; Next 48 Hours
+    </div>
+    <div class="quick-wins">
+      <div class="win-card">
+        <div class="win-number">1</div>
+        <div>
+          <h5>iOS: Config + Utility Tests</h5>
+          <p>Simplest tests to write, biggest coverage jump. Knock them out first to show momentum.</p>
+        </div>
+      </div>
+      <div class="win-card">
+        <div class="win-number">2</div>
+        <div>
+          <h5>Android: MVI Mock Wiring</h5>
+          <p>Get GoldHomeFeature State/Event/Command fully wired with mock data so the UI is reviewable.</p>
+        </div>
+      </div>
+      <div class="win-card">
+        <div class="win-number">3</div>
+        <div>
+          <h5>Both: Export Partner Logos</h5>
+          <p>Export O Gold, Goldwise, Brinks logos from Figma now. 5 minutes of work that could block UI later.</p>
+        </div>
+      </div>
+      <div class="win-card">
+        <div class="win-number">4</div>
+        <div>
+          <h5>Both: Calculator Hardcoded Data</h5>
+          <p>Build returns calculator with sample data while waiting for real API integration.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risk Watch -->
+  <div class="open-questions">
+    <div class="section-title">
+      <span class="icon" style="background:linear-gradient(135deg,#ef4444,#b91c1c);">&#9888;</span>
+      Risk Watch
+    </div>
+    <div class="risk-grid">
+      <div class="risk-card high">
+        <h5>3-Day Commit Gap</h5>
+        <p>Both repos silent since March 6. If this continues another day, the March 17 deadline moves from tight to unrealistic.</p>
+      </div>
+      <div class="risk-card medium">
+        <h5>Android Chart Decision</h5>
+        <p>No chart library chosen yet. Every day of indecision is a day of blocked UI work on the returns calculator.</p>
+      </div>
+      <div class="risk-card medium">
+        <h5>External Dependencies</h5>
+        <p>FAQ content (product), disclaimer copy (legal), partner logos (Figma export). Use placeholders and ship without waiting.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Waiting On -->
+  <div class="waiting-section">
+    <div class="section-title">
+      <span class="icon" style="background:linear-gradient(135deg,#71717a,#52525b);">&#9202;</span>
+      Waiting On
+    </div>
+    <div class="waiting-grid">
+      <div class="waiting-item">
+        <div class="wi-icon">&#128196;</div>
+        <div class="wi-title">FAQ Content</div>
+        <div class="wi-owner">Product Team</div>
+      </div>
+      <div class="waiting-item">
+        <div class="wi-icon">&#9878;</div>
+        <div class="wi-title">Disclaimer Copy</div>
+        <div class="wi-owner">Legal Team</div>
+      </div>
+      <div class="waiting-item">
+        <div class="wi-icon">&#127912;</div>
+        <div class="wi-title">Partner Logos</div>
+        <div class="wi-owner">Figma Export</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Motivation -->
+  <div class="motivation">
+    <p>The architecture is solid on both platforms. This week is about execution speed, not design decisions. Focus on parallel tracks, don't wait on each other, and flag blockers immediately. 7 days is tight but doable.</p>
+  </div>
+
+  <div class="footer">
+    Gold Module Feature Agent &mdash; Auto-generated status report &mdash; Aspora / Vance
+  </div>
+</div>
+
+</body>
+</html>
