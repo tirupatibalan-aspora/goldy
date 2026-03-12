@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goldy — AI Project Manager</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #09090b;
+    color: #e4e4e7;
+    min-height: 100vh;
+  }
+
+  /* ===== GOLDY NAVBAR ===== */
+  .navbar {
+    background: rgba(9,9,11,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid #1f1f28;
+    padding: 12px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .goldy-logo {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 900;
+    color: #09090b;
+    box-shadow: 0 0 20px rgba(251,191,36,0.25);
+  }
+  .goldy-name {
+    font-size: 18px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #fbbf24, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .goldy-subtitle {
+    font-size: 10px;
+    color: #71717a;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+  }
+  .nav-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 12px;
+    color: #71717a;
+  }
+  .nav-chip {
+    background: #1a1a24;
+    border: 1px solid #2a2a3a;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .nav-chip.live {
+    border-color: #22c55e40;
+    color: #4ade80;
+  }
+  .nav-chip.live::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: linear-gradient(135deg, #0f0f18 0%, #1a1020 40%, #1a1530 100%);
+    padding: 48px 40px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(251,191,36,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -150px; left: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(139,92,246,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hero-left { flex: 1; }
+  .goldy-says {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fbbf24;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .goldy-says .g-icon {
+    width: 20px; height: 20px;
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 900;
+    color: #09090b;
+  }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .hero h1 .gold { color: #fbbf24; }
+  .hero .project-name {
+    font-size: 15px;
+    color: #a1a1aa;
+    font-weight: 500;
+  }
+  .hero .project-name strong { color: #d4d4d8; }
+  .deadline-card {
+    background: linear-gradient(135deg, #dc2626, #991b1b);
+    border-radius: 16px;
+    padding: 20px 28px;
+    text-align: center;
+    min-width: 140px;
+    box-shadow: 0 4px 30px rgba(220,38,38,0.3);
+  }
+  .deadline-card .number {
+    font-size: 48px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+  }
+  .deadline-card .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    margin-top: 4px;
+  }
+  .deadline-card .target {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+  }
+
+  /* ===== CONTENT ===== */
+  .content { max-width: 1200px; margin: 0 auto; padding: 32px 40px; }
+
+  /* Goldy Insight Bar */
+  .goldy-insight {
+    background: linear-gradient(90deg, #1a1520, #1a1a2e);
+    border: 1px solid #fbbf2420;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .goldy-insight .g-avatar {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    color: #09090b;
+    flex-shrink: 0;
+  }
+  .goldy-insight p {
+    font-size: 13px;
+    color: #d4d4d8;
+    line-height: 1.6;
+  }
+  .goldy-insight p strong { color: #fbbf24; }
+
+  /* Stat Cards */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: #111118;
+    border: 1px solid #1f1f2e;
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .stat-card.danger::before { background: linear-gradient(90deg, #ef4444, transparent); }
+  .stat-card.success::before { background: linear-gradient(90deg, #22c55e, transparent); }
+  .stat-card.warning::before { background: linear-gradient(90deg, #f59e0b, transparent); }
+  .stat-card.info::before { background: linear-gradient(90deg, #60a5fa, transparent); }
+  .stat-card.gold::before { background: linear-gradient(90deg, #fbbf24, transparent); }
+  .stat-value {
+    font-size: 26px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+  .stat-card.danger .stat-value { color: #ef4444; }
+  .stat-card.success .stat-value { color: #22c55e; }
+  .stat-card.warning .stat-value { color: #f59e0b; }
+  .stat-card.info .stat-value { color: #60a5fa; }
+  .stat-card.gold .stat-value { color: #fbbf24; }
+  .stat-label {
+    font-size: 10px;
+    color: #52525b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Platform Cards */
+  .platforms {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+  .p-card {
+    background: #111118;
+    border: 1px solid #1f1f2e;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .p-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #1a1a28;
+  }
+  .p-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 15px;
+    color: #fff;
+  }
+  .p-icon.ios { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+  .p-icon.android { background: linear-gradient(135deg, #22c55e, #15803d); }
+  .p-header h3 { font-size: 15px; font-weight: 700; color: #fff; }
+  .p-header .tag {
+    margin-left: auto;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    background: #1a1a28;
+    color: #71717a;
+    font-family: 'SF Mono', monospace;
+  }
+  .p-body { padding: 16px 20px; }
+  .commit-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #52525b;
+    padding: 8px 10px;
+    background: #09090b;
+    border-radius: 6px;
+    margin-bottom: 14px;
+  }
+  .commit-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .commit-dot.stale { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,0.4); }
+  .commit-dot.ok { background: #22c55e; }
+  .commit-line code {
+    color: #a78bfa;
+    font-family: 'SF Mono', monospace;
+    font-size: 10px;
+  }
+  .mini-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .mini-stat {
+    background: #09090b;
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+  }
+  .mini-stat .n { font-size: 18px; font-weight: 800; color: #fff; }
+  .mini-stat .l { font-size: 9px; color: #52525b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 1px; }
+  .prog { margin-bottom: 12px; }
+  .prog-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .prog-row .name { font-size: 11px; color: #71717a; }
+  .prog-row .pct { font-size: 11px; color: #fff; font-weight: 700; }
+  .prog-bar {
+    height: 6px;
+    background: #1a1a28;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .prog-fill { height: 100%; border-radius: 3px; }
+  .prog-fill.g100 { background: linear-gradient(90deg, #22c55e, #4ade80); }
+  .prog-fill.b85 { background: linear-gradient(90deg, #3b82f6, #60a5fa); width: 85%; }
+  .prog-fill.a55 { background: linear-gradient(90deg, #f59e0b, #fbbf24); width: 55%; }
+  .prog-fill.r0 { background: #27272a; width: 0%; }
+  .prog-fill.g80 { background: linear-gradient(90deg, #22c55e, #4ade80); width: 80%; }
+  .prog-fill.a40 { background: linear-gradient(90deg, #f59e0b, #fbbf24); width: 40%; }
+  .prog-fill.r25 { background: linear-gradient(90deg, #ef4444, #f87171); width: 25%; }
+  .task-list { list-style: none; }
+  .task-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 12px;
+    color: #a1a1aa;
+    line-height: 1.4;
+    border-bottom: 1px solid #111118;
+  }
+  .task-list li:last-child { border-bottom: none; }
+  .t-icon {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .t-icon.done { background: #15803d; color: #4ade80; }
+  .t-icon.todo { background: #1a1a28; color: #52525b; border: 1px solid #27272a; }
+  .t-icon.warn { background: #7f1d1d; color: #fca5a5; }
+
+  /* Section containers */
+  .section {
+    background: #111118;
+    border: 1px solid #1f1f2e;
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 20px;
+  }
+  .s-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .s-icon {
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #fff;
+  }
+
+  /* Matrix Table */
+  .matrix { width: 100%; border-collapse: collapse; }
+  .matrix th {
+    background: #09090b;
+    padding: 8px 14px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #52525b;
+    text-align: left;
+    font-weight: 700;
+  }
+  .matrix td {
+    padding: 8px 14px;
+    font-size: 12px;
+    border-bottom: 1px solid #1a1a28;
+    color: #a1a1aa;
+  }
+  .matrix tr:last-child td { border-bottom: none; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .badge.done { background: #15803d25; color: #4ade80; }
+  .badge.wip { background: #f59e0b20; color: #fbbf24; }
+  .badge.todo { background: #3b82f620; color: #60a5fa; }
+  .badge.blocked { background: #ef444420; color: #fca5a5; }
+
+  /* Open Questions */
+  .q-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #1a1a28;
+  }
+  .q-item:last-child { border-bottom: none; }
+  .q-num {
+    width: 22px; height: 22px;
+    background: #fbbf2415;
+    color: #fbbf24;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .q-txt { font-size: 12px; color: #a1a1aa; line-height: 1.5; flex: 1; }
+  .q-tag {
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+  .q-tag.product { background: #7c3aed18; color: #a78bfa; }
+  .q-tag.eng { background: #0ea5e918; color: #67e8f9; }
+  .q-tag.legal { background: #dc262618; color: #fca5a5; }
+
+  /* AI Section */
+  .ai-box {
+    background: linear-gradient(135deg, #111118, #15102a);
+    border: 1px solid #312e81;
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ai-box::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Timeline */
+  .tl-item {
+    display: flex;
+    gap: 14px;
+    padding-bottom: 16px;
+    position: relative;
+  }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: 13px; top: 28px; bottom: 0;
+    width: 2px;
+    background: #1f1f2e;
+  }
+  .tl-item:last-child::before { display: none; }
+  .tl-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+    z-index: 1;
+    color: #fff;
+    font-weight: 700;
+  }
+  .tl-dot.now { background: linear-gradient(135deg, #dc2626, #991b1b); }
+  .tl-dot.sprint { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .tl-dot.done { background: linear-gradient(135deg, #22c55e, #16a34a); }
+  .tl-body h4 { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+  .tl-body .dates { font-size: 10px; color: #52525b; margin-bottom: 4px; }
+  .tl-body p { font-size: 12px; color: #71717a; line-height: 1.5; }
+
+  /* Win Cards */
+  .wins {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .win {
+    background: #09090b;
+    border-radius: 8px;
+    padding: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .win-n {
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    color: #09090b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .win h5 { font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+  .win p { font-size: 11px; color: #52525b; line-height: 1.4; }
+
+  /* Risk */
+  .risks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .risk {
+    background: #09090b;
+    border-radius: 8px;
+    padding: 14px;
+    border-left: 3px solid;
+  }
+  .risk.high { border-color: #ef4444; }
+  .risk.med { border-color: #f59e0b; }
+  .risk h5 { font-size: 11px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .risk p { font-size: 11px; color: #52525b; line-height: 1.4; }
+
+  /* Waiting */
+  .wait-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .wait-item {
+    background: #09090b;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+  .wait-item .wi-t { font-size: 11px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+  .wait-item .wi-o { font-size: 10px; color: #52525b; }
+
+  /* Motivation */
+  .goldy-close {
+    background: linear-gradient(90deg, #1a1520, #15201a);
+    border: 1px solid #fbbf2415;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .goldy-close p {
+    font-size: 13px;
+    color: #a1a1aa;
+    line-height: 1.6;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 20px 0 32px;
+    border-top: 1px solid #1a1a28;
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .footer-brand .g-sm {
+    width: 20px; height: 20px;
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 900;
+    color: #09090b;
+  }
+  .footer-brand span {
+    font-size: 13px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #fbbf24, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .footer p {
+    font-size: 10px;
+    color: #27272a;
+  }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-brand">
+    <div class="goldy-logo">G</div>
+    <div>
+      <div class="goldy-name">Goldy</div>
+      <div class="goldy-subtitle">Your AI Hand in Product Development</div>
+    </div>
+  </div>
+  <div class="nav-meta">
+    <span class="nav-chip live">Live</span>
+    <span class="nav-chip">Figma</span>
+    <span class="nav-chip">GitHub</span>
+    <span class="nav-chip">Slack</span>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div class="goldy-says">
+        <span class="g-icon">G</span>
+        Goldy's Daily Briefing
+      </div>
+      <h1><span class="gold">Gold Module</span> Status</h1>
+      <p class="project-name"><strong>Vance (Aspora)</strong> — Cross-border Money Transfer App</p>
+    </div>
+    <div class="deadline-card">
+      <div class="number">4</div>
+      <div class="label">Days Left</div>
+      <div class="target">Target: March 17</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:#52525b;text-align:right;max-width:1200px;margin:0 auto;padding:8px 40px 0;">Last updated: March 13, 2026 — Goldy (daily refresh)</div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- Goldy Insight -->
+  <div class="goldy-insight">
+    <div class="g-avatar">G</div>
+    <p>Hey Tirupati. <strong>759 tests across both platforms — iOS at 453, Android at 306.</strong> All 10 M2 screens are built on both platforms. M1 PRs merged on both sides. M2 code pushed to origin — PRs pending for <strong>Paul (iOS)</strong> and <strong>Sergei (Android)</strong>. Chart library is resolved — custom Figma-matched composables replaced Vico. Sergei's review feedback addressed (grouping logic extracted, 26 @Preview functions added). You're in PR-and-polish mode now. 4 days to March 17.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stat-row">
+    <div class="stat-card success">
+      <div class="stat-value">0d</div>
+      <div class="stat-label">Commit Gap</div>
+    </div>
+    <div class="stat-card success">
+      <div class="stat-value">453</div>
+      <div class="stat-label">iOS Tests</div>
+    </div>
+    <div class="stat-card success">
+      <div class="stat-value">306</div>
+      <div class="stat-label">Android Tests</div>
+    </div>
+    <div class="stat-card info">
+      <div class="stat-value">4</div>
+      <div class="stat-label">Open Qs</div>
+    </div>
+    <div class="stat-card gold">
+      <div class="stat-value">176+</div>
+      <div class="stat-label">Total Files</div>
+    </div>
+  </div>
+
+  <!-- Platforms -->
+  <div class="platforms">
+    <!-- iOS -->
+    <div class="p-card">
+      <div class="p-header">
+        <div class="p-icon ios">iOS</div>
+        <h3>iOS — 65% Complete</h3>
+        <span class="tag">M2 Pending PR</span>
+      </div>
+      <div class="p-body">
+        <div class="commit-line">
+          <span class="commit-dot ok"></span>
+          Mar 13 — <code>ee13375 Fix Order Summary request: use value_mode instead of buy_mode</code>
+        </div>
+        <div class="mini-stats">
+          <div class="mini-stat"><div class="n">100+</div><div class="l">Swift Files</div></div>
+          <div class="mini-stat"><div class="n">10+</div><div class="l">Test Suites</div></div>
+          <div class="mini-stat"><div class="n">453</div><div class="l">Tests Pass</div></div>
+        </div>
+        <div class="prog">
+          <div class="prog-row"><span class="name">Core Architecture</span><span class="pct">100%</span></div>
+          <div class="prog-bar"><div class="prog-fill g100" style="width:100%"></div></div>
+          <div class="prog-row"><span class="name">M2 Screens (10/10)</span><span class="pct">100%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:100%;background:linear-gradient(90deg,#22c55e,#4ade80);height:100%;border-radius:3px;"></div></div>
+          <div class="prog-row"><span class="name">Test Coverage</span><span class="pct">~85%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:85%;background:linear-gradient(90deg,#3b82f6,#60a5fa);height:100%;border-radius:3px;"></div></div>
+          <div class="prog-row"><span class="name">API Wiring (Buy Flow)</span><span class="pct">100%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:100%;background:linear-gradient(90deg,#22c55e,#4ade80);height:100%;border-radius:3px;"></div></div>
+        </div>
+        <ul class="task-list">
+          <li><span class="t-icon done">&#10003;</span>M1 PR #1465 merged — approved by Paul</li>
+          <li><span class="t-icon done">&#10003;</span>All 10 M2 screens built (3 buy + 1 success + 6 sell + bank flow)</li>
+          <li><span class="t-icon done">&#10003;</span>453 tests — BuyVM, BuyReviewVM, SellVM, SellReviewVM, SelectBankVM, AccountDetailsVM, Friction, Lander</li>
+          <li><span class="t-icon done">&#10003;</span>13 Figma assets, 42 localization keys, sell friction flow wired</li>
+          <li><span class="t-icon done">&#10003;</span>Buy Flow APIs wired (Create Cart + Order Summary)</li>
+          <li><span class="t-icon todo">&#9679;</span>Create M2 PR for Paul's review</li>
+          <li><span class="t-icon todo">&#9679;</span>Wire isLongTermUser to SellReviewView</li>
+          <li><span class="t-icon todo">&#9679;</span>Fix sell presets (25/50/75/100% → Figma 10/20/40/Sell All)</li>
+          <li><span class="t-icon warn">!</span>Partner logos + disclaimer pending (external)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Android -->
+    <div class="p-card">
+      <div class="p-header">
+        <div class="p-icon android">A</div>
+        <h3>Android — 55% Complete</h3>
+        <span class="tag">M2 Pending PR</span>
+      </div>
+      <div class="p-body">
+        <div class="commit-line">
+          <span class="commit-dot ok"></span>
+          Mar 13 — <code>add32e2 Update existing user hero: gains badge, action buttons, Figma spacing</code>
+        </div>
+        <div class="mini-stats">
+          <div class="mini-stat"><div class="n">76</div><div class="l">Kotlin Files</div></div>
+          <div class="mini-stat"><div class="n">14</div><div class="l">Test Suites</div></div>
+          <div class="mini-stat"><div class="n">306</div><div class="l">Tests Pass</div></div>
+        </div>
+        <div class="prog">
+          <div class="prog-row"><span class="name">Core Architecture</span><span class="pct">100%</span></div>
+          <div class="prog-bar"><div class="prog-fill g100" style="width:100%"></div></div>
+          <div class="prog-row"><span class="name">M2 Screens (10/10)</span><span class="pct">100%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:100%;background:linear-gradient(90deg,#22c55e,#4ade80);height:100%;border-radius:3px;"></div></div>
+          <div class="prog-row"><span class="name">Test Coverage</span><span class="pct">~80%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:80%;background:linear-gradient(90deg,#3b82f6,#60a5fa);height:100%;border-radius:3px;"></div></div>
+          <div class="prog-row"><span class="name">Chart Library</span><span class="pct">Resolved</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:100%;background:linear-gradient(90deg,#22c55e,#4ade80);height:100%;border-radius:3px;"></div></div>
+        </div>
+        <ul class="task-list">
+          <li><span class="t-icon done">&#10003;</span>M1 PR #1512 merged — approved by Sergei</li>
+          <li><span class="t-icon done">&#10003;</span>All 10 M2 screens built with MVI pattern</li>
+          <li><span class="t-icon done">&#10003;</span>306 tests — 14 suites (Sell, Buy, Bank, Home, Lander, DataSource, Validator, Domain, etc.)</li>
+          <li><span class="t-icon done">&#10003;</span>Chart: Custom Figma-matched composables (Vico evaluated, replaced for pixel-perfect match)</li>
+          <li><span class="t-icon done">&#10003;</span>Sergei feedback: grouping logic extracted from UI, 26 @Preview functions added</li>
+          <li><span class="t-icon done">&#10003;</span>All hardcoded strings localized</li>
+          <li><span class="t-icon todo">&#9679;</span>Create M2 PR for Sergei's review</li>
+          <li><span class="t-icon warn">!</span>Partner logos + disclaimer pending (external)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Matrix -->
+  <div class="section">
+    <div class="s-title">
+      <span class="s-icon" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);">&#9776;</span>
+      Feature Completion Matrix
+    </div>
+    <table class="matrix">
+      <thead><tr><th>Feature</th><th>iOS</th><th>Android</th></tr></thead>
+      <tbody>
+        <tr><td>Domain Models</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Use Cases (6)</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Repository Layer</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Network / API</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Gold Home Screen</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Gold Lander (7 sections)</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Returns Calculator</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Buy Flow (3 screens)</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Sell Flow (7 screens)</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Portfolio View</td><td><span class="badge done">Done</span></td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Chart Library</td><td><span class="badge done">N/A</span></td><td><span class="badge done">Resolved</span></td></tr>
+        <tr><td>Unit Tests</td><td><span class="badge done">453</span></td><td><span class="badge done">306</span></td></tr>
+        <tr><td>@Preview Functions</td><td><span class="badge wip">N/A</span></td><td><span class="badge done">26 added</span></td></tr>
+        <tr><td>M2 PR</td><td><span class="badge wip">Pending</span></td><td><span class="badge wip">Pending</span></td></tr>
+        <tr><td>Comparison Table</td><td><span class="badge blocked">Needs Disc.</span></td><td><span class="badge blocked">Needs Disc.</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Open Questions -->
+  <div class="section">
+    <div class="s-title">
+      <span class="s-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);">?</span>
+      Open Design Questions
+    </div>
+    <div class="q-item"><div class="q-num">1</div><div class="q-txt">Hero section — sticky or collapsible on scroll?</div><span class="q-tag product">Product</span></div>
+    <div class="q-item"><div class="q-num">2</div><div class="q-txt">Comparison table — Remote Config vs hardcoded data?</div><span class="q-tag eng">Engineering</span></div>
+    <div class="q-item"><div class="q-num">3</div><div class="q-txt">Comparison table — static grid vs reusable component?</div><span class="q-tag eng">Engineering</span></div>
+    <div class="q-item"><div class="q-num">4</div><div class="q-txt">Disclaimer text — pending legal review</div><span class="q-tag legal">Legal</span></div>
+  </div>
+
+  <!-- AI Sprint Plan -->
+  <div class="ai-box">
+    <div class="s-title">
+      <span class="s-icon" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);">&#9889;</span>
+      Goldy's Sprint Plan — 4 Days to March 17
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot done">1</div>
+      <div class="tl-body">
+        <h4>API Integration + Lander Wiring</h4>
+        <div class="dates">March 10 (Day 1)</div>
+        <p>Both platforms wired Landing Page to live price API. M1 PRs merged on both platforms.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot done">2</div>
+      <div class="tl-body">
+        <h4>M2 Build Sprint — All Screens</h4>
+        <div class="dates">March 11-12 (Days 2-3)</div>
+        <p>All 10 M2 screens built on both platforms. 453 iOS tests, 306 Android tests. Chart library resolved (custom composables). Sell friction flow wired. Strings localized. Buy flow APIs wired on iOS.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot done">3</div>
+      <div class="tl-body">
+        <h4>Sergei Review Feedback + Previews</h4>
+        <div class="dates">March 13 (Day 4)</div>
+        <p>Addressed Sergei's Android review: extracted transaction grouping from UI (GoldTransactionGrouper), moved bank grouping to State, added 26 @Preview functions for all screens + reusable components.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot now">4</div>
+      <div class="tl-body">
+        <h4>Today — Create M2 PRs</h4>
+        <div class="dates">March 13 (Day 4)</div>
+        <p>Create M2 PRs for Paul (iOS) and Sergei (Android). Both repos pushed to origin. Fix sell presets mismatch and wire isLongTermUser on iOS.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot sprint">5</div>
+      <div class="tl-body">
+        <h4>PR Review + Polish + Ship</h4>
+        <div class="dates">March 14-17 (Days 5-8)</div>
+        <p>Paul and Sergei review M2 PRs. Address review feedback. Wire remaining API data. Partner logos (placeholders if needed). March 16 = code freeze. March 17 = target merge.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Wins -->
+  <div class="ai-box">
+    <div class="s-title">
+      <span class="s-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a);">&#10003;</span>
+      Quick Wins — Next 48 Hours
+    </div>
+    <div class="wins">
+      <div class="win"><div class="win-n">1</div><div><h5>Create M2 PRs — Both Platforms</h5><p>All screens built, tests passing, code pushed. Nothing blocking PR creation. Get Paul and Sergei reviewing today.</p></div></div>
+      <div class="win"><div class="win-n">2</div><div><h5>iOS: Fix Sell Presets</h5><p>Current 25/50/75/100% doesn't match Figma (10/20/40/Sell All with "POPULAR" badge). Quick UI update.</p></div></div>
+      <div class="win"><div class="win-n">3</div><div><h5>iOS: Wire isLongTermUser</h5><p>SellReviewView needs route param for retention nudge gating. Small plumbing fix.</p></div></div>
+      <div class="win"><div class="win-n">4</div><div><h5>Both: Export Partner Logos from Figma</h5><p>Still pending. 5 minutes now prevents a last-minute scramble on March 16.</p></div></div>
+    </div>
+  </div>
+
+  <!-- Risk Watch -->
+  <div class="section">
+    <div class="s-title">
+      <span class="s-icon" style="background:linear-gradient(135deg,#ef4444,#b91c1c);">&#9888;</span>
+      Risk Watch
+    </div>
+    <div class="risks">
+      <div class="risk med"><h5>M2 PRs Not Yet Created</h5><p>Both platforms have code pushed but PRs not yet open. Reviewers (Paul, Sergei) can't start until PRs exist. Every day without a PR is a day less for review.</p></div>
+      <div class="risk med"><h5>iOS Sell Presets Mismatch</h5><p>Current 25/50/75/100% doesn't match Figma 10/20/40/Sell All. Needs fixing before Paul reviews.</p></div>
+      <div class="risk med"><h5>External Dependencies</h5><p>Disclaimer copy (legal), partner logos (Figma export) still pending. Timebox — use placeholders if not ready by March 16.</p></div>
+    </div>
+  </div>
+
+  <!-- Waiting On -->
+  <div class="section">
+    <div class="s-title">
+      <span class="s-icon" style="background:#27272a;">&#9202;</span>
+      Waiting On
+    </div>
+    <div class="wait-grid">
+      <div class="wait-item"><div class="wi-t">FAQ Content</div><div class="wi-o">Product Team</div></div>
+      <div class="wait-item"><div class="wi-t">Disclaimer Copy</div><div class="wi-o">Legal Team</div></div>
+      <div class="wait-item"><div class="wi-t">Partner Logos</div><div class="wi-o">Figma Export</div></div>
+    </div>
+  </div>
+
+  <!-- Goldy Close -->
+  <div class="goldy-close">
+    <div class="g-avatar">G</div>
+    <p>Tirupati, 759 tests across 176+ files. All 10 M2 screens done on both platforms. Chart library resolved. Sergei's feedback addressed. Zero technical blockers remaining — it's all PR creation and review from here. 4 days left. Get both PRs open today so Paul and Sergei have maximum review time. — Goldy</p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-brand">
+      <span class="g-sm">G</span>
+      <span>Goldy</span>
+    </div>
+    <p>Your AI Hand in Product Development — Track the speed of your vibe — Aspora / Vance</p>
+  </div>
+</div>
+
+</body>
+</html>
