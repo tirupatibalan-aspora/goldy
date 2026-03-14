@@ -30,16 +30,23 @@ Tirupati Balan, tirupati.balan@aspora.com. Works on Vance (Aspora) — a cross-b
 |------|------|--------|
 | **vance-ios** | iOS app — SwiftUI, Clean Architecture + MVVM, Swift 6, iOS 16.4+ | Active |
 | **vance-android** | Android app — Kotlin, Clean Architecture + MVVM, Dagger Hilt, Compose + XML | Active |
-| **Gold Module (iOS)** | Wealth module — domain, use cases, repo, views, 102 tests. PR #1465 under review by Paul | Active — PR review |
-| **Gold Module (Android)** | Gold home screen, MVI pattern, ~25% test coverage | Active — early dev |
+| **Gold Module (iOS)** | Wealth module — 100+ files, 453 tests. M1 merged ✅. M2 all screens built, live price polling, ORDER_COMPLETED fix. Pending PR. | Active — 70% complete |
+| **Gold Module (Android)** | Gold module — 76 Kotlin files, 306 tests. M1 merged ✅. M2 all screens built, live price polling + toolbar pill, ORDER_COMPLETED fix. Cart API 500 blocking buy flow. Pending PR. | Active — 60% complete |
+| **Goldy** | AI project manager — shared knowledge base across iOS & Android, saves ~32% tokens on cross-platform dev | Active |
 | **UK SD Components (Android)** | UK-specific server-driven UI components (Address view, picker) | Active branch |
 → Details: memory/projects/
 
 ## Active Branches
-| Repo | Branch |
-|------|--------|
-| vance-ios | `feature/wealth-module-gold-onboarding` |
-| vance-android | `feature/wealth-module-gold-onboarding` |
+| Repo | Branch | Milestone |
+|------|--------|-----------|
+| vance-ios | `feature/wealth-module-gold-buy-sell-flow` | M2 — Buy/Sell flows |
+| vance-android | `feature/wealth-module-gold-buy-sell-flow` | M2 — Buy/Sell flows |
+
+## Milestones
+| # | Name | Status | Branch |
+|---|------|--------|--------|
+| M1 | Gold Landing Page | ✅ Merged on both platforms (iOS PR #1484, Android PR #1512) | `feature/wealth-module-gold-onboarding` |
+| M2 | Buy & Sell Gold Flows | All screens built, pushed. Pending PRs. | `feature/wealth-module-gold-buy-sell-flow` |
 
 ## Tech Stack Summary
 | | iOS | Android |
@@ -69,3 +76,9 @@ Tirupati Balan, tirupati.balan@aspora.com. Works on Vance (Aspora) — a cross-b
 - No over-engineering — simplest solution that works
 - Quality > Speed
 - Never build iOS project (xcodebuild) unless explicitly asked
+- **Figma**: ALWAYS use `figma-console` MCP plugin (southleft/figma-console-mcp) for ALL Figma operations — design extraction, variables, components, screenshots, design system kit. NEVER use the built-in claude.ai Figma MCP. If figma-console is not running, show a message asking to start it — do NOT fall back to claude.ai Figma MCP.
+- **Buttons**: NEVER create custom buttons. Always use the platform's Aspora button as the base:
+  - **Android (Compose)**: `PlusButtonLarge` / `PlusButtonMedium` / `PlusButtonSmall` from `tech.vance.app.base.compose.components`. Use `ButtonState.ENABLED` / `ButtonState.DISABLED` / `ButtonState.LOADING` for state management.
+  - **Android (XML)**: `PlusButton` custom view from `tech.vance.app.base.views`
+  - **iOS**: `AsporaButton` with variants `.primary` / `.secondary` / `.tertiary`. Supports async actions.
+- **Buttons**: ALWAYS use the platform's Aspora button as the base component — never create custom Button composables/views. iOS: `AsporaButton` (.primary, .secondary, .tertiary). Android: `PlusButtonLarge`/`PlusButtonMedium`/`PlusButtonSmall` from `tech.vance.app.base.compose.components`. Only use raw `Button` if the Aspora button variants don't support the required styling (e.g. secondary gray).

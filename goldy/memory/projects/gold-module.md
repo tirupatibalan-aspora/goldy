@@ -90,6 +90,9 @@ Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold
 - Gold Landing Page: GoldLanderView replaced with Figma-matched design (7 sections: Hero, Trust Badges, Returns Calculator, Value Cards, Comparison, FAQ, Partners)
 - GoldLanderViewModel with calculator logic (step 500, min 500, max 1M, rates: 1Y ~8%, 3Y ~30%, 5Y ~60%)
 - Localization: 42 new keys for buy flow strings in en.lproj/Localizable.strings
+- **Live Price Polling**: 5s interval in GoldLanderViewModel (Task-based, cancellation-safe, keeps last known price on error). Replaces one-shot fetch.
+- **ORDER_COMPLETED fix**: Added `.orderCompleted = "ORDER_COMPLETED"` to `GoldOrderStatus` enum. BuyReviewViewModel checks both `.completed` and `.orderCompleted` as success, `.paymentFailed` as failure.
+- **Partner logos**: Arrived from Figma — exported to `Assets.xcassets/Gold/*.imageset`
 
 ### Pending (iOS)
 - Pass `isLongTermUser` to SellReviewView (not yet wired through route — ReviewVM needs route param or independent detection)
@@ -100,11 +103,6 @@ Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold
 - Disclaimer copy (pending legal review)
 - Certificates view (placeholder)
 - M2 PR creation for Paul's review
-
-### Recent Changes (iOS)
-- **Live Price Polling**: 5s interval in GoldLanderViewModel (Task-based, cancellation-safe)
-- **ORDER_COMPLETED fix**: Added `.orderCompleted = "ORDER_COMPLETED"` to GoldOrderStatus enum
-- **Partner logos**: Arrived and exported to Assets.xcassets/Gold/
 
 ## Gold Lander — Decided Answers
 
@@ -171,7 +169,8 @@ Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold
 1. Hero section — sticky/collapsible on scroll? (product unclear, needs sync)
 2. Comparison table — Remote Config vs hardcoded (tradeoffs to discuss)
 3. Comparison table — static grid vs reusable component?
-4. Disclaimer — legal copy pending review
+4. ~~Android chart library — YCharts or Vico?~~ **DECIDED: Vico 2.4.3** — integrated in Returns Calculator (commit `960ae5d`). Better customization for Figma-matching, rounded bars, animations.
+5. Disclaimer — legal copy pending review
 
 ### Key Patterns (iOS Gold)
 - Protocol-based market config: `GoldMarketConfigurable` + UAEGoldMarketConfig / UKGoldMarketConfig
@@ -201,20 +200,15 @@ Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold
 - **Sell flow**: Sell entry, WhySheet, RetentionSheet, SelectBank, AccountDetails, SellReview, RetentionNudge — all with MVI pattern
 - **Chart**: Custom Figma-matched bar composables (replaced Vico for Returns Calculator)
 - **Localization**: All hardcoded strings localized
-- **Sergei review feedback** (commit `76a92917a0`):
-  - Extracted transaction grouping from UI → `GoldTransactionGrouper` utility (Today/Yesterday/date labels, java.time APIs)
-  - Moved alphabetical bank grouping from `SelectBankScreen` composable → `SelectBankFeature.State.groupedBanks` computed property
-  - Added 26 @Preview functions in `GoldScreenPreviews.kt` — all 12 screens (loading/content/error states) + reusable components (LivePriceBanner, SectionHeader, FeatureBadge) + portfolio components
 - **Tests**: 306 total — GoldSellFeatureTest (43), GoldSellReviewFeatureTest (18), SelectBankFeatureTest (11), AccountDetailsFeatureTest (13), GoldHomeUpdateTest (33), GoldLanderSectionTests (55), GoldLanderSnapshotTests (18), GoldRemoteDataSourceTest (32), GoldAmountValidatorTest (21), GoldDomainModelTest (16), GoldConstantsTest (9), GoldMarketTest (12), GoldChartDataTest (14), GoldUseCaseTest (11)
-
-### Recent Changes (Android)
-- **Live Price Polling**: 5s interval in GoldHomeViewModel (coroutine-based). Fixed `firstOrNull()` bug — must use `firstOrNull { it !is Resource.Loading }`.
-- **Toolbar Live Price Pill**: `GoldToolbarPricePill.kt` — capsule composable overlaid on HomeToolbar
-- **ORDER_COMPLETED fix**: GoldBuyReviewFeature handles `ORDER_COMPLETED` as success + `PAYMENT_FAILED` as failure
-- **Partner logos**: Arrived from Figma, exported to `res/drawable-xxxhdpi/`
+- **Live Price Polling**: 5s interval in GoldHomeViewModel (coroutine-based `while(isActive) + delay(5000)`, keeps last known price on error). Fixed `firstOrNull()` bug — must use `firstOrNull { it !is Resource.Loading }`.
+- **Toolbar Live Price Pill**: `GoldToolbarPricePill.kt` — capsule composable ("LIVE BUY PRICE" + price) overlaid on HomeToolbar via FrameLayout + ComposeView in `fragment_gold_home.xml` (Wealth tab only)
+- **ORDER_COMPLETED fix**: `GoldBuyReviewFeature.kt` handles `ORDER_COMPLETED` as success + `PAYMENT_FAILED` as failure. `GoldBuyReviewViewModel` stops polling on these terminal states.
+- **Partner logos**: Arrived from Figma — exported to `res/drawable-xxxhdpi/`
+- **Known issue**: Cart API 500 on Android — `POST /wealth/v1/digital-metal/buy/cart` returns HTTP 500 (iOS works fine with identical request). Debug logging added to `GoldRepository.createBuyCart`.
 
 ### Pending (Android)
-- Fix cart API 500 error (`POST /wealth/v1/digital-metal/buy/cart` returns HTTP 500)
+- Fix cart API 500 error (`POST /wealth/v1/digital-metal/buy/cart` returns HTTP 500 — iOS works fine)
 - Wire Landing Page to real API data
 - Partner logos ✅ arrived from Figma
 - Disclaimer copy (pending legal review)
