@@ -82,3 +82,9 @@ Tirupati Balan, tirupati.balan@aspora.com. Works on Vance (Aspora) — a cross-b
   - **Android (XML)**: `PlusButton` custom view from `tech.vance.app.base.views`
   - **iOS**: `AsporaButton` with variants `.primary` / `.secondary` / `.tertiary`. Supports async actions.
 - **Buttons**: ALWAYS use the platform's Aspora button as the base component — never create custom Button composables/views. iOS: `AsporaButton` (.primary, .secondary, .tertiary). Android: `PlusButtonLarge`/`PlusButtonMedium`/`PlusButtonSmall` from `tech.vance.app.base.compose.components`. Only use raw `Button` if the Aspora button variants don't support the required styling (e.g. secondary gray).
+
+## PR Standards (Strict)
+- **No hardcoded values in Views**: All strings, colors, presets, config values, formatting, and business logic MUST live in the ViewModel (or Model/Constants layer). Views should only bind to ViewModel properties — never contain inline strings, NumberFormatters, conditional logic for data, or raw color values. The View layer is strictly for layout and rendering.
+- **All user-visible strings must be localized**: Use `R.string.localizable.*` (iOS) or `R.string.*` (Android). No inline string literals in Views or ViewModels for user-facing text.
+- **Colors must use centralized tokens**: Use `GoldColors.*`, `Theme.colors.*`, or `theme.p91Colors.*`. Never use raw `Color(hex:)` / `Color(0x...)` in View or ViewModel files — add new constants to `GoldColors` (or equivalent) instead.
+- **Figma specs must use exact values**: Gradient stops, icon sizes, spacing, and font weights must match Figma exactly — no approximations. Reference the Figma node ID in a comment when implementing non-obvious design specs.
