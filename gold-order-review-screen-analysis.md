@@ -157,4 +157,42 @@ This gives us **shared infrastructure** without coupling unrelated business flow
 
 ---
 
+## 8. Bank Selection & Account Details — Same Conclusion
+
+Tech lead also asked about reusing remittance bank/beneficiary screens for Gold sell flow. Same answer: **Gold already has its own, remittance ones are NOT reusable.**
+
+### What Gold Module Already Has
+
+| Screen | Android | iOS | Status |
+|--------|---------|-----|--------|
+| **Select Bank** (list + search + status badges) | `SelectBankScreen.kt` (240 lines) | `SelectBankView.swift` (207 lines) | Built |
+| **Account Details** (IBAN input + verification) | `AccountDetailsScreen.kt` (199 lines) | -- | Android only |
+| **Use Cases** (fetch/create beneficiary) | `FetchBeneficiaryAccountsUseCase` + `CreateBeneficiaryAccountUseCase` | Same pattern | Built |
+
+### Existing Remittance Bank Screens — Why NOT Reusable
+
+| Screen | Platform | Lines | Why NOT |
+|--------|----------|-------|---------|
+| `SelectBankForAccountLinkingFragment` | Android | 176 | XML-based, tied to Lean SDK account linking |
+| `BeneficiaryAccountDetailsFragment` | Android | 288 | View/edit existing beneficiary, not IBAN input |
+| `AddBankDetailsView` + ViewModel | iOS | 544 | Old SwiftUI pattern, IFSC/Razorpay specific |
+
+**Key reasons:**
+1. **Architecture mismatch** — remittance is XML/old SwiftUI, Gold is Compose+MVI / modern SwiftUI
+2. **SDK coupling** — remittance bank screens tied to Lean SDK, Razorpay IFSC validation
+3. **Different purpose** — remittance = link bank for payment; Gold = select bank for sell payout
+4. **Gold screens already built** — merging adds complexity for zero benefit
+
+### Remaining Bank Screen Work
+
+| Task | Android | iOS |
+|------|---------|-----|
+| Account Details screen (IBAN input) | Built | **NOT built — needs implementation** |
+| Verification flow ("Fetching account details...") | Not built | Not built |
+| Wire bank list API | Mock data | Mock data |
+| Wire beneficiary API (fetch/create) | Placeholder | Placeholder |
+| Wire account verification API (test deposit) | Placeholder | Placeholder |
+
+---
+
 *Generated for internal architecture discussion — Gold Module M2*
