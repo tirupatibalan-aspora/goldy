@@ -83,8 +83,173 @@ Tirupati Balan, tirupati.balan@aspora.com. Works on Vance (Aspora) — a cross-b
   - **iOS**: `AsporaButton` with variants `.primary` / `.secondary` / `.tertiary`. Supports async actions.
 - **Buttons**: ALWAYS use the platform's Aspora button as the base component — never create custom Button composables/views. iOS: `AsporaButton` (.primary, .secondary, .tertiary). Android: `PlusButtonLarge`/`PlusButtonMedium`/`PlusButtonSmall` from `tech.vance.app.base.compose.components`. Only use raw `Button` if the Aspora button variants don't support the required styling (e.g. secondary gray).
 
+## STRICT: Feature Plan Before Implementation
+
+**ALWAYS create a markdown plan file before starting any feature implementation.**
+
+For every new feature, screen, or module:
+1. Extract Figma specs (via figma-console MCP) — node IDs, exact values, all states/variants
+2. Analyze current codebase — what exists, what's missing, what needs changing
+3. Create a plan markdown file in Goldy memory (`memory/plan_<feature_name>.md`)
+4. Get user approval on the plan before writing any code
+5. Reference the plan file in MEMORY.md
+
+Plan file must include:
+- Figma node IDs and screenshot analysis
+- Current state (what's built)
+- Gap analysis (Figma vs current)
+- Implementation tasks (numbered, per-platform)
+- Files to create/modify
+- Validation rules, error messages, edge cases
+- Colors, typography, spacing (exact Figma values)
+- Testing requirements
+
+**NEVER start implementation without an approved plan file.**
+
+## STRICT: No Modifications Outside Gold Module
+
+**ALWAYS ASK before modifying any file outside the Gold module on either platform.**
+
+This applies to ALL files that are shared, base-level, or used by other modules — even if the change seems small or Gold-specific.
+
+### Android — files that require explicit approval:
+- `navigation/Route.kt` — navigation route enum
+- `navigation/nav_graph_common.xml` — navigation graph
+- `navigation/AppNavigation.kt` — navigation controller
+- `base/` — any base classes, components, views, extensions, themes
+- `di/` — Dagger Hilt modules
+- `data-layer/` — shared data layer (network, models, repositories)
+- `utils/` — shared utilities
+- Any file outside `ui/gold/`
+
+### iOS — files that require explicit approval:
+- `Coordinator/` — route enums (except `Gold/GoldRoute.swift`)
+- `Router/` — router classes (except `Gold/GoldRouter.swift`)
+- `Core/` — DI containers, network, services, stores
+- `Components/` — shared UI components (except `Gold/`)
+- `Domain/` — shared use cases, models
+- `Repository/` — shared repositories
+- `Resources/` — Localizable.strings (adding strings is OK, never modify existing)
+- Any file outside `UserInterface/Views/Gold/`, `UserInterface/Components/Gold/`, `UserInterface/Styles/Gold/`
+
+### Why:
+- Other teams depend on shared files — changes can break their work
+- Gold module should be self-contained during M2 development
+- Route/navigation changes affect the entire app
+- Paul (iOS) and Sergei (Android) review Gold PRs — minimize non-Gold diff
+
+## Review Bot Learnings (auto-synced 2026-03-25)
+
+Bot test score: 10/10 (76/76 tests passing)
+
+### Top Cross-Platform Patterns (both reviewers flag these)
+| # | Category | Rule | Frequency |
+|---|----------|------|-----------|
+| 1 | constants | Use Constants for repeated header keys and magic strings | 3x |
+
+### iOS — Paul's Top Blockers
+- **Never create DateFormatter or ISO8601DateFormatter per call — use static let singleton** (2x)
+- **Static/singleton formatters — DateFormatter is one of the most expensive Foundation objects to instantiate** (2x)
+- **NEVER modify shared/base files used by other modules — revert any changes to CurrencyFormatter, shared models, etc.** (1x)
+
+### Android — Sergei's Top Blockers
+- **ALL ViewModels MUST extend BaseMviViewModel — never raw ViewModel()** (7x)
+- **All screens must have @Preview composable and use AppScreen as root wrapper** (4x)
+- **Use enums for order statuses — never hardcoded strings like 'COMPLETED', 'ORDER_COMPLETED', 'FAILED'** (3x)
+- **Dangerous defaults — never hardcode currency 'AED' or country 'AE'. Use required fields or market-aware constants** (3x)
+- **Screen composables must accept State + accept: (Event) -> Unit — never pass ViewModel directly** (3x)
+- **NEVER modify base components (PlusButton, MainFragment) or build scripts (app.gradle.kts) — keep wealth module isolated** (3x)
+
+→ Full learnings: `claude-review-bot/.github/actions/claude-review/learnings/`
+
 ## PR Standards (Strict)
 - **No hardcoded values in Views**: All strings, colors, presets, config values, formatting, and business logic MUST live in the ViewModel (or Model/Constants layer). Views should only bind to ViewModel properties — never contain inline strings, NumberFormatters, conditional logic for data, or raw color values. The View layer is strictly for layout and rendering.
 - **All user-visible strings must be localized**: Use `R.string.localizable.*` (iOS) or `R.string.*` (Android). No inline string literals in Views or ViewModels for user-facing text.
 - **Colors must use centralized tokens**: Use `GoldColors.*`, `Theme.colors.*`, or `theme.p91Colors.*`. Never use raw `Color(hex:)` / `Color(0x...)` in View or ViewModel files — add new constants to `GoldColors` (or equivalent) instead.
 - **Figma specs must use exact values**: Gradient stops, icon sizes, spacing, and font weights must match Figma exactly — no approximations. Reference the Figma node ID in a comment when implementing non-obvious design specs.
+
+## STRICT: Run Tests Locally Before Pushing to CI
+
+**ALWAYS run tests locally before pushing code and triggering CI builds.**
+
+This avoids wasting CI runner time and gives faster feedback. Run the relevant test suite — not the full project — to keep the feedback loop tight.
+
+### Commands
+
+**iOS** (run from `vance-ios/`):
+```bash
+xcodebuild test \
+  -workspace Vance.xcworkspace \
+  -scheme Vance_Stage \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+  -configuration Debug \
+  -only-testing:VanceTests/<TestSuiteName> \
+  -skipPackagePluginValidation
+```
+- Replace `<TestSuiteName>` with the specific test class (e.g., `GoldOrderUseCaseTests`, `FileSessionLoggerTests`)
+- For multiple suites: repeat `-only-testing:VanceTests/<Suite>` for each
+- To run ALL Gold tests: `-only-testing:VanceTests` and grep for Gold (or list each Gold suite)
+
+**Android** (run from `vance-android/`):
+```bash
+# Single test class
+./gradlew :app:testDebugUnitTest --tests "tech.vance.app.ui.gold.<package>.<TestClass>"
+
+# All Gold tests
+./gradlew :app:testDebugUnitTest --tests "tech.vance.app.ui.gold.*"
+```
+
+### Rules
+1. **Before every `git push`**: run at minimum the test suites for files you changed
+2. **After merge conflicts**: run ALL tests for the affected module (not just changed files)
+3. **If local tests fail**: fix before pushing — never push broken code hoping CI will catch it
+4. **Run Aspora Review Bot audit**: before every push, audit changed files against reviewer learnings (see below). Min score 8/10. Fix critical/major issues before pushing.
+4. **CI is for verification, not discovery** — local tests should catch issues first
+
+## STRICT: Aspora Review Bot Audit Before Every Push
+
+**ALWAYS run the Aspora Review Bot audit before every `git push` — not just PR creation.**
+
+This applies to ALL modules and teams, not just Gold. The review bot learns from each reviewer's PR comments and enforces their patterns automatically.
+
+### How it works
+1. **Reviewer learnings** are stored in `claude-review-bot/.github/actions/claude-review/learnings/` as JSON files named `{platform}-{reviewer}.json` (e.g., `ios-paul.json`, `android-sergei.json`)
+2. Each file contains categorized patterns (critical/major/minor) with bad/good examples, extracted from real PR review comments
+3. Before any PR, Claude audits the diff against ALL patterns for the target reviewer
+
+### Adding a new reviewer / module
+Any team can onboard their reviewer by creating a learnings file:
+```
+claude-review-bot/.github/actions/claude-review/learnings/{platform}-{reviewer}.json
+```
+Format: see existing files for schema (`patterns[]` with `id`, `severity`, `category`, `rule`, `bad_example`, `good_example`, `source`, `frequency`). Once added, the review bot will enforce that reviewer's patterns on all future PRs targeting their platform.
+
+### Audit process (before every push)
+1. **Find the reviewer**: Check the PR reviewer (from `gh pr view` or user context), then read **ALL** matching learnings JSONs from `claude-review-bot/.github/actions/claude-review/learnings/`. Load every `{platform}-*.json` file for the target platform (e.g., all `ios-*.json` for an iOS PR). If a specific reviewer is assigned, prioritize their file but still check platform-wide patterns.
+2. Diff the branch changes against the base branch
+3. Audit every changed file against ALL reviewer patterns (critical, major, minor)
+4. Score the PR out of 10:
+   - Critical issues: -3 each (would block merge)
+   - Major issues: -2 each (must fix before merge)
+   - Minor issues: -0.5 each (nice to have)
+5. Fix all critical and major issues BEFORE creating/updating the PR
+6. Include the **Aspora Review Bot Score** section in the PR description:
+
+```markdown
+## Aspora Review Bot Score: X/10
+| Severity | Count | Details |
+|----------|-------|---------|
+| Critical | N | (list or "None") |
+| Major | N | (list or "None") |
+| Minor | N | (list or "None") |
+```
+
+**Minimum score to create PR: 8/10.** If below 8, fix issues first. Never create a PR with critical issues.
+
+### Current reviewers
+| Platform | Reviewer | Learnings file | Patterns |
+|----------|----------|---------------|----------|
+| iOS | Paul | `ios-paul.json` | 12 patterns (3 critical, 7 major, 2 minor) |
+| Android | Sergei | `android-sergei.json` | 25 patterns (6 critical, 14 major, 5 minor) |
+
+To add your module's reviewer: create the JSON, add a row here, and the bot will enforce their standards automatically.
