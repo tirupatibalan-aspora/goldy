@@ -2,7 +2,7 @@
 
 **One brain. Multiple codebases. Zero wasted tokens.**
 
-Goldy is your AI-powered workspace that keeps every platform in sync. Clone it, drop your repos inside, run one command — done.
+Goldy is a shared knowledge base and automation toolkit that syncs cross-platform, multi-project development — changelogs, reviewer pattern enforcement (review bot), status reports, and health checks — across iOS, Android, or any repos. Clone it, drop your repos inside, run one command — done.
 
 ---
 
