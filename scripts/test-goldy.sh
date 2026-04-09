@@ -210,7 +210,7 @@ section "12. Status Report (Intelligence)"
 # ──────────────────────────────────────────────────────────────
 
 report_output=$("$WORKSPACE/scripts/generate-report.sh" --hours 168 --output terminal 2>&1 || echo "FAILED")
-if echo "$report_output" | grep -q "Status Report"; then
+if echo "$report_output" | grep -qi "STATUS REPORT"; then
   pass "generate-report.sh produces valid report"
 else
   fail "generate-report.sh failed to produce report"
@@ -226,8 +226,8 @@ for project in "${GOLDY_PROJECTS[@]}"; do
 done
 
 # Check report includes infrastructure + review bot lines
-echo "$report_output" | grep -q "Infrastructure" && pass "Report shows infrastructure stats" || fail "Report missing infrastructure stats"
-echo "$report_output" | grep -q "Review Bot" && pass "Report shows review bot stats" || fail "Report missing review bot stats"
+echo "$report_output" | grep -qi "INFRASTRUCTURE" && pass "Report shows infrastructure stats" || fail "Report missing infrastructure stats"
+echo "$report_output" | grep -qi "REVIEW BOT" && pass "Report shows review bot stats" || fail "Report missing review bot stats"
 
 # Test markdown output
 "$WORKSPACE/scripts/generate-report.sh" --hours 168 --output markdown >/dev/null 2>&1
