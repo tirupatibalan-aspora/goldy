@@ -8,7 +8,10 @@ WORKSPACE="$(cd "$(dirname "$0")/.." && pwd)"
 CHANGELOG_BASE="$WORKSPACE/memory/changelogs"
 SUMMARY_DIR="$WORKSPACE/memory/summaries"
 OUTFILE="$WORKSPACE/TRUTH.md"
-PROJECTS=("vance-ios" "vance-android")
+
+# Auto-detect projects
+source "$WORKSPACE/scripts/detect-projects.sh"
+PROJECTS=("${GOLDY_PROJECTS[@]}")
 TODAY=$(date '+%Y-%m-%d')
 
 cat > "$OUTFILE" <<EOF

@@ -5,7 +5,10 @@
 set -euo pipefail
 
 WORKSPACE="$(cd "$(dirname "$0")/.." && pwd)"
-PROJECTS=("vance-ios" "vance-android")
+
+# Auto-detect projects
+source "$WORKSPACE/scripts/detect-projects.sh"
+PROJECTS=("${GOLDY_PROJECTS[@]}")
 
 for project in "${PROJECTS[@]}"; do
   repo_dir="$WORKSPACE/$project"

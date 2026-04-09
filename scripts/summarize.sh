@@ -7,7 +7,10 @@ set -euo pipefail
 WORKSPACE="$(cd "$(dirname "$0")/.." && pwd)"
 CHANGELOG_BASE="$WORKSPACE/memory/changelogs"
 SUMMARY_DIR="$WORKSPACE/memory/summaries"
-PROJECTS=("vance-ios" "vance-android")
+
+# Auto-detect projects (or use provided arg)
+source "$WORKSPACE/scripts/detect-projects.sh"
+PROJECTS=("${GOLDY_PROJECTS[@]}")
 
 mkdir -p "$SUMMARY_DIR"
 

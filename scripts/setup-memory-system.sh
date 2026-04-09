@@ -3,10 +3,11 @@
 # Usage: ./scripts/setup-memory-system.sh [--backfill N]
 #
 # What it does:
-#   1. Creates memory/changelogs/ and memory/summaries/ directories
-#   2. Installs post-commit hooks in vance-ios and vance-android
-#   3. Optionally backfills N commits from each repo
-#   4. Generates initial summaries and TRUTH.md
+#   1. Auto-detects git repos inside this workspace
+#   2. Creates memory/changelogs/ and memory/summaries/ directories
+#   3. Installs post-commit hooks in all detected repos
+#   4. Optionally backfills N commits from each repo
+#   5. Generates initial summaries and TRUTH.md
 
 set -euo pipefail
 
@@ -25,13 +26,28 @@ echo "=== Goldy Setup ==="
 echo "Workspace: $WORKSPACE"
 echo ""
 
+# Auto-detect repos
+source "$WORKSPACE/scripts/detect-projects.sh"
+
+if [ ${#GOLDY_PROJECTS[@]} -eq 0 ]; then
+  echo "ERROR: No git repos found in $WORKSPACE"
+  echo "  Clone your repos inside this directory first:"
+  echo "  git clone https://github.com/your-org/app-ios.git"
+  exit 1
+fi
+
+echo "Detected projects: ${GOLDY_PROJECTS[*]}"
+echo ""
+
 # Step 1: Create directories
 echo "Step 1: Creating directory structure..."
-mkdir -p "$WORKSPACE/memory/changelogs/vance-ios"
-mkdir -p "$WORKSPACE/memory/changelogs/vance-android"
 mkdir -p "$WORKSPACE/memory/summaries"
-echo "  ✓ memory/changelogs/vance-ios/"
-echo "  ✓ memory/changelogs/vance-android/"
+mkdir -p "$WORKSPACE/memory/projects"
+mkdir -p "$WORKSPACE/memory/people"
+for project in "${GOLDY_PROJECTS[@]}"; do
+  mkdir -p "$WORKSPACE/memory/changelogs/$project"
+  echo "  ✓ memory/changelogs/$project/"
+done
 echo "  ✓ memory/summaries/"
 echo ""
 
@@ -49,8 +65,9 @@ echo ""
 # Step 4: Backfill (optional)
 if [ "$BACKFILL_COUNT" -gt 0 ]; then
   echo "Step 4: Backfilling last $BACKFILL_COUNT commits..."
-  "$WORKSPACE/scripts/backfill.sh" vance-ios "$BACKFILL_COUNT"
-  "$WORKSPACE/scripts/backfill.sh" vance-android "$BACKFILL_COUNT"
+  for project in "${GOLDY_PROJECTS[@]}"; do
+    "$WORKSPACE/scripts/backfill.sh" "$project" "$BACKFILL_COUNT"
+  done
   echo ""
 fi
 
@@ -63,7 +80,7 @@ echo ""
 echo "=== Goldy Setup Complete ==="
 echo ""
 echo "What happens now:"
-echo "  • Every commit in vance-ios/ or vance-android/ auto-creates a changelog"
+echo "  • Every commit in your repos auto-creates a changelog"
 echo "  • Summaries and TRUTH.md refresh automatically (background, non-blocking)"
 echo "  • Claude Code reads TRUTH.md for instant cross-project state"
 echo ""

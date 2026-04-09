@@ -6,36 +6,12 @@
 
 | Project | Branch | Last Commit | Last Date | Changelogs |
 |---------|--------|-------------|-----------|------------|
-| vance-ios | `feature/wealth-module-gold-buy-sell-flow` | 37f260ab8 fix(gold): use tier-based vault image instead of hardcoded locker | 2026-04-09 | 30 |
 | vance-android | `feature/wealth-module-gold-qa-fixes` | 4030d6c9f9 docs: add PR #1637 and Goldy README links to handbook | 2026-04-09 | 30 |
+| vance-ios | `feature/wealth-module-gold-buy-sell-flow` | 37f260ab8 fix(gold): use tier-based vault image instead of hardcoded locker | 2026-04-09 | 30 |
 
 ## Cross-Platform Alerts
 
 Commits touching shared contracts (API, schema, migration, shared):
-
-### vance-ios
-```
-256e44117 feat(gold): add payment-instruments and invoice-download endpoints
-3d0ac8988 fix(gold): add missing paymentInstrument to BuyReviewViewModelTests factory
-b4607b607 fix(gold): add missing paymentInstrument to test factory helper
-21bf9e5c6 refactor(gold): rename paymentMode → paymentInstrument across API contract
-8d2961a10 fixed mapping parameters when calling the patch user onboarding api with legacy onboarding version (#1570)
-abf7bb1dd fix: resolve 5 iOS CI build errors — theme API, optional unwrap, MainActor
-e11b7a7da Feature/beneficiary revamp fixes (#1565)
-0529d6111 feat(gold): 7-part segmented confirmation animation (P1-9)
-b239bd204 Fix 5 test files: broken APIs after dev merge
-a21c3ebb2 fix: adapt Gold hex colors to Color(hexString:) API (renamed in dev refactor)
-5aa0ff298 feat(gold): sell failed/success screens, swipe reset, bottom safe area
-ab99ca345 feat(gold): wire success screen data + sell IBAN flow + transaction fixes
-cdb80c1a2 Fix review screen: Total Payable bg + CTA spacing per Figma
-b182791d3 fix(gold): transaction detail API endpoint correction
-c5266ad2c fix(gold): surface backend error message on cart/summary failure
-9d57588e9 fix(gold): review screen gradient, WebView dismiss reset
-6406173cc feat(gold): review screen Figma polish — 6 gaps implemented
-d2d982626 fix: revert JSON casing to snake_case — backend not yet on camelCase
-87424f60a fix: update Gold cart/order API contracts to match backend v2
-df479f06f feat(gold): wire SumSub KYC verification into Gold buy flow
-```
 
 ### vance-android
 ```
@@ -61,91 +37,32 @@ a0ffbe6803 feat(gold): wire SDUI transaction detail API — server-driven header
 4c5d4adb79 fix: Address review bot audit issues — @Preview, Color.White, localization
 ```
 
-
-## Recent Activity (7 days)
-
-### vance-ios (79 commits)
+### vance-ios
 ```
-37f260ab8 fix(gold): use tier-based vault image instead of hardcoded locker
-7672f2b81 fix(gold): migrate to design system tokens — fonts, spacing, images
-e159f4c8d fix(gold): port Android QA fixes to iOS — defaults, decimals, lander, friction
-17b00c8c2 fix(gold): use theme fonts instead of raw Font.custom/system
 256e44117 feat(gold): add payment-instruments and invoice-download endpoints
-17cf1750c fix: FileSessionLogger rotation filename collision on same millisecond
 3d0ac8988 fix(gold): add missing paymentInstrument to BuyReviewViewModelTests factory
 b4607b607 fix(gold): add missing paymentInstrument to test factory helper
 21bf9e5c6 refactor(gold): rename paymentMode → paymentInstrument across API contract
-a79970cdf fix: increase test sleep to 1s for CI reliability (GoldLanderViewModelTests)
-5fc918cec Merge branch 'feature/wealth-module' into feature/wealth-module-gold-buy-sell-flow
-f56159d2a Merge remote-tracking branch 'origin/dev' into feature/wealth-module
 8d2961a10 fixed mapping parameters when calling the patch user onboarding api with legacy onboarding version (#1570)
-fc943415b Merge pull request #1568 from Vance-Club/Update_analytics_app_version_format
-28baa96dc fix: relax flaky loadPrice invoke count assertion (== 1 → >= 1)
 abf7bb1dd fix: resolve 5 iOS CI build errors — theme API, optional unwrap, MainActor
 e11b7a7da Feature/beneficiary revamp fixes (#1565)
-ce27812fc fix(gold): Shreeyash design feedback — tabular numbers, remove borders, hide persistent subtitle
 0529d6111 feat(gold): 7-part segmented confirmation animation (P1-9)
-e08ddb586 Cu-86d2gvf7e Aspora Guarantee M1 (#1561)
-6ea6e7d2c Merge pull request #1558 from Vance-Club/fix/86d23bux8_rates_comparision_load_time
-b8b163ad3 Merge pull request #1571 from Vance-Club/fix/86d239qpw_send_tab_navbar
-8be687f32 86d239qpw: Fixed send button not working on rates view
-fea062721 fix: Remove extra top spacing on Gold landing page
-b3d07fade fix: Gold entry screen layout for iPhone SE compact screen
-8e71b8f39 fix: Ensure Gold tab always appears in bottom bar + rename to Gold
-369e375c0 86d239qpw: PR comments resolved
-a9a50c0c9 86d239qpw: Added exchange rates view in sendtab navbar
-421332308 86d23bux8: PR comments resolved
-c0f647360 chore: Bump version to 11.0.0 (1) for Gold M2 TestFlight
-22d81aa12 fix: update Gold test expectations after dev merge refactor
-171c36018 Fix GoldLanderViewModelTests: init now requires goldRouter, ctaActionHandler, tabRouter
-227721eb5 Fix double-prefixed factory names from over-eager replace-all
-b5b255138 Fix GoldOrderUseCaseTests + GoldLanderViewTests compilation errors
-2cd5c8295 Add import Foundation to 4 test files missing Decimal/TimeInterval types
-3c25d2d3a Fix missing Foundation import for Decimal type in SellReviewViewModelTests
-2c3686c37 Fix review VM tests: SellReviewViewModel + BuyReviewViewModel → GoldSellBuyReviewViewModel
 b239bd204 Fix 5 test files: broken APIs after dev merge
-7cbbd57ec fix: add missing refreshCart method to MockGoldRepository
-84a2c9c50 fix: comprehensive test compilation fixes after dev merge
-6b0145500 fix: update GoldTestFixtures to match current Network model signatures
-8686917a3 fix: correct @testable import Aspora → import Vance in 8 Gold tests
-52c3a15cb fix: replace corner.X with corner.M (12pt) — X never existed
-0c98f35a6 fix: add GoldThemeCompat shim for deleted ThemeEnvKey
-c616c1152 fix: rename DashedLine → GoldDashedLine to avoid collision with Canvas
-c0011a1b8 fix: handle .gold case in TabViewContainerView getViewModelForTab switch
 a21c3ebb2 fix: adapt Gold hex colors to Color(hexString:) API (renamed in dev refactor)
-a4647cc50 fix: replace TextColorScheme with DecodableColor (renamed in dev refactor)
-c50d53c33 fix: restore DesignKit partner assets + remove underscore duplicate
-15bed5899 fix: remove duplicate Gold assets that break R.swift symbol generation
-aa5073168 fix: rename SelectBank → GoldSelectBank to resolve duplicate .stringsdata CI error
-94e946761 Merge feature/wealth-module into gold-buy-sell-flow
-c390c742d Merge origin/dev into feature/wealth-module
-6a875330b chore: trigger CI build
-cbd5078cc fix: Address Paul's 12 review comments — centralize formatters, localize strings, theme spacing
-15e690393 Change app version format we send to Mixpanel to filter easily
-b288664a7 fix(gold): hero images — gold bar for fresh, locker for existing users
-441740c1f Fix Mohamed's review
-381f9fcb7 Merge pull request #1566 from Vance-Club/CU-86d2gur9j_iOS-Onboarding-Stepper-Logic-Widget
-536193cf0 fix(gold): handle AWAITING_WITHDRAWAL state + increase maxBuyAmount to 500K
-c68eeee90 fix(gold): native .sheet for bank selector + medium detent scrollable
-f07439e68 fix(gold): reset swipe on bank change + fresh cart on sell retry
-08332b4d7 86d2gur9j: Implement stepper widget https://app.clickup.com/t/86d2gur9j
-483d2bfee fix(gold): show plain white bg during transaction detail loading
-e6bf18fb8 Revert Mixpanel update
 5aa0ff298 feat(gold): sell failed/success screens, swipe reset, bottom safe area
-6087f9760 Merge pull request #1556 from Vance-Club/dependencies_update
-e52ea2d68 Merge branch 'dev' into dependencies_update
-ebde7e901 fix(gold): add CodingKeys for beneficiary request — iban_number snake_case
-efb466b2c fix(gold): navigate to IBAN screen directly instead of bank list
 ab99ca345 feat(gold): wire success screen data + sell IBAN flow + transaction fixes
-113e03d58 Fix iOS nav title invisible on SDUI transaction detail header
 cdb80c1a2 Fix review screen: Total Payable bg + CTA spacing per Figma
 b182791d3 fix(gold): transaction detail API endpoint correction
-1a32758c5 86d23bux8: PR comments resolved
-55b1840af fix(gold): handle 409 cart conflict — reuse cached cartId on retry
 c5266ad2c fix(gold): surface backend error message on cart/summary failure
 9d57588e9 fix(gold): review screen gradient, WebView dismiss reset
-e9ba6536e Merge pull request #1560 from Vance-Club/Fix_analytics
+6406173cc feat(gold): review screen Figma polish — 6 gaps implemented
+d2d982626 fix: revert JSON casing to snake_case — backend not yet on camelCase
+87424f60a fix: update Gold cart/order API contracts to match backend v2
+df479f06f feat(gold): wire SumSub KYC verification into Gold buy flow
 ```
+
+
+## Recent Activity (7 days)
 
 ### vance-android (86 commits)
 ```
@@ -237,8 +154,134 @@ eb0c00c4f9 Merge branch 'develop' into release/version-7.0.29
 40854fefaa aspora guarantee
 ```
 
+### vance-ios (79 commits)
+```
+37f260ab8 fix(gold): use tier-based vault image instead of hardcoded locker
+7672f2b81 fix(gold): migrate to design system tokens — fonts, spacing, images
+e159f4c8d fix(gold): port Android QA fixes to iOS — defaults, decimals, lander, friction
+17b00c8c2 fix(gold): use theme fonts instead of raw Font.custom/system
+256e44117 feat(gold): add payment-instruments and invoice-download endpoints
+17cf1750c fix: FileSessionLogger rotation filename collision on same millisecond
+3d0ac8988 fix(gold): add missing paymentInstrument to BuyReviewViewModelTests factory
+b4607b607 fix(gold): add missing paymentInstrument to test factory helper
+21bf9e5c6 refactor(gold): rename paymentMode → paymentInstrument across API contract
+a79970cdf fix: increase test sleep to 1s for CI reliability (GoldLanderViewModelTests)
+5fc918cec Merge branch 'feature/wealth-module' into feature/wealth-module-gold-buy-sell-flow
+f56159d2a Merge remote-tracking branch 'origin/dev' into feature/wealth-module
+8d2961a10 fixed mapping parameters when calling the patch user onboarding api with legacy onboarding version (#1570)
+fc943415b Merge pull request #1568 from Vance-Club/Update_analytics_app_version_format
+28baa96dc fix: relax flaky loadPrice invoke count assertion (== 1 → >= 1)
+abf7bb1dd fix: resolve 5 iOS CI build errors — theme API, optional unwrap, MainActor
+e11b7a7da Feature/beneficiary revamp fixes (#1565)
+ce27812fc fix(gold): Shreeyash design feedback — tabular numbers, remove borders, hide persistent subtitle
+0529d6111 feat(gold): 7-part segmented confirmation animation (P1-9)
+e08ddb586 Cu-86d2gvf7e Aspora Guarantee M1 (#1561)
+6ea6e7d2c Merge pull request #1558 from Vance-Club/fix/86d23bux8_rates_comparision_load_time
+b8b163ad3 Merge pull request #1571 from Vance-Club/fix/86d239qpw_send_tab_navbar
+8be687f32 86d239qpw: Fixed send button not working on rates view
+fea062721 fix: Remove extra top spacing on Gold landing page
+b3d07fade fix: Gold entry screen layout for iPhone SE compact screen
+8e71b8f39 fix: Ensure Gold tab always appears in bottom bar + rename to Gold
+369e375c0 86d239qpw: PR comments resolved
+a9a50c0c9 86d239qpw: Added exchange rates view in sendtab navbar
+421332308 86d23bux8: PR comments resolved
+c0f647360 chore: Bump version to 11.0.0 (1) for Gold M2 TestFlight
+22d81aa12 fix: update Gold test expectations after dev merge refactor
+171c36018 Fix GoldLanderViewModelTests: init now requires goldRouter, ctaActionHandler, tabRouter
+227721eb5 Fix double-prefixed factory names from over-eager replace-all
+b5b255138 Fix GoldOrderUseCaseTests + GoldLanderViewTests compilation errors
+2cd5c8295 Add import Foundation to 4 test files missing Decimal/TimeInterval types
+3c25d2d3a Fix missing Foundation import for Decimal type in SellReviewViewModelTests
+2c3686c37 Fix review VM tests: SellReviewViewModel + BuyReviewViewModel → GoldSellBuyReviewViewModel
+b239bd204 Fix 5 test files: broken APIs after dev merge
+7cbbd57ec fix: add missing refreshCart method to MockGoldRepository
+84a2c9c50 fix: comprehensive test compilation fixes after dev merge
+6b0145500 fix: update GoldTestFixtures to match current Network model signatures
+8686917a3 fix: correct @testable import Aspora → import Vance in 8 Gold tests
+52c3a15cb fix: replace corner.X with corner.M (12pt) — X never existed
+0c98f35a6 fix: add GoldThemeCompat shim for deleted ThemeEnvKey
+c616c1152 fix: rename DashedLine → GoldDashedLine to avoid collision with Canvas
+c0011a1b8 fix: handle .gold case in TabViewContainerView getViewModelForTab switch
+a21c3ebb2 fix: adapt Gold hex colors to Color(hexString:) API (renamed in dev refactor)
+a4647cc50 fix: replace TextColorScheme with DecodableColor (renamed in dev refactor)
+c50d53c33 fix: restore DesignKit partner assets + remove underscore duplicate
+15bed5899 fix: remove duplicate Gold assets that break R.swift symbol generation
+aa5073168 fix: rename SelectBank → GoldSelectBank to resolve duplicate .stringsdata CI error
+94e946761 Merge feature/wealth-module into gold-buy-sell-flow
+c390c742d Merge origin/dev into feature/wealth-module
+6a875330b chore: trigger CI build
+cbd5078cc fix: Address Paul's 12 review comments — centralize formatters, localize strings, theme spacing
+15e690393 Change app version format we send to Mixpanel to filter easily
+b288664a7 fix(gold): hero images — gold bar for fresh, locker for existing users
+441740c1f Fix Mohamed's review
+381f9fcb7 Merge pull request #1566 from Vance-Club/CU-86d2gur9j_iOS-Onboarding-Stepper-Logic-Widget
+536193cf0 fix(gold): handle AWAITING_WITHDRAWAL state + increase maxBuyAmount to 500K
+c68eeee90 fix(gold): native .sheet for bank selector + medium detent scrollable
+f07439e68 fix(gold): reset swipe on bank change + fresh cart on sell retry
+08332b4d7 86d2gur9j: Implement stepper widget https://app.clickup.com/t/86d2gur9j
+483d2bfee fix(gold): show plain white bg during transaction detail loading
+e6bf18fb8 Revert Mixpanel update
+5aa0ff298 feat(gold): sell failed/success screens, swipe reset, bottom safe area
+6087f9760 Merge pull request #1556 from Vance-Club/dependencies_update
+e52ea2d68 Merge branch 'dev' into dependencies_update
+ebde7e901 fix(gold): add CodingKeys for beneficiary request — iban_number snake_case
+efb466b2c fix(gold): navigate to IBAN screen directly instead of bank list
+ab99ca345 feat(gold): wire success screen data + sell IBAN flow + transaction fixes
+113e03d58 Fix iOS nav title invisible on SDUI transaction detail header
+cdb80c1a2 Fix review screen: Total Payable bg + CTA spacing per Figma
+b182791d3 fix(gold): transaction detail API endpoint correction
+1a32758c5 86d23bux8: PR comments resolved
+55b1840af fix(gold): handle 409 cart conflict — reuse cached cartId on retry
+c5266ad2c fix(gold): surface backend error message on cart/summary failure
+9d57588e9 fix(gold): review screen gradient, WebView dismiss reset
+e9ba6536e Merge pull request #1560 from Vance-Club/Fix_analytics
+```
+
 
 ## Per-Platform Summaries
+
+### vance-android
+
+| Field | Value |
+|-------|-------|
+| **Branch** | `feature/wealth-module-gold-qa-fixes` |
+| **Last Commit** | 4030d6c9f9 docs: add PR #1637 and Goldy README links to handbook |
+| **Last Activity** | 2026-04-09 |
+| **Total Changelogs** | 30 |
+
+## Recent Changes (14 days)
+
+- **2026-04-09** — docs: add PR #1637 and Goldy README links to handbook
+
+## Feature Areas
+
+- **feat**: 3 commits
+- **fix**: 21 commits
+- **refactor**: 1 commits
+- **docs**: 2 commits
+- **style**: 1 commits
+
+## Frequently Modified Files (last 50 commits)
+
+```
+49 
+7 app/src/main/res/values/strings.xml
+6 app/src/main/java/tech/vance/app/ui/gold/sell/logic/GoldSellFeature.kt
+6 app/src/main/java/tech/vance/app/ui/gold/review/logic/GoldOrderReviewFeature.kt
+5 app/src/test/java/tech/vance/app/ui/gold/sell/logic/GoldSellFeatureTest.kt
+5 app/src/main/java/tech/vance/app/ui/gold/review/ui/GoldOrderReviewScreen.kt
+4 app/src/test/java/tech/vance/app/ui/gold/review/logic/GoldOrderReviewFeatureTest.kt
+3 data-layer/src/main/java/tech/vance/app/data_layer/network/gold/repository/GoldRepository.kt
+3 app/src/test/java/tech/vance/app/ui/gold/buy/logic/GoldBuyFeatureTest.kt
+3 app/src/main/java/tech/vance/app/ui/send/fragment/SendFragment.kt
+3 app/src/main/java/tech/vance/app/ui/home/fragment/MainFragmentV2.kt
+3 app/src/main/java/tech/vance/app/ui/gold/sell/ui/GoldSellScreen.kt
+3 app/src/main/java/tech/vance/app/ui/gold/sell/bank/ui/AccountDetailsScreen.kt
+3 app/src/main/java/tech/vance/app/ui/gold/processing/GoldProcessingFragment.kt
+3 app/src/main/java/tech/vance/app/ui/gold/buy/logic/GoldBuyFeature.kt
+```
+
+---
 
 ### vance-ios
 
@@ -297,49 +340,6 @@ eb0c00c4f9 Merge branch 'develop' into release/version-7.0.29
 3 Aspora/UserInterface/Views/Gold/GoldAmountEntryView.swift
 3 Aspora/UserInterface/Views/Gold/Buy/GoldSellBuyReviewView.swift
 3 Aspora/UserInterface/Views/Gold/Buy/BuyGoldViewModel.swift
-```
-
----
-
-### vance-android
-
-| Field | Value |
-|-------|-------|
-| **Branch** | `feature/wealth-module-gold-qa-fixes` |
-| **Last Commit** | 4030d6c9f9 docs: add PR #1637 and Goldy README links to handbook |
-| **Last Activity** | 2026-04-09 |
-| **Total Changelogs** | 30 |
-
-## Recent Changes (14 days)
-
-- **2026-04-09** — docs: add PR #1637 and Goldy README links to handbook
-
-## Feature Areas
-
-- **feat**: 3 commits
-- **fix**: 21 commits
-- **refactor**: 1 commits
-- **docs**: 2 commits
-- **style**: 1 commits
-
-## Frequently Modified Files (last 50 commits)
-
-```
-49 
-7 app/src/main/res/values/strings.xml
-6 app/src/main/java/tech/vance/app/ui/gold/sell/logic/GoldSellFeature.kt
-6 app/src/main/java/tech/vance/app/ui/gold/review/logic/GoldOrderReviewFeature.kt
-5 app/src/test/java/tech/vance/app/ui/gold/sell/logic/GoldSellFeatureTest.kt
-5 app/src/main/java/tech/vance/app/ui/gold/review/ui/GoldOrderReviewScreen.kt
-4 app/src/test/java/tech/vance/app/ui/gold/review/logic/GoldOrderReviewFeatureTest.kt
-3 data-layer/src/main/java/tech/vance/app/data_layer/network/gold/repository/GoldRepository.kt
-3 app/src/test/java/tech/vance/app/ui/gold/buy/logic/GoldBuyFeatureTest.kt
-3 app/src/main/java/tech/vance/app/ui/send/fragment/SendFragment.kt
-3 app/src/main/java/tech/vance/app/ui/home/fragment/MainFragmentV2.kt
-3 app/src/main/java/tech/vance/app/ui/gold/sell/ui/GoldSellScreen.kt
-3 app/src/main/java/tech/vance/app/ui/gold/sell/bank/ui/AccountDetailsScreen.kt
-3 app/src/main/java/tech/vance/app/ui/gold/processing/GoldProcessingFragment.kt
-3 app/src/main/java/tech/vance/app/ui/gold/buy/logic/GoldBuyFeature.kt
 ```
 
 ---
