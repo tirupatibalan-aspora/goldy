@@ -118,8 +118,11 @@ Goldy auto-detects it. No config files to edit.
 ## Add a New Reviewer
 
 ```bash
-# Create learnings JSON (see existing files for schema)
-claude-review-bot/.github/actions/claude-review/learnings/{platform}-{name}.json
+# One command — creates JSON, updates CLAUDE.md, ready to go
+./scripts/add-reviewer.sh --name john --github john-dev --platform android
+
+# With auto-harvest from existing PRs
+./scripts/add-reviewer.sh --name sarah --github sarahk --platform ios --pr 1520 --pr 1600
 ```
 
 The Review Bot will enforce their patterns on all future PRs.

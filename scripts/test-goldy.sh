@@ -47,7 +47,7 @@ section "1. Directory Structure"
 section "2. Scripts Exist & Executable"
 # ──────────────────────────────────────────────────────────────
 
-for script in detect-projects.sh setup-memory-system.sh log-commit.sh summarize.sh generate-truth.sh install-hooks.sh backfill.sh generate-report.sh postreport.sh test-goldy.sh; do
+for script in detect-projects.sh setup-memory-system.sh log-commit.sh summarize.sh generate-truth.sh install-hooks.sh backfill.sh generate-report.sh postreport.sh add-reviewer.sh test-goldy.sh; do
   if [ -x "$WORKSPACE/scripts/$script" ]; then
     pass "$script executable"
   elif [ -f "$WORKSPACE/scripts/$script" ]; then
