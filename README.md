@@ -142,6 +142,23 @@ git clone https://github.com/your-org/app-web.git
 
 Goldy auto-detects it. No config files to edit.
 
+## Configure Install Links
+
+Edit `.goldy-install.conf` to customize how installation links appear in reports:
+
+```bash
+# Android — point to your APK distribution channel
+INSTALL_ANDROID_CHANNEL="#android-apk"
+INSTALL_ANDROID_BRANCH_KEYWORD="gold"
+INSTALL_ANDROID_STEPS="1. Join #android-apk channel..."
+
+# iOS — TestFlight version + instructions
+INSTALL_IOS_VERSION="11.0.0"
+INSTALL_IOS_STEPS="1. Install TestFlight..."
+```
+
+If no config exists, Goldy auto-detects from GitHub artifacts (Android) or shows generic TestFlight (iOS).
+
 ## Add a New Reviewer
 
 ```bash
