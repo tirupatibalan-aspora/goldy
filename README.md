@@ -139,4 +139,44 @@ The Review Bot will enforce their patterns on all future PRs.
 
 ---
 
+## Live Dashboard (GitHub Pages)
+
+Goldy includes an HTML dashboard at `docs/index.html` — deploy via GitHub Pages for a visual overview.
+
+**What it shows:**
+- Platform status (iOS/Android branches, last commits, build health)
+- Milestone progress bars (M1, M2, QA)
+- Test counts and Review Bot scores per platform
+- Cross-platform alerts and recent activity
+- Architecture decisions and key links
+
+**Setup:**
+1. Go to your Goldy repo → Settings → Pages
+2. Source: `Deploy from a branch` → Branch: `main` → Folder: `/docs`
+3. Save → dashboard is live at `https://<org>.github.io/goldy/`
+
+> Currently in draft — the dashboard is static HTML. A future `generate-dashboard.sh` will auto-refresh it from TRUTH.md + git data.
+
+**Preview:**
+```
+┌──────────────────────────────────────────────────────┐
+│  GOLDY — AI Project Manager              ● Live      │
+├──────────┬───────────┬───────────────────────────────┤
+│ iOS      │ Android   │  Cross-Platform Alerts        │
+│ ━━━━━━━━ │ ━━━━━━━━  │  ⚠ API contract renamed       │
+│ 226 tests│ 101+ tests│  ⚠ payment_instrument change  │
+│ Bot: 9/10│ Bot: 10/10│                               │
+├──────────┴───────────┴───────────────────────────────┤
+│  M1 Landing    ████████████████████████████ 100%     │
+│  M2 Buy/Sell   █████████████████████░░░░░░  85%     │
+│  QA Fixes      ████████████░░░░░░░░░░░░░░░  55%     │
+├──────────────────────────────────────────────────────┤
+│  Review Bot: 2 reviewers, 37 patterns enforced       │
+│  Memory: 12 shared files, 60 changelogs              │
+│  Reports: ./scripts/generate-report.sh               │
+└──────────────────────────────────────────────────────┘
+```
+
+---
+
 *Imagined by [Tirupati Balan](https://github.com/tirupatibalan-aspora) · Built with [Claude Code](https://claude.com/claude-code)*
