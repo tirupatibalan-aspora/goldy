@@ -75,12 +75,35 @@ This is enforced in CLAUDE.md. The Review Bot learns from real reviewer feedback
 | Script | What |
 |--------|------|
 | `setup-memory-system.sh` | One-command setup (auto-detects repos) |
-| `test-goldy.sh` | Verify everything works (36 checks) |
+| `test-goldy.sh` | Verify everything works (40+ checks) |
+| `generate-report.sh` | Status report from git + memory |
+| `postreport.sh` | Post report to Slack (or terminal) |
 | `log-commit.sh` | Auto-changelog per commit |
 | `summarize.sh` | Per-project summaries |
 | `generate-truth.sh` | TRUTH.md (master state) |
 | `install-hooks.sh` | Install git hooks |
 | `backfill.sh` | Bootstrap from git history |
+
+## Status Reports
+
+```bash
+# Generate report (terminal)
+./scripts/generate-report.sh
+
+# Save as markdown
+./scripts/generate-report.sh --output markdown
+
+# Post to Slack
+export SLACK_BOT_TOKEN="xoxb-your-token"
+./scripts/postreport.sh --channel C0XXXXX
+
+# Or use Claude Code's /postreport command
+# (uses Slack MCP to post directly)
+```
+
+Reports include: per-project commits, cross-platform alerts, infrastructure stats, and review bot status. All auto-generated from git history + Goldy memory.
+
+---
 
 ## Add a New Repo
 

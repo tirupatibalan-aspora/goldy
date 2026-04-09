@@ -47,7 +47,7 @@ section "1. Directory Structure"
 section "2. Scripts Exist & Executable"
 # ──────────────────────────────────────────────────────────────
 
-for script in detect-projects.sh setup-memory-system.sh log-commit.sh summarize.sh generate-truth.sh install-hooks.sh backfill.sh; do
+for script in detect-projects.sh setup-memory-system.sh log-commit.sh summarize.sh generate-truth.sh install-hooks.sh backfill.sh generate-report.sh postreport.sh test-goldy.sh; do
   if [ -x "$WORKSPACE/scripts/$script" ]; then
     pass "$script executable"
   elif [ -f "$WORKSPACE/scripts/$script" ]; then
@@ -206,7 +206,40 @@ if [ ${#GOLDY_PROJECTS[@]} -gt 0 ]; then
 fi
 
 # ──────────────────────────────────────────────────────────────
-section "12. Cross-Platform Consistency"
+section "12. Status Report (Intelligence)"
+# ──────────────────────────────────────────────────────────────
+
+report_output=$("$WORKSPACE/scripts/generate-report.sh" --hours 168 --output terminal 2>&1 || echo "FAILED")
+if echo "$report_output" | grep -q "Status Report"; then
+  pass "generate-report.sh produces valid report"
+else
+  fail "generate-report.sh failed to produce report"
+fi
+
+# Check report contains project data
+for project in "${GOLDY_PROJECTS[@]}"; do
+  if echo "$report_output" | grep -q "$project"; then
+    pass "Report includes $project data"
+  else
+    fail "Report missing $project data"
+  fi
+done
+
+# Check report includes infrastructure + review bot lines
+echo "$report_output" | grep -q "Infrastructure" && pass "Report shows infrastructure stats" || fail "Report missing infrastructure stats"
+echo "$report_output" | grep -q "Review Bot" && pass "Report shows review bot stats" || fail "Report missing review bot stats"
+
+# Test markdown output
+"$WORKSPACE/scripts/generate-report.sh" --hours 168 --output markdown >/dev/null 2>&1
+report_file="$WORKSPACE/memory/reports/report_$(date '+%Y-%m-%d').md"
+if [ -f "$report_file" ] && [ -s "$report_file" ]; then
+  pass "Markdown report saved to memory/reports/"
+else
+  fail "Markdown report not saved"
+fi
+
+# ──────────────────────────────────────────────────────────────
+section "13. Cross-Platform Consistency"
 # ──────────────────────────────────────────────────────────────
 
 if [ ${#GOLDY_PROJECTS[@]} -ge 2 ]; then
