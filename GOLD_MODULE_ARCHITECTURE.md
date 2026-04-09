@@ -5,13 +5,13 @@
 
 | | iOS | Android |
 |---|---|---|
-| **PR** | [#1520](https://github.com/Vance-Club/vance-ios/pull/1520) | [#1548](https://github.com/Vance-Club/vance-android/pull/1548) |
+| **PR** | [#1520](https://github.com/your-org/app-ios/pull/XXX) | [#1548](https://github.com/your-org/app-android/pull/XXX) |
 | **Branch** | `feature/wealth-module-gold-buy-sell-flow` | `feature/wealth-module-gold-buy-sell-flow` |
 | **Target** | `feature/wealth-module` | `feature/wealth-module` |
 | **Files** | 244 changed, +16,048 / -585 | 164 changed, +19,591 / -494 |
 | **Commits** | 70 | 75 |
 | **Tests** | 184 | 306 |
-| **Reviewer** | Paul | Sergei |
+| **Reviewer** | Reviewer A | Reviewer B |
 
 ---
 

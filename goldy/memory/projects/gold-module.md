@@ -10,29 +10,29 @@
 | | iOS | Android |
 |---|---|---|
 | **M1 (Landing)** | PR #1484 — Merged ✅ | PR #1512 — Merged ✅ |
-| **M2 (Buy/Sell)** | PR #1520 — In review (Paul) | PR #1548 — Merged ✅ |
+| **M2 (Buy/Sell)** | PR #1520 — In review (Reviewer A) | PR #1548 — Merged ✅ |
 | **QA Fixes** | On `feature/wealth-module-gold-buy-sell-flow` | PR #1637 — `feature/wealth-module-gold-qa-fixes` |
 | **Source files** | 120+ Swift | 97 UI + 20 data layer Kotlin |
 | **Tests** | 226 (all passing) | 101+ MVI feature tests |
-| **Reviewer** | Paul | Sergei |
+| **Reviewer** | Reviewer A | Reviewer B |
 | **Review Bot Score** | 9/10 | 10/10 |
 
 ## Platform Handbooks
 
-- **Android**: [`GOLD_MODULE_HANDBOOK.md`](https://github.com/Vance-Club/vance-android/blob/feature/wealth-module-gold-qa-fixes/GOLD_MODULE_HANDBOOK.md) — 16-section reference (architecture, APIs, components, testing, Goldy, Review Bot, push workflow)
+- **Android**: [`GOLD_MODULE_HANDBOOK.md`](https://github.com/your-org/app-android/blob/feature/wealth-module-gold-qa-fixes/GOLD_MODULE_HANDBOOK.md) — 16-section reference (architecture, APIs, components, testing, Goldy, Review Bot, push workflow)
 - **iOS**: `GOLD_MODULE_HANDBOOK.md` — (pending creation, same structure)
 - **Architecture Doc**: [GOLD_MODULE_ARCHITECTURE.md](https://github.com/tirupatibalan-aspora/goldy/blob/main/GOLD_MODULE_ARCHITECTURE.md)
 
 ## Milestones
 
 ### M1 — Gold Landing Page ✅ MERGED (Both Platforms)
-- **iOS PR #1484**: Paul approved, merged
-- **Android PR #1512**: Sergei approved, merged
+- **iOS PR #1484**: Reviewer A approved, merged
+- **Android PR #1512**: Reviewer B approved, merged
 - 7 lander sections, live price polling, vault tiers, returns calculator
 
 ### M2 — Buy & Sell Gold Flows ✅ BUILT (Both Platforms)
-- **iOS PR #1520**: In review by Paul. 120+ files, 226 tests. Design system token migration done.
-- **Android PR #1548**: Merged by Sergei. 170+ files, 85+ commits, 101 tests. Review Bot: 10/10.
+- **iOS PR #1520**: In review by Reviewer A. 120+ files, 226 tests. Design system token migration done.
+- **Android PR #1548**: Merged by Reviewer B. 170+ files, 85+ commits, 101 tests. Review Bot: 10/10.
 
 ### QA Fixes (Post-Merge)
 - **Android PR #1637**: 10 commits — 7-part animation, backstack fix, vault tier image, API rename, test fixes
@@ -131,7 +131,7 @@ GET  wealth/v1/digital-metal/documents/invoices/{id}/download
 | UK market testing | P3 | Code ready | Code ready |
 
 ## Review Bot Integration
-- **iOS (Paul)**: 12 patterns — 3 critical. Top: DateFormatter singletons, shared file protection.
-- **Android (Sergei)**: 25 patterns — 6 critical. Top: BaseMviViewModel (7x), Screen(state,accept) (3x).
+- **iOS (Reviewer A)**: 12 patterns — 3 critical. Top: DateFormatter singletons, shared file protection.
+- **Android (Reviewer B)**: 25 patterns — 6 critical. Top: BaseMviViewModel (7x), Screen(state,accept) (3x).
 - **Cross-platform**: 1 shared pattern (constants/header keys).
 - **Learnings DB**: `claude-review-bot/.github/actions/claude-review/learnings/`

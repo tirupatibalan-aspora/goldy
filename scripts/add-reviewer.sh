@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Goldy — Add a new reviewer to the Review Bot
 # Usage:
-#   ./scripts/add-reviewer.sh --name sergei --github z-sergei --platform android
-#   ./scripts/add-reviewer.sh --name paul --github PaulLavoine --platform ios --pr 1520
+#   ./scripts/add-reviewer.sh --name sergei --github reviewer-b --platform android
+#   ./scripts/add-reviewer.sh --name paul --github reviewer-a --platform ios --pr 1520
 #   ./scripts/add-reviewer.sh --name john --github john-dev --platform android --pr 1637 --pr 1548
 #
 # What it does:
@@ -116,9 +116,9 @@ if [ ${#PRS[@]} -gt 0 ]; then
   else
     # Determine repo
     if [ "$PLATFORM" = "ios" ]; then
-      REPO="Vance-Club/vance-ios"
+      REPO="your-org/app-ios"
     else
-      REPO="Vance-Club/vance-android"
+      REPO="your-org/app-android"
     fi
 
     for pr in "${PRS[@]}"; do
@@ -197,7 +197,7 @@ if [ "$pattern_count" -eq 0 ]; then
   echo ""
   echo "  1. Auto-harvest from a PR:"
   echo "     node claude-review-bot/scripts/harvest-pr-comments.js \\"
-  echo "       --repo Vance-Club/vance-${PLATFORM} --pr NUMBER --reviewer $GITHUB"
+  echo "       --repo your-org/vance-${PLATFORM} --pr NUMBER --reviewer $GITHUB"
   echo ""
   echo "  2. Ask Claude Code:"
   echo "     \"Harvest review patterns from PR #1234 for $NAME\""

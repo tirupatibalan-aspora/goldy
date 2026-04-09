@@ -1,7 +1,7 @@
 # Gold Module: Why We Should NOT Reuse ReviewTransfer Screen
 
 **Date:** 2026-03-18
-**Author:** Tirupati Balan
+**Author:** Team
 **Context:** Tech lead suggested reusing the existing ReviewTransfer (remittance) screen for Gold buy/sell review flows
 
 ---

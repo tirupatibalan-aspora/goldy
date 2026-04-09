@@ -13,17 +13,17 @@
 - **2026-04-09** — fix(gold): use tier-based vault image instead of hardcoded locker
 - **2026-04-08** — fix(gold): port Android QA fixes to iOS — defaults, decimals, lander, friction
 - **2026-04-08** — fix(gold): use theme fonts instead of raw Font.custom/system
-- **2026-04-07** — Merge pull request #1568 from Vance-Club/Update_analytics_app_version_format
+- **2026-04-07** — Merge pull request #1568 from your-org/Update_analytics_app_version_format
 - **2026-04-07** — Merge remote-tracking branch 'origin/dev' into feature/wealth-module
 - **2026-04-07** — Feature/beneficiary revamp fixes (#1565)
 - **2026-04-07** — Cu-86d2gvf7e Aspora Guarantee M1 (#1561)
-- **2026-04-07** — fix(gold): Shreeyash design feedback — tabular numbers, remove borders, hide persistent subtitle
-- **2026-04-07** — Merge pull request #1571 from Vance-Club/fix/86d239qpw_send_tab_navbar
+- **2026-04-07** — fix(gold): Designer design feedback — tabular numbers, remove borders, hide persistent subtitle
+- **2026-04-07** — Merge pull request #1571 from your-org/fix/86d239qpw_send_tab_navbar
 - **2026-04-07** — fix(gold): add missing paymentInstrument to test factory helper
 - **2026-04-07** — fix: resolve 5 iOS CI build errors — theme API, optional unwrap, MainActor
 - **2026-04-07** — fix: increase test sleep to 1s for CI reliability (GoldLanderViewModelTests)
 - **2026-04-07** — fixed mapping parameters when calling the patch user onboarding api with legacy onboarding version (#1570)
-- **2026-04-07** — Merge pull request #1558 from Vance-Club/fix/86d23bux8_rates_comparision_load_time
+- **2026-04-07** — Merge pull request #1558 from your-org/fix/86d23bux8_rates_comparision_load_time
 - **2026-04-07** — Merge branch 'feature/wealth-module' into feature/wealth-module-gold-buy-sell-flow
 - **2026-04-07** — fix(gold): add missing paymentInstrument to BuyReviewViewModelTests factory
 - **2026-04-07** — fix: relax flaky loadPrice invoke count assertion (== 1 → >= 1)

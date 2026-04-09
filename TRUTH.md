@@ -75,9 +75,9 @@ a6447708f9 fix(gold): QA quick wins — decimal limits, zero display, sell loade
 bafa5f2450 fix: revert max buy to 55K + remove sell friction sheets
 3e514e5685 feat(gold): add payment-instruments and invoice-download endpoints + fix stale tests
 cddd9cddf2 refactor(gold): rename paymentMode → paymentInstrument across API contract
-7dcdd42595 fix(gold): Shreeyash design feedback — tabular numbers, remove borders, hide persistent subtitle
+7dcdd42595 fix(gold): Designer design feedback — tabular numbers, remove borders, hide persistent subtitle
 e686619661 feat(gold): 7-part segmented confirmation animation (P0-2, P1-8)
-1c70193acb Merge pull request #1548 from Vance-Club/feature/wealth-module-gold-buy-sell-flow
+1c70193acb Merge pull request #1548 from your-org/feature/wealth-module-gold-buy-sell-flow
 2f27e3a424 style: fix indentation in initSell()
 cd42cbaed1 fix(gold): sell review price pill shows actual price instead of "---"
 eefaa0e935 fix(gold): sell confirm shows AED amount as primary, not weight
@@ -97,16 +97,16 @@ b613309e61 fix: Resolve Gold build errors from develop merge
 a8377ce347 fix: Add getGoldService to ServiceProvider + regenerate detekt baselines
 6a1d1ab705 Merge branch 'feature/wealth-module' into feature/wealth-module-gold-buy-sell-flow
 33b8719cd3 Merge remote-tracking branch 'origin/develop' into feature/wealth-module
-fbb52abe8b Merge pull request #1608 from Vance-Club/fix/ci-submodule-non-fatal
-9829281932 Merge branch 'develop' of github.com:Vance-Club/vance-android into fix/ci-submodule-non-fatal
+fbb52abe8b Merge pull request #1608 from your-org/fix/ci-submodule-non-fatal
+9829281932 Merge branch 'develop' of github.com:your-org/app-android into fix/ci-submodule-non-fatal
 1ac520aab5 Fix CI: use GitHub App token for cross-repo submodule access
-ec17feeb0d Merge pull request #1617 from Vance-Club/idskills
+ec17feeb0d Merge pull request #1617 from your-org/idskills
 7f77527783 skills updated
-46ae9d9902 Merge pull request #1616 from Vance-Club/idskills
+46ae9d9902 Merge pull request #1616 from your-org/idskills
 96e5bbb028 updated skills
-96a62b1a63 Merge pull request #1615 from Vance-Club/idskills
+96a62b1a63 Merge pull request #1615 from your-org/idskills
 63530242cd skills added
-2442a8e303 Merge pull request #1613 from Vance-Club/release/7.0.33
+2442a8e303 Merge pull request #1613 from your-org/release/7.0.33
 44772feaf7 fix: Restore 40 Gold files deleted during develop merge + fix Detekt violations
 7db87aac4a Merge feature/wealth-module (with latest develop) into gold-buy-sell-flow
 eebd7bc9e3 Merge remote-tracking branch 'origin/develop' into feature/wealth-module
@@ -121,7 +121,7 @@ d6e69202e9 chore: bump version to 7.0.32 (732)
 e07a3f9642 fix(gold): UI polish — processing screen, sell flow, entry gradient
 e14beaa96f fix(gold): sell review amount uses gold gradient, not purple
 8129fa9d47 fix(gold): wire price lock pill data to IBAN entry screen
-ed42ed8241 Merge pull request #1610 from Vance-Club/feat/guarantee-bs2
+ed42ed8241 Merge pull request #1610 from your-org/feat/guarantee-bs2
 4476926c7e fix(send): return to send screen instead of home on transfer cancellation
 eeb8812924 fix: bug fixes nri banking flow (#1607)
 08d9591ac1 fix(gold): correct typography token BodyCaption1Regular in sell success
@@ -139,14 +139,14 @@ e8a0cd7196 fix(gold): resolve build errors — stale ARG_SUBTITLE/ARG_CAPTION re
 fab8365978 feat(gold): sell failed/success screens + buy CTA text
 01f59dafa7 NRE-NRO fixes
 2099438ed7 feat(gold): wire success screen data + sell IBAN flow + transaction fixes
-939e53cf78 Merge pull request #1600 from Vance-Club/release/version-7.0.29
-67bb585837 Merge pull request #1597 from Vance-Club/rit/kmm
+939e53cf78 Merge pull request #1600 from your-org/release/version-7.0.29
+67bb585837 Merge pull request #1597 from your-org/rit/kmm
 c46239a4ae Wire Sell Gold button navigation on landing page
 910f1f84ca Fix back nav from txn detail + align card design with Figma
 456df3bfa8 Fix nav title invisible on SDUI transaction detail header
 d6a89a01cf fix(gold): transaction detail endpoint, loading state, back navigation
 b428f0769b fix: nri banking bug fixes (#1603)
-e4e3645616 Merge branch 'release/version-7.0.29' of https://github.com/Vance-Club/vance-android into release/version-7.0.29
+e4e3645616 Merge branch 'release/version-7.0.29' of https://github.com/your-org/app-android into release/version-7.0.29
 9eb5e2cb48 removed mainfragment
 4dadcacf40 fix(gold): review screen gradient, WebView dismiss, Lottie fullscreen, txn detail crash guard
 43cfc7c428 Design system module
@@ -169,15 +169,15 @@ a79970cdf fix: increase test sleep to 1s for CI reliability (GoldLanderViewModel
 5fc918cec Merge branch 'feature/wealth-module' into feature/wealth-module-gold-buy-sell-flow
 f56159d2a Merge remote-tracking branch 'origin/dev' into feature/wealth-module
 8d2961a10 fixed mapping parameters when calling the patch user onboarding api with legacy onboarding version (#1570)
-fc943415b Merge pull request #1568 from Vance-Club/Update_analytics_app_version_format
+fc943415b Merge pull request #1568 from your-org/Update_analytics_app_version_format
 28baa96dc fix: relax flaky loadPrice invoke count assertion (== 1 → >= 1)
 abf7bb1dd fix: resolve 5 iOS CI build errors — theme API, optional unwrap, MainActor
 e11b7a7da Feature/beneficiary revamp fixes (#1565)
-ce27812fc fix(gold): Shreeyash design feedback — tabular numbers, remove borders, hide persistent subtitle
+ce27812fc fix(gold): Designer design feedback — tabular numbers, remove borders, hide persistent subtitle
 0529d6111 feat(gold): 7-part segmented confirmation animation (P1-9)
 e08ddb586 Cu-86d2gvf7e Aspora Guarantee M1 (#1561)
-6ea6e7d2c Merge pull request #1558 from Vance-Club/fix/86d23bux8_rates_comparision_load_time
-b8b163ad3 Merge pull request #1571 from Vance-Club/fix/86d239qpw_send_tab_navbar
+6ea6e7d2c Merge pull request #1558 from your-org/fix/86d23bux8_rates_comparision_load_time
+b8b163ad3 Merge pull request #1571 from your-org/fix/86d239qpw_send_tab_navbar
 8be687f32 86d239qpw: Fixed send button not working on rates view
 fea062721 fix: Remove extra top spacing on Gold landing page
 b3d07fade fix: Gold entry screen layout for iPhone SE compact screen
@@ -210,11 +210,11 @@ aa5073168 fix: rename SelectBank → GoldSelectBank to resolve duplicate .string
 94e946761 Merge feature/wealth-module into gold-buy-sell-flow
 c390c742d Merge origin/dev into feature/wealth-module
 6a875330b chore: trigger CI build
-cbd5078cc fix: Address Paul's 12 review comments — centralize formatters, localize strings, theme spacing
+cbd5078cc fix: Address Reviewer A's 12 review comments — centralize formatters, localize strings, theme spacing
 15e690393 Change app version format we send to Mixpanel to filter easily
 b288664a7 fix(gold): hero images — gold bar for fresh, locker for existing users
 441740c1f Fix Mohamed's review
-381f9fcb7 Merge pull request #1566 from Vance-Club/CU-86d2gur9j_iOS-Onboarding-Stepper-Logic-Widget
+381f9fcb7 Merge pull request #1566 from your-org/CU-86d2gur9j_iOS-Onboarding-Stepper-Logic-Widget
 536193cf0 fix(gold): handle AWAITING_WITHDRAWAL state + increase maxBuyAmount to 500K
 c68eeee90 fix(gold): native .sheet for bank selector + medium detent scrollable
 f07439e68 fix(gold): reset swipe on bank change + fresh cart on sell retry
@@ -222,7 +222,7 @@ f07439e68 fix(gold): reset swipe on bank change + fresh cart on sell retry
 483d2bfee fix(gold): show plain white bg during transaction detail loading
 e6bf18fb8 Revert Mixpanel update
 5aa0ff298 feat(gold): sell failed/success screens, swipe reset, bottom safe area
-6087f9760 Merge pull request #1556 from Vance-Club/dependencies_update
+6087f9760 Merge pull request #1556 from your-org/dependencies_update
 e52ea2d68 Merge branch 'dev' into dependencies_update
 ebde7e901 fix(gold): add CodingKeys for beneficiary request — iban_number snake_case
 efb466b2c fix(gold): navigate to IBAN screen directly instead of bank list
@@ -234,7 +234,7 @@ b182791d3 fix(gold): transaction detail API endpoint correction
 55b1840af fix(gold): handle 409 cart conflict — reuse cached cartId on retry
 c5266ad2c fix(gold): surface backend error message on cart/summary failure
 9d57588e9 fix(gold): review screen gradient, WebView dismiss reset
-e9ba6536e Merge pull request #1560 from Vance-Club/Fix_analytics
+e9ba6536e Merge pull request #1560 from your-org/Fix_analytics
 ```
 
 
@@ -298,17 +298,17 @@ e9ba6536e Merge pull request #1560 from Vance-Club/Fix_analytics
 - **2026-04-09** — fix(gold): use tier-based vault image instead of hardcoded locker
 - **2026-04-08** — fix(gold): port Android QA fixes to iOS — defaults, decimals, lander, friction
 - **2026-04-08** — fix(gold): use theme fonts instead of raw Font.custom/system
-- **2026-04-07** — Merge pull request #1568 from Vance-Club/Update_analytics_app_version_format
+- **2026-04-07** — Merge pull request #1568 from your-org/Update_analytics_app_version_format
 - **2026-04-07** — Merge remote-tracking branch 'origin/dev' into feature/wealth-module
 - **2026-04-07** — Feature/beneficiary revamp fixes (#1565)
 - **2026-04-07** — Cu-86d2gvf7e Aspora Guarantee M1 (#1561)
-- **2026-04-07** — fix(gold): Shreeyash design feedback — tabular numbers, remove borders, hide persistent subtitle
-- **2026-04-07** — Merge pull request #1571 from Vance-Club/fix/86d239qpw_send_tab_navbar
+- **2026-04-07** — fix(gold): Designer design feedback — tabular numbers, remove borders, hide persistent subtitle
+- **2026-04-07** — Merge pull request #1571 from your-org/fix/86d239qpw_send_tab_navbar
 - **2026-04-07** — fix(gold): add missing paymentInstrument to test factory helper
 - **2026-04-07** — fix: resolve 5 iOS CI build errors — theme API, optional unwrap, MainActor
 - **2026-04-07** — fix: increase test sleep to 1s for CI reliability (GoldLanderViewModelTests)
 - **2026-04-07** — fixed mapping parameters when calling the patch user onboarding api with legacy onboarding version (#1570)
-- **2026-04-07** — Merge pull request #1558 from Vance-Club/fix/86d23bux8_rates_comparision_load_time
+- **2026-04-07** — Merge pull request #1558 from your-org/fix/86d23bux8_rates_comparision_load_time
 - **2026-04-07** — Merge branch 'feature/wealth-module' into feature/wealth-module-gold-buy-sell-flow
 - **2026-04-07** — fix(gold): add missing paymentInstrument to BuyReviewViewModelTests factory
 - **2026-04-07** — fix: relax flaky loadPrice invoke count assertion (== 1 → >= 1)

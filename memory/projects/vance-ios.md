@@ -1,6 +1,6 @@
 # Vance iOS
 
-**Repo**: Vance-Club/vance-ios
+**Repo**: your-org/app-ios
 **Language**: Swift 6 | **Min iOS**: 16.4+ | **Xcode**: 16.4+
 **Architecture**: Clean Architecture + MVVM with SwiftUI
 
@@ -55,10 +55,10 @@ Gold (Buy, Sell, Portfolio, PriceChart, Lander, Transactions, Placeholder), Canv
 4. R.swift needs build to regenerate after adding strings
 
 ## Current Active Work
-- **Gold Module PR #1465** (`feature/wealth-module-gold-onboarding` → `dev`) — Approved by Paul ✅
+- **Gold Module PR #1465** (`feature/wealth-module-gold-onboarding` → `dev`) — Approved by Reviewer A ✅
 - Full Gold module: domain models, use cases, repository, network layer, views, DI, 117 tests (64 Swift files)
 - Gold Landing Page: built (GoldLanderView replaced, 7 sections, GoldLanderViewModel, 15 new tests)
-- Next: New PR for Landing Page → Paul to review
+- Next: New PR for Landing Page → Reviewer A to review
 - Pending: ~66-81 additional tests, API timing tracking, sell/portfolio placeholder views, wire to real API data
 
 ## Testing

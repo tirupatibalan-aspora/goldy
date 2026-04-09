@@ -11,7 +11,7 @@ Aspora (consumer brand: **Vance**) — Cross-border money transfer fintech app. 
 ## Tools & Systems
 | Tool | Used for |
 |------|----------|
-| GitHub | Source control (Vance-Club org) |
+| GitHub | Source control (your-org org) |
 | Xcode | iOS development |
 | Android Studio | Android development |
 | Firebase | Analytics, Crashlytics, Remote Config, Auth, Firestore |

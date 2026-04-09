@@ -7,12 +7,12 @@ This auto-detects new repos, installs missing hooks, backfills changelogs, and r
 # Memory
 
 ## Me
-Tirupati Balan, tirupati.balan@aspora.com. Works on Vance (Aspora) — a cross-border money transfer fintech app (iOS + Android).
+Your Name, you@example.com. Works on Your App — describe your project here.
 
 ## People
 | Who | Role |
 |-----|------|
-| **Paul** | iOS code reviewer (reviews Gold module PRs) |
+| **Reviewer A** | iOS code reviewer (reviews Gold module PRs) |
 → Full list: memory/glossary.md, profiles: memory/people/
 
 ## Terms
@@ -142,7 +142,7 @@ This applies to ALL files that are shared, base-level, or used by other modules 
 - Other teams depend on shared files — changes can break their work
 - Gold module should be self-contained during M2 development
 - Route/navigation changes affect the entire app
-- Paul (iOS) and Sergei (Android) review Gold PRs — minimize non-Gold diff
+- Reviewer A (iOS) and Reviewer B (Android) review Gold PRs — minimize non-Gold diff
 
 ## Review Bot Learnings (auto-synced 2026-03-25)
 
@@ -153,12 +153,12 @@ Bot test score: 10/10 (76/76 tests passing)
 |---|----------|------|-----------|
 | 1 | constants | Use Constants for repeated header keys and magic strings | 3x |
 
-### iOS — Paul's Top Blockers
+### iOS — Reviewer A's Top Blockers
 - **Never create DateFormatter or ISO8601DateFormatter per call — use static let singleton** (2x)
 - **Static/singleton formatters — DateFormatter is one of the most expensive Foundation objects to instantiate** (2x)
 - **NEVER modify shared/base files used by other modules — revert any changes to CurrencyFormatter, shared models, etc.** (1x)
 
-### Android — Sergei's Top Blockers
+### Android — Reviewer B's Top Blockers
 - **ALL ViewModels MUST extend BaseMviViewModel — never raw ViewModel()** (7x)
 - **All screens must have @Preview composable and use AppScreen as root wrapper** (4x)
 - **Use enums for order statuses — never hardcoded strings like 'COMPLETED', 'ORDER_COMPLETED', 'FAILED'** (3x)
@@ -219,7 +219,7 @@ xcodebuild test \
 This applies to ALL modules and teams, not just Gold. The review bot learns from each reviewer's PR comments and enforces their patterns automatically.
 
 ### How it works
-1. **Reviewer learnings** are stored in `claude-review-bot/.github/actions/claude-review/learnings/` as JSON files named `{platform}-{reviewer}.json` (e.g., `ios-paul.json`, `android-sergei.json`)
+1. **Reviewer learnings** are stored in `claude-review-bot/.github/actions/claude-review/learnings/` as JSON files named `{platform}-{reviewer}.json` (e.g., `ios-reviewer-a.json`, `android-reviewer-b.json`)
 2. Each file contains categorized patterns (critical/major/minor) with bad/good examples, extracted from real PR review comments
 3. Before any PR, Claude audits the diff against ALL patterns for the target reviewer
 
@@ -255,7 +255,7 @@ Format: see existing files for schema (`patterns[]` with `id`, `severity`, `cate
 ### Current reviewers
 | Platform | Reviewer | Learnings file | Patterns |
 |----------|----------|---------------|----------|
-| iOS | Paul | `ios-paul.json` | 12 patterns (3 critical, 7 major, 2 minor) |
-| Android | Sergei | `android-sergei.json` | 25 patterns (6 critical, 14 major, 5 minor) |
+| iOS | Reviewer A | `ios-reviewer-a.json` | 12 patterns (3 critical, 7 major, 2 minor) |
+| Android | Reviewer B | `android-reviewer-b.json` | 25 patterns (6 critical, 14 major, 5 minor) |
 
 To add your module's reviewer: create the JSON, add a row here, and the bot will enforce their standards automatically.

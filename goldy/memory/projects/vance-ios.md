@@ -1,6 +1,6 @@
 # Vance iOS
 
-**Repo**: Vance-Club/vance-ios
+**Repo**: your-org/app-ios
 **Language**: Swift 6 | **Min iOS**: 16.4+ | **Xcode**: 16.4+
 **Architecture**: Clean Architecture + MVVM with SwiftUI
 
@@ -55,12 +55,12 @@ Gold (Buy, Sell, Portfolio, PriceChart, Lander, Transactions, Placeholder), Canv
 4. R.swift needs build to regenerate after adding strings
 
 ## Current Active Work
-- **M1 PR #1484 MERGED** — `feature/wealth-module-gold-onboarding` → `feature/wealth-module` (Paul approved, 2026-03-13)
+- **M1 PR #1484 MERGED** — `feature/wealth-module-gold-onboarding` → `feature/wealth-module` (Reviewer A approved, 2026-03-13)
 - **M2 branch**: `feature/wealth-module-gold-buy-sell-flow` — All 10 screens built, 453 tests, pushed to origin
 - **Live Price Polling**: 5s interval in GoldLanderViewModel (Task-based, cancellation-safe)
 - **ORDER_COMPLETED**: `.orderCompleted` added to `GoldOrderStatus` enum, BuyReviewViewModel handles it as success
 - **Partner logos**: Arrived from Figma
-- Next: Create M2 PR for Paul's review
+- Next: Create M2 PR for Reviewer A's review
 - Pending: Wire sell flow to real API, portfolio API wiring, SIP/Coins screens, certificates
 
 ## Testing

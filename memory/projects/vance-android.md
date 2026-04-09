@@ -36,16 +36,16 @@
 - **Pattern**: MVI (GoldHomeFeature with State/Event/Command)
 - **Stats**: 76 Kotlin source files, 14 test files, 306 tests
 - **M1 (Landing Page)**: PR #1512 merged. 7 sections (Hero, Trust Badges, Returns Calculator, Value Cards, Comparison, FAQ, Partners)
-- **M2 (Buy & Sell)**: All screens built, pushed to origin. Pending PR for Sergei.
+- **M2 (Buy & Sell)**: All screens built, pushed to origin. Pending PR for Reviewer B.
 - **Chart**: Custom Figma-matched bar composables (Vico 2.4.3 evaluated, replaced with custom implementation for pixel-perfect Figma matching)
 - **Buy flow**: Buy entry, KYC sheet, Buy review — all with MVI + tests
 - **Sell flow**: Sell entry, WhySheet, RetentionSheet, SelectBank, AccountDetails, SellReview, RetentionNudge — all with MVI + tests
-- **Sergei review feedback**: Extracted transaction grouping from UI (GoldTransactionGrouper), added 26 @Preview functions (GoldScreenPreviews.kt)
+- **Reviewer B review feedback**: Extracted transaction grouping from UI (GoldTransactionGrouper), added 26 @Preview functions (GoldScreenPreviews.kt)
 - **Live Price Polling**: 5s interval in GoldHomeViewModel, toolbar pill (`GoldToolbarPricePill.kt`)
 - **ORDER_COMPLETED**: Recognized as terminal success in Feature + ViewModel polling
 - **Known issue**: Cart API 500 — debug logging in GoldRepository.createBuyCart
 - **Partner logos**: ✅ Arrived from Figma
-- **Pending**: Fix cart API 500, wire to real API, disclaimer, remove debug logging, M2 PR for Sergei
+- **Pending**: Fix cart API 500, wire to real API, disclaimer, remove debug logging, M2 PR for Reviewer B
 
 ## Build Variants
 - debug, dev_test (minified debug), release (ProGuard/R8), release_test

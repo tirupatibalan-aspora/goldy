@@ -36,7 +36,7 @@ Workplace shorthand, acronyms, and internal language for Vance/Aspora.
 ## Project Codenames
 | Codename | Project |
 |----------|---------|
-| vance-ios | iOS app (GitHub: Vance-Club/vance-ios) |
+| vance-ios | iOS app (GitHub: your-org/app-ios) |
 | vance-android | Android app |
 | Gold / Wealth module | Gold investment feature on both platforms |
 | Canvas | Home V3 server-driven home screen |
@@ -45,5 +45,5 @@ Workplace shorthand, acronyms, and internal language for Vance/Aspora.
 ## Nicknames → Full Names
 | Nickname | Person |
 |----------|--------|
-| Paul | iOS code reviewer — reviews Gold module PRs |
-| Sergei | Android code reviewer — reviews Gold module PRs |
+| Reviewer A | iOS code reviewer — reviews Gold module PRs |
+| Reviewer B | Android code reviewer — reviews Gold module PRs |

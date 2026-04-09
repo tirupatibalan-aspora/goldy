@@ -9,12 +9,12 @@
 ### M1 — Gold Landing Page ✅ MERGED
 - **Branch**: `feature/wealth-module-gold-onboarding` → merged
 - **Status**: QA in progress (build comparison running parallel)
-- **iOS**: PR #1465 approved by Paul, merged. 64 files, 117 tests, 7 lander sections.
-- **Android**: PR #1512 approved by Sergei, merged. `feature/wealth-module-gold-onboarding` → `feature/wealth-module`. 40 files changed (+4,703 −244). Wired live gold price API, updated domain models with change/changePercent fields, 3 test files updated.
+- **iOS**: PR #1465 approved by Reviewer A, merged. 64 files, 117 tests, 7 lander sections.
+- **Android**: PR #1512 approved by Reviewer B, merged. `feature/wealth-module-gold-onboarding` → `feature/wealth-module`. 40 files changed (+4,703 −244). Wired live gold price API, updated domain models with change/changePercent fields, 3 test files updated.
 
 ### M2 — Buy & Sell Gold Flows 🚧 ALL SCREENS BUILT — PENDING PR
 - **Branch**: `feature/wealth-module-gold-buy-sell-flow` (pushed to origin)
-- **Status**: All 10 screens built on iOS. 453 tests. Ready for PR creation → Paul review.
+- **Status**: All 10 screens built on iOS. 453 tests. Ready for PR creation → Reviewer A review.
 - **Scope**: 10 unique screens (3 buy + 1 success + 7 sell). All Figma-matched.
 - **Figma**: Buy section `28949:69838` | Sell section `28950:1317`
 - **Commits**: `a5e077bc6` (sell friction flow) → `efa2c41dc` (ViewModel tests) → `2a1de8474` (buy flow + assets)
@@ -65,11 +65,11 @@ Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold
 
 ## iOS
 ### M1 Branch (`feature/wealth-module-gold-onboarding`)
-- **PR #1465**: Approved by Paul ✅, merged → `dev`
-- **PR URL**: https://github.com/Vance-Club/vance-ios/pull/1465
+- **PR #1465**: Approved by Reviewer A ✅, merged → `dev`
+- **PR URL**: https://github.com/your-org/app-ios/pull/1465
 
 ### M2 Branch (`feature/wealth-module-gold-buy-sell-flow`) — PUSHED
-- **Status**: All screens built, pushed to origin. Next: create PR for Paul.
+- **Status**: All screens built, pushed to origin. Next: create PR for Reviewer A.
 - **Architecture**: Clean Architecture with UseCases, Actor-based repositories, SwiftUI views
 - **Stats**: ~100+ Swift files, 453 tests across 10+ test files
 
@@ -99,7 +99,7 @@ Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold
 - Partner logos ✅ arrived from Figma
 - Disclaimer copy (pending legal review)
 - Certificates view (placeholder)
-- M2 PR creation for Paul's review
+- M2 PR creation for Reviewer A's review
 
 ### Recent Changes (iOS)
 - **Live Price Polling**: 5s interval in GoldLanderViewModel (Task-based, cancellation-safe)
@@ -184,11 +184,11 @@ Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold
 
 ## Android
 ### M1 Branch (`feature/wealth-module-gold-onboarding`)
-- **PR #1512**: Approved by Sergei ✅, merged
+- **PR #1512**: Approved by Reviewer B ✅, merged
 - **Branch**: `feature/wealth-module-gold-onboarding` → `feature/wealth-module`
 
 ### M2 Branch (`feature/wealth-module-gold-buy-sell-flow`) — PUSHED
-- **Status**: All screens built, pushed to origin. Next: create PR for Sergei.
+- **Status**: All screens built, pushed to origin. Next: create PR for Reviewer B.
 - **Pattern**: MVI (GoldHomeFeature with State/Event/Command)
 - **Stats**: 76 Kotlin source files, 14 test files, 306 tests
 
@@ -201,7 +201,7 @@ Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold
 - **Sell flow**: Sell entry, WhySheet, RetentionSheet, SelectBank, AccountDetails, SellReview, RetentionNudge — all with MVI pattern
 - **Chart**: Custom Figma-matched bar composables (replaced Vico for Returns Calculator)
 - **Localization**: All hardcoded strings localized
-- **Sergei review feedback** (commit `76a92917a0`):
+- **Reviewer B review feedback** (commit `76a92917a0`):
   - Extracted transaction grouping from UI → `GoldTransactionGrouper` utility (Today/Yesterday/date labels, java.time APIs)
   - Moved alphabetical bank grouping from `SelectBankScreen` composable → `SelectBankFeature.State.groupedBanks` computed property
   - Added 26 @Preview functions in `GoldScreenPreviews.kt` — all 12 screens (loading/content/error states) + reusable components (LivePriceBanner, SectionHeader, FeatureBadge) + portfolio components
@@ -219,4 +219,4 @@ Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold
 - Partner logos ✅ arrived from Figma
 - Disclaimer copy (pending legal review)
 - Remove debug logging from GoldRepository.createBuyCart (after 500 fix)
-- M2 PR creation for Sergei's review
+- M2 PR creation for Reviewer B's review
