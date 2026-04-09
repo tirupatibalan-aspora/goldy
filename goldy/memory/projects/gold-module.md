@@ -1,216 +1,137 @@
 # Gold/Wealth Module
 
-**Status**: Active development on both platforms
-**Purpose**: Buy, sell, and manage gold investments within Vance app
-**Completion**: iOS 70% | Android 60% (of full Gold module scope)
+**Status**: M2 merged on both platforms. QA fixes in progress.
+**Purpose**: Buy, sell, and manage 24K gold investments within Vance app
+**Markets**: UAE (AED), UK (GBP)
+**Last Updated**: 2026-04-09
+
+## Current State
+
+| | iOS | Android |
+|---|---|---|
+| **M1 (Landing)** | PR #1484 — Merged ✅ | PR #1512 — Merged ✅ |
+| **M2 (Buy/Sell)** | PR #1520 — In review (Paul) | PR #1548 — Merged ✅ |
+| **QA Fixes** | On `feature/wealth-module-gold-buy-sell-flow` | PR #1637 — `feature/wealth-module-gold-qa-fixes` |
+| **Source files** | 120+ Swift | 97 UI + 20 data layer Kotlin |
+| **Tests** | 226 (all passing) | 101+ MVI feature tests |
+| **Reviewer** | Paul | Sergei |
+| **Review Bot Score** | 9/10 | 10/10 |
+
+## Platform Handbooks
+
+- **Android**: [`GOLD_MODULE_HANDBOOK.md`](https://github.com/Vance-Club/vance-android/blob/feature/wealth-module-gold-qa-fixes/GOLD_MODULE_HANDBOOK.md) — 16-section reference (architecture, APIs, components, testing, Goldy, Review Bot, push workflow)
+- **iOS**: `GOLD_MODULE_HANDBOOK.md` — (pending creation, same structure)
+- **Architecture Doc**: [GOLD_MODULE_ARCHITECTURE.md](https://github.com/tirupatibalan-aspora/goldy/blob/main/GOLD_MODULE_ARCHITECTURE.md)
 
 ## Milestones
 
-### M1 — Gold Landing Page ✅ MERGED
-- **Branch**: `feature/wealth-module-gold-onboarding` → merged
-- **Status**: QA in progress (build comparison running parallel)
-- **iOS**: PR #1465 approved by Paul, merged. 64 files, 117 tests, 7 lander sections.
-- **Android**: PR #1512 approved by Sergei, merged. `feature/wealth-module-gold-onboarding` → `feature/wealth-module`. 40 files changed (+4,703 −244). Wired live gold price API, updated domain models with change/changePercent fields, 3 test files updated.
+### M1 — Gold Landing Page ✅ MERGED (Both Platforms)
+- **iOS PR #1484**: Paul approved, merged
+- **Android PR #1512**: Sergei approved, merged
+- 7 lander sections, live price polling, vault tiers, returns calculator
 
-### M2 — Buy & Sell Gold Flows 🚧 ALL SCREENS BUILT — PENDING PR
-- **Branch**: `feature/wealth-module-gold-buy-sell-flow` (pushed to origin)
-- **Status**: All 10 screens built on iOS. 453 tests. Ready for PR creation → Paul review.
-- **Scope**: 10 unique screens (3 buy + 1 success + 7 sell). All Figma-matched.
-- **Figma**: Buy section `28949:69838` | Sell section `28950:1317`
-- **Commits**: `a5e077bc6` (sell friction flow) → `efa2c41dc` (ViewModel tests) → `2a1de8474` (buy flow + assets)
+### M2 — Buy & Sell Gold Flows ✅ BUILT (Both Platforms)
+- **iOS PR #1520**: In review by Paul. 120+ files, 226 tests. Design system token migration done.
+- **Android PR #1548**: Merged by Sergei. 170+ files, 85+ commits, 101 tests. Review Bot: 10/10.
 
-#### Buy Flow Screens (3 to build) — ALL BUILT ✅ (Both Platforms)
-1. **Buy Gold Entry** ✅ — Amount in grams, price lock timer, presets (2/5/10/50gm), numpad, amount/weight toggle, social proof
-2. **KYC Bottom Sheet** ✅ — First-time only gate, 3 benefit rows, "Proceed to Digital KYC" CTA
-3. **Buy Review** ✅ — Order summary, rate pill, 3% processing fee, bank selector, countdown timer, Pay CTA
-4. **Success Screen** ✅ — GoldAddedView (post-purchase confirmation)
+### QA Fixes (Post-Merge)
+- **Android PR #1637**: 10 commits — 7-part animation, backstack fix, vault tier image, API rename, test fixes
+- **iOS**: Design system tokens (30 files), backstack navigation, vault tier image
 
-#### Sell Flow Screens (7 to build) — ALL BUILT ✅ (Both Platforms)
-1. **Sell Gold Entry** ✅ — Amount in gms, % presets (25/50/75/MAX), numpad, holdings badge
-2. **"Why?" Friction Sheet** ✅ — Reason chips (Wedding/Emergency/Goals Met/Testing App/Expenses/Other), animated bottom sheet overlay
-3. **Retention Friction Sheet** ✅ — Long-term user only, profit stats + compounding streak warning, animated overlay
-4. **Select Bank** ✅ — Search, frequently used, A-Z grouping, availability badges
-5. **Account Details** ✅ — Bank account number input (8-18 digits), test deposit note, auto-fetch banner
-6. **Review Sell Order** ✅ — Rate pill, lock timer, AED 2 flat fee, payout time card, bank selector via navigation
-7. **Retention Nudge** ✅ — Value today vs 6m projection, growth chart placeholder, "Keep Gold" / "Sell Gold" CTAs
+## Screens (Both Platforms)
 
-#### Sell Friction Flow (wired — both platforms)
-Entry → (ContinueClick) → Why? sheet → (if long-term user) → Retention sheet → Review → Success
-Review → (bank selector tap) → SelectBank → AccountDetails → Review with bank set
-Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold" (execute)
+### Buy Flow
+```
+Gold Home → Buy Entry (amount/weight) → KYC Bottom Sheet → Order Review (price lock)
+→ Payment WebView → Processing (7-part Lottie) → Buy Success (certificate)
+```
 
-**Android**: Fragment Result API for bank selector callback
-**iOS**: Closure-based callbacks via GoldRoute (.selectBank(onBankSelected:))
+### Sell Flow
+```
+Gold Home → Sell Entry (swipe confirm) → Why Selling Sheet → Retention Sheet
+→ Order Review → Select Bank → Account Details (IBAN) → Processing
+→ Sell Success (receipt)  OR  Sell Failed (retry)
+```
 
-#### M2 Tests (Android)
-- **GoldSellFeatureTest** — 42 tests (numpad, presets, validation, friction flow, timer, computed properties)
-- **GoldSellReviewFeatureTest** — 16 tests (bank selection, confirm sell, sell result, computed properties)
-- **SelectBankFeatureTest** — 10 tests (search, bank selection, availability, data loading)
-- **AccountDetailsFeatureTest** — 12 tests (input validation, verification flow, navigation)
+### All Screens
+| Screen | iOS | Android |
+|--------|-----|---------|
+| Gold Landing (fresh + existing user) | ✅ | ✅ |
+| Buy Entry (numpad, presets, amount/weight) | ✅ | ✅ |
+| KYC Bottom Sheet | ✅ | ✅ |
+| Order Review (buy + sell unified) | ✅ | ✅ |
+| Payment WebView | ✅ | ✅ |
+| Processing (7-part Lottie animation) | ✅ | ✅ |
+| Buy Success (certificate card) | ✅ | ✅ |
+| Sell Entry (swipe-to-confirm) | ✅ | ✅ |
+| Why Selling / Retention sheets | ✅ | ✅ |
+| Select Bank | ✅ | ✅ |
+| Account Details (IBAN entry) | ✅ | ✅ |
+| Sell Success (receipt + timeline) | ✅ | ✅ |
+| Sell Failed (retry) | ✅ | ✅ |
+| Transaction List (paginated) | ✅ | ✅ |
+| Transaction Detail (SDUI) | ✅ | ✅ |
 
-#### M2 Tests (iOS) — 453 total Gold module tests
-- **BuyGoldViewModelTests** — 37 tests (numpad input, presets, mode toggle, validation, KYC flow, countdown)
-- **BuyReviewViewModelTests** — 17 tests (order summary, fees, countdown, pay gating)
-- **SellGoldViewModelTests** — 33 tests (numpad input, percent presets, friction flow, validation, display)
-- **SellReviewViewModelTests** — 26 tests (flat fee, retention nudge, execute sell gating)
-- **SelectBankViewModelTests** — 15 tests (search filtering, availability, bank info)
-- **AccountDetailsViewModelTests** — 16 tests (validation, numpad, verification)
-- **SellFrictionFlowTests** — 23 tests across 4 suites (SellReason enum, BankInfo model, SelectBankVM, AccountDetailsVM, GoldRoute)
-- **GoldLanderViewTests** — 66 tests (lander section logic)
+## API Endpoints (15 — Both Platforms Use Same)
 
-#### External/Placeholder Flows (not building)
-- KYC Flow (Persona/SumSub integration)
-- Payment Flow (Checkout.com/TrueLayer integration)
-- Account Verification Flow
+```
+GET  wealth/v1/digital-metal/prices/live
+GET  wealth/v1/digital-metal/chart
+GET  wealth/v1/digital-metal/portfolio
+GET  wealth/v1/digital-metal/transactions
+GET  wealth/v1/digital-metal/transactions/{id}    (SDUI detail)
+GET  wealth/v1/digital-metal/certificate/{id}
+POST wealth/v1/digital-metal/cart
+POST wealth/v1/digital-metal/cart/{id}/order-preview
+POST wealth/v1/digital-metal/cart/{id}/refresh
+POST wealth/v1/digital-metal/order
+GET  wealth/v1/digital-metal/order/{id}/status
+POST wealth/v1/digital-metal/onboarding/onboard
+GET  wealth/v1/digital-metal/beneficiary-accounts
+POST wealth/v1/digital-metal/beneficiary-accounts
+GET  wealth/v1/digital-metal/payment-instruments
+GET  wealth/v1/digital-metal/documents/invoices/{id}/download
+```
 
-## iOS
-### M1 Branch (`feature/wealth-module-gold-onboarding`)
-- **PR #1465**: Approved by Paul ✅, merged → `dev`
-- **PR URL**: https://github.com/Vance-Club/vance-ios/pull/1465
+**Headers**: `X-User-Id`, `X-Country` (NOT query params). All snake_case (v2 not deployed).
 
-### M2 Branch (`feature/wealth-module-gold-buy-sell-flow`) — PUSHED
-- **Status**: All screens built, pushed to origin. Next: create PR for Paul.
-- **Architecture**: Clean Architecture with UseCases, Actor-based repositories, SwiftUI views
-- **Stats**: ~100+ Swift files, 453 tests across 10+ test files
+## Key Shared Components (Cross-Platform)
 
-### Completed (iOS)
-- Domain models: GoldPrice, GoldPortfolio, GoldTransaction, GoldChart, GoldKYCStatus, GoldPaymentMethod, GoldCertificate
-- Use cases: FetchGoldPrice, FetchGoldPortfolio, FetchGoldTransactionHistory, FetchGoldChartData, BuyGold, SellGold
-- Repository: Actor-based GoldRepository
-- Network layer: Network+Gold models
-- DI: Container+GoldUseCases, Container+GoldRepositories
-- Views: Buy, Sell, Portfolio, PriceChart, Lander, Transactions, GoldHome, Placeholder
-- Buy flow views: BuyGoldView (numpad, presets, amount/weight toggle, price lock), BuyReviewView (3% fee, bank selector, countdown), GoldKYCBottomSheet, GoldAddedView (success)
-- Buy flow ViewModels: BuyGoldViewModel (validation, KYC gating, price loading), BuyReviewViewModel (fee calc, pay gating)
-- Sell flow views: WhySellingSheet, RetentionSheet, RetentionNudgeView, SelectBankView, AccountDetailsView, SellReviewView (all Figma-matched)
-- Sell flow ViewModels: SellGoldViewModel (friction flow), SellReviewViewModel, SelectBankViewModel, AccountDetailsViewModel
-- 13 Figma assets: gold_coin_stack_1/2/3, gold_vault_shelf/mid_rail/top_rail, gold_partner_brinks/goldwise, gold_avatar_ring, gold_user_avatar, gold_help_circle, gold_maximize_icon, gold_pro_tag
-- Unit tests: **453 total** — 102 foundation + 66 Lander + 37 BuyVM + 17 BuyReviewVM + 33 SellVM + 26 SellReviewVM + 15 SelectBankVM + 16 AccountDetailsVM + 23 SellFrictionFlow + misc
-- UI component standards: gold-ui-component-standards.md
-- Gold Landing Page: GoldLanderView replaced with Figma-matched design (7 sections: Hero, Trust Badges, Returns Calculator, Value Cards, Comparison, FAQ, Partners)
-- GoldLanderViewModel with calculator logic (step 500, min 500, max 1M, rates: 1Y ~8%, 3Y ~30%, 5Y ~60%)
-- Localization: 42 new keys for buy flow strings in en.lproj/Localizable.strings
-- **Live Price Polling**: 5s interval in GoldLanderViewModel (Task-based, cancellation-safe, keeps last known price on error). Replaces one-shot fetch.
-- **ORDER_COMPLETED fix**: Added `.orderCompleted = "ORDER_COMPLETED"` to `GoldOrderStatus` enum. BuyReviewViewModel checks both `.completed` and `.orderCompleted` as success, `.paymentFailed` as failure.
-- **Partner logos**: Arrived from Figma — exported to `Assets.xcassets/Gold/*.imageset`
+| Component | iOS | Android |
+|-----------|-----|---------|
+| Amount input (gradient) | `GoldAmountTextField` | `GoldAmountTextField` |
+| Price lock pill | `GoldPriceLockPill` | `GoldPriceLockPill` |
+| Lock timer | `GoldLockTimerPill` | `GoldLockTimerPill` |
+| Live price banner | `GoldLivePriceBanner` | `GoldLivePriceBanner` |
+| Color tokens | `GoldColors` | `GoldColors` |
+| Swipe to sell | `SwipeToSellButton` | `SwipeToSellButton` |
 
-### Pending (iOS)
-- Pass `isLongTermUser` to SellReviewView (not yet wired through route — ReviewVM needs route param or independent detection)
-- Sell presets mismatch: current 25/50/75/100% → Figma shows 10/20/40/Sell All with "POPULAR" badge
-- Wire Landing Page to real API data (gains percent, returns)
-- API timing tracking for Gold endpoints
-- Partner logos ✅ arrived from Figma
-- Disclaimer copy (pending legal review)
-- Certificates view (placeholder)
-- M2 PR creation for Paul's review
+## Key Decisions (Made Once, Applied Both)
 
-## Gold Lander — Decided Answers
+| Decision | Applied |
+|----------|---------|
+| Cart becomes terminal after CREATE_FAILED — must create fresh | Both |
+| Price lock: 300s, auto-refresh, green/orange/red | Both |
+| Refresh button is SEPARATE circle (40×32, #F7F7FA) | Both |
+| popUpTo(GOLD_HOME) for all terminal screens | Both |
+| AML checkpoints wired but disabled (IS_AML_ENABLED=false) | Both |
+| `paymentMode` → `paymentInstrument` API rename | Both |
+| Vault tier images: 5 tiers by weight, not hardcoded locker | Both |
+| 7-part segmented Lottie (buy: 7 phases, sell: 4 phases) | Both |
 
-### Platform-Specific
-| Question | Answer |
-|----------|--------|
-| iOS: Replace or new GoldLanderView? | Replace entirely with Figma |
-| iOS: Gradient text style | Reusable `GoldColors.titleGradient` |
-| Purple button color | Use theme token `primary500` (both platforms) |
-| Android: separate Fragment or state? | State inside `GoldHomeFragment` |
-| Android: chart bar style | Must match Figma exactly (rounded bars) |
-| Android: Figma fidelity | Pixel-match Figma |
-| Android: chart library | **Vico 2.4.3** (`compose-m3`) — decided March 11, 2026. Integrated in Returns Calculator. |
+## What's Left
 
-### Hero & CTA
-| Question | Answer |
-|----------|--------|
-| Hero image | Use existing `hero_gold_coins.png` from repo |
-| Trust badge icons | Figma's AI-generated images are final |
-| "106% GAINS" text | Dynamic — compute daily + cache |
-| Hero sticky/collapsible | NEEDS DISCUSSION with product |
-| "Buy Digital Gold" button style | Match Figma purple |
-| "Buy Digital Gold" tap action | KYC/onboarding flow first (not BuyGoldView directly) |
+| Item | Priority | iOS | Android |
+|------|----------|-----|---------|
+| AML checkpoint enforcement | P1 | Wired, disabled | Wired, disabled |
+| Negative gains badge | P1 | TODO | TODO |
+| Gold certificate download | P2 | TODO | TODO |
+| "Price updated" fade (3s) | P2 | Needs design spec | Needs design spec |
+| SIP/Coins screens | P3 | Placeholder | Placeholder |
+| UK market testing | P3 | Code ready | Code ready |
 
-### Returns Calculator
-| Question | Answer |
-|----------|--------|
-| Returns data source | Real API — compute daily + cache |
-| Amount stepper step size | 500 |
-| Amount min/max | Min 500, Max 1,000,000 |
-| Amount field tappable? | Yes — manual text input supported |
-| Bar chart animation | Animated on appear |
-
-### Content Sections
-| Question | Answer |
-|----------|--------|
-| Horizontal scroll cards | Just the 2 shown in Figma |
-| "Asopra" typo | Fix to "Aspora" |
-| Stats ("12,000 NRI" etc.) | Backend — card visibility should be configurable too |
-| Comparison table data | Prefer Remote Config (unless tradeoff) — NEEDS DISCUSSION |
-| Comparison table format | Flat table only (no expandable rows) |
-| Comparison table component | NEEDS DISCUSSION (static grid vs reusable) |
-
-### Help & Support
-| Question | Answer |
-|----------|--------|
-| FAQs | Gold-specific FAQ — product working on content |
-| "24x7 Aspora guide" | Existing Chat/Help flow |
-
-### Partners & Trust
-| Question | Answer |
-|----------|--------|
-| Partner logos | ✅ Arrived from Figma — exported to both platforms |
-| Gold checkmark badge | Use existing `trust_badge_*` images from repo |
-| Disclaimer text | Pending legal review |
-| Bottom tabs | Main app bottom nav (not Gold-specific) |
-
-### Scope
-| Question | Answer |
-|----------|--------|
-| Market | UAE first, then UK. No INR. Check roadmap sheet for timelines |
-
-### Still Open / Needs Discussion
-1. Hero section — sticky/collapsible on scroll? (product unclear, needs sync)
-2. Comparison table — Remote Config vs hardcoded (tradeoffs to discuss)
-3. Comparison table — static grid vs reusable component?
-4. ~~Android chart library — YCharts or Vico?~~ **DECIDED: Vico 2.4.3** — integrated in Returns Calculator (commit `960ae5d`). Better customization for Figma-matching, rounded bars, animations.
-5. Disclaimer — legal copy pending review
-
-### Key Patterns (iOS Gold)
-- Protocol-based market config: `GoldMarketConfigurable` + UAEGoldMarketConfig / UKGoldMarketConfig
-- Formatters separate from models: `GoldPriceFormatter`
-- Actor-based repository for thread safety
-- `ModelConversionError.failedToConvertFromNetworkModel` for domain conversion failures
-- `Network+GoldPrice.swift` file naming convention
-- No `.singleton` on use cases (stateless)
-- Cache with TTL for polled data (price cache = 30 seconds)
-
-## Android
-### M1 Branch (`feature/wealth-module-gold-onboarding`)
-- **PR #1512**: Approved by Sergei ✅, merged
-- **Branch**: `feature/wealth-module-gold-onboarding` → `feature/wealth-module`
-
-### M2 Branch (`feature/wealth-module-gold-buy-sell-flow`) — PUSHED
-- **Status**: All screens built, pushed to origin. Next: create PR for Sergei.
-- **Pattern**: MVI (GoldHomeFeature with State/Event/Command)
-- **Stats**: 76 Kotlin source files, 14 test files, 306 tests
-
-### Completed (Android)
-- **App layer**: GoldColors, GoldHomeFragment, GoldHomeViewModel, GoldHomeFeature (expanded MVI), GoldHomeScreen (Compose), 6 use cases, GoldAmountValidator
-- **Data layer**: GoldService (Retrofit), GoldRemoteDataSource, GoldRepository, model files (GoldPrice, GoldPortfolio, etc.)
-- **Gold Landing Page**: 7 section composables (Hero, Trust Badges, Returns Calculator, Value Cards, Comparison, FAQ, Partners)
-- **MVI expansion**: 7 new Events, 3 new Commands
-- **Buy flow**: Buy entry, KYC sheet, Buy review, navigation + tests
-- **Sell flow**: Sell entry, WhySheet, RetentionSheet, SelectBank, AccountDetails, SellReview, RetentionNudge — all with MVI pattern
-- **Chart**: Custom Figma-matched bar composables (replaced Vico for Returns Calculator)
-- **Localization**: All hardcoded strings localized
-- **Tests**: 306 total — GoldSellFeatureTest (43), GoldSellReviewFeatureTest (18), SelectBankFeatureTest (11), AccountDetailsFeatureTest (13), GoldHomeUpdateTest (33), GoldLanderSectionTests (55), GoldLanderSnapshotTests (18), GoldRemoteDataSourceTest (32), GoldAmountValidatorTest (21), GoldDomainModelTest (16), GoldConstantsTest (9), GoldMarketTest (12), GoldChartDataTest (14), GoldUseCaseTest (11)
-- **Live Price Polling**: 5s interval in GoldHomeViewModel (coroutine-based `while(isActive) + delay(5000)`, keeps last known price on error). Fixed `firstOrNull()` bug — must use `firstOrNull { it !is Resource.Loading }`.
-- **Toolbar Live Price Pill**: `GoldToolbarPricePill.kt` — capsule composable ("LIVE BUY PRICE" + price) overlaid on HomeToolbar via FrameLayout + ComposeView in `fragment_gold_home.xml` (Wealth tab only)
-- **ORDER_COMPLETED fix**: `GoldBuyReviewFeature.kt` handles `ORDER_COMPLETED` as success + `PAYMENT_FAILED` as failure. `GoldBuyReviewViewModel` stops polling on these terminal states.
-- **Partner logos**: Arrived from Figma — exported to `res/drawable-xxxhdpi/`
-- **Known issue**: Cart API 500 on Android — `POST /wealth/v1/digital-metal/buy/cart` returns HTTP 500 (iOS works fine with identical request). Debug logging added to `GoldRepository.createBuyCart`.
-
-### Pending (Android)
-- Fix cart API 500 error (`POST /wealth/v1/digital-metal/buy/cart` returns HTTP 500 — iOS works fine)
-- Wire Landing Page to real API data
-- Partner logos ✅ arrived from Figma
-- Disclaimer copy (pending legal review)
-- Remove debug logging from GoldRepository.createBuyCart (after 500 fix)
-- M2 PR creation for Sergei's review
+## Review Bot Integration
+- **iOS (Paul)**: 12 patterns — 3 critical. Top: DateFormatter singletons, shared file protection.
+- **Android (Sergei)**: 25 patterns — 6 critical. Top: BaseMviViewModel (7x), Screen(state,accept) (3x).
+- **Cross-platform**: 1 shared pattern (constants/header keys).
+- **Learnings DB**: `claude-review-bot/.github/actions/claude-review/learnings/`

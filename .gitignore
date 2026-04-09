@@ -7,3 +7,7 @@
 node_modules/
 __pycache__/
 *.pyc
+
+# Sub-project repos (separate git repos, not tracked by Goldy)
+vance-ios/
+vance-android/
