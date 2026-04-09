@@ -8,6 +8,9 @@ node_modules/
 __pycache__/
 *.pyc
 
+# Local state (per-machine, not shared)
+.goldy-initialized
+
 # Sub-project repos (separate git repos, not tracked by Goldy)
 vance-ios/
 vance-android/

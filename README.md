@@ -95,22 +95,33 @@ This is enforced in CLAUDE.md. The Review Bot learns from real reviewer feedback
 
 ## Status Reports
 
-```bash
-# Generate report (terminal)
-./scripts/generate-report.sh
+In any Claude Code session inside your Goldy workspace, just say:
 
-# Save as markdown
-./scripts/generate-report.sh --output markdown
-
-# Post to Slack
-export SLACK_BOT_TOKEN="xoxb-your-token"
-./scripts/postreport.sh --channel C0XXXXX
-
-# Or use Claude Code's /postreport command
-# (uses Slack MCP to post directly)
+```
+"generate goldy report"
+"give me a weekly goldy report"
+"what happened this week"
+"goldy status for last 3 days"
 ```
 
-Reports include: per-project commits, cross-platform alerts, infrastructure stats, and review bot status. All auto-generated from git history + Goldy memory.
+Claude knows about Goldy (via CLAUDE.md) — any natural phrasing works.
+
+**Or run directly:**
+
+```bash
+./scripts/generate-report.sh                          # Last 24h → terminal
+./scripts/generate-report.sh --hours 168              # Last 7 days (weekly)
+./scripts/generate-report.sh --hours 72 --output markdown  # Last 3 days → saved to memory/reports/
+./scripts/postreport.sh --channel C0XXXXX             # Post to Slack (needs SLACK_BOT_TOKEN)
+```
+
+**What's in a report:**
+- Per-repo: branch, commits, file change stats
+- Cross-platform alerts (from TRUTH.md)
+- Infrastructure: changelogs generated
+- Review Bot: reviewers + patterns enforced
+
+All auto-generated from git history + Goldy memory. No manual data entry.
 
 ---
 

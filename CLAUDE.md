@@ -7,6 +7,23 @@
 
 This is non-negotiable. Even if the user says "hi", run the health check first. It takes <3 seconds.
 
+# Goldy Commands — USE THE SCRIPTS
+
+**When the user asks for any of these, run the script directly. Do NOT manually run git commands or piece together data yourself.**
+
+| Command | Run this | What |
+|---------|----------|------|
+| `goldyreport` | `./scripts/generate-report.sh` | Last 24h status report |
+| `goldyreport week` | `./scripts/generate-report.sh --hours 168` | Weekly report |
+| `goldyreport 3` | `./scripts/generate-report.sh --hours 72` | Last N days |
+| `goldyreport save` | `./scripts/generate-report.sh --output markdown` | Save to memory/reports/ |
+| `goldyreport slack` | `./scripts/postreport.sh` | Post to Slack |
+| `goldytest` | `./scripts/test-goldy.sh` | Run 47 checks |
+| `goldycheck` | `./scripts/goldy-check.sh` | Health check |
+| `goldyreviewer` | `./scripts/add-reviewer.sh` | Onboard reviewer (ask for details) |
+
+**STRICT**: These are reserved keywords. When the user types any of these exact commands, run the corresponding script IMMEDIATELY — no questions, no manual git commands, no piecing together data. The scripts handle everything. Do NOT use these words for anything else.
+
 # Memory
 
 ## Me
