@@ -72,27 +72,26 @@ This is enforced in CLAUDE.md. The Review Bot learns from real reviewer feedback
 
 ## Scripts
 
-### Automated (run by git hooks on every commit — zero manual effort)
+### Automated (you never run these — they just work)
 
-| Script | What |
-|--------|------|
-| `log-commit.sh` | Creates structured changelog in `memory/changelogs/` |
-| `summarize.sh` | Refreshes per-project summary (14-day window, hot files) |
-| `generate-truth.sh` | Refreshes TRUTH.md (branches, alerts, activity) |
-
-These fire automatically via post-commit hooks. You never run them manually.
+| Script | Trigger | What |
+|--------|---------|------|
+| `log-commit.sh` | Every commit (git hook) | Creates structured changelog in `memory/changelogs/` |
+| `summarize.sh` | Every commit (git hook) | Refreshes per-project summary (14-day window, hot files) |
+| `generate-truth.sh` | Every commit (git hook) | Refreshes TRUTH.md (branches, alerts, activity) |
+| `goldy-check.sh` | Every Claude Code session | Auto-detects new repos, installs hooks, backfills changelogs, refreshes stale TRUTH.md |
+| `install-hooks.sh` | On setup + auto via `goldy-check` | Installs post-commit hooks in all detected repos |
+| `backfill.sh` | On setup + auto via `goldy-check` | Bootstraps changelogs from existing git history |
 
 ### Manual (run when you need them)
 
 | Script | What |
 |--------|------|
-| `setup-memory-system.sh` | One-command setup (auto-detects repos, installs hooks, backfills) |
+| `setup-memory-system.sh` | One-command first-time setup |
 | `test-goldy.sh` | Verify everything works (46 checks across both layers) |
 | `generate-report.sh` | Status report from git + memory |
 | `postreport.sh` | Post report to Slack (or terminal) |
 | `add-reviewer.sh` | Onboard a new reviewer in one command |
-| `install-hooks.sh` | Reinstall git hooks (after fresh clone) |
-| `backfill.sh` | Bootstrap changelogs from existing git history |
 
 ## Status Reports
 

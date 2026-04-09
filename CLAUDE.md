@@ -1,3 +1,9 @@
+# Session Start
+
+**On every new Claude Code session, run:** `./scripts/goldy-check.sh`
+
+This auto-detects new repos, installs missing hooks, backfills changelogs, and refreshes TRUTH.md if stale. Takes <5 seconds. Idempotent.
+
 # Memory
 
 ## Me
