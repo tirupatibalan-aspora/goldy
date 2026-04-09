@@ -88,7 +88,7 @@ This is enforced in CLAUDE.md. The Review Bot learns from real reviewer feedback
 | Script | What |
 |--------|------|
 | `setup-memory-system.sh` | One-command first-time setup |
-| `test-goldy.sh` | Verify everything works (46 checks across both layers) |
+| `test-goldy.sh` | Verify everything works (47 checks across both layers) |
 | `generate-report.sh` | Status report from git + memory |
 | `postreport.sh` | Post report to Slack (or terminal) |
 | `add-reviewer.sh` | Onboard a new reviewer in one command |
