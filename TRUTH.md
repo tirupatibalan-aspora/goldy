@@ -6,7 +6,7 @@
 
 | Project | Branch | Last Commit | Last Date | Changelogs |
 |---------|--------|-------------|-----------|------------|
-| vance-ios | `feature/wealth-module-gold-buy-sell-flow` | 37f260ab8 fix(gold): use tier-based vault image instead of hardcoded locker | 2026-04-09 | 47 |
+| vance-ios | `feature/wealth-module-gold-buy-sell-flow` | 37f260ab8 fix(gold): use tier-based vault image instead of hardcoded locker | 2026-04-09 | 30 |
 | vance-android | `feature/wealth-module-gold-qa-fixes` | 4030d6c9f9 docs: add PR #1637 and Goldy README links to handbook | 2026-04-09 | 30 |
 
 ## Cross-Platform Alerts
@@ -64,7 +64,7 @@ a0ffbe6803 feat(gold): wire SDUI transaction detail API — server-driven header
 
 ## Recent Activity (7 days)
 
-### vance-ios (80 commits)
+### vance-ios (79 commits)
 ```
 37f260ab8 fix(gold): use tier-based vault image instead of hardcoded locker
 7672f2b81 fix(gold): migrate to design system tokens — fonts, spacing, images
@@ -145,7 +145,6 @@ b182791d3 fix(gold): transaction detail API endpoint correction
 c5266ad2c fix(gold): surface backend error message on cart/summary failure
 9d57588e9 fix(gold): review screen gradient, WebView dismiss reset
 e9ba6536e Merge pull request #1560 from Vance-Club/Fix_analytics
-444e1b7bb fix(gold): price lock pill — fixed-width timer, extract countdown constant
 ```
 
 ### vance-android (86 commits)
@@ -248,18 +247,37 @@ eb0c00c4f9 Merge branch 'develop' into release/version-7.0.29
 | **Branch** | `feature/wealth-module-gold-buy-sell-flow` |
 | **Last Commit** | 37f260ab8 fix(gold): use tier-based vault image instead of hardcoded locker |
 | **Last Activity** | 2026-04-09 |
-| **Total Changelogs** | 47 |
+| **Total Changelogs** | 30 |
 
 ## Recent Changes (14 days)
 
+- **2026-04-09** — fix(gold): migrate to design system tokens — fonts, spacing, images
 - **2026-04-09** — fix(gold): use tier-based vault image instead of hardcoded locker
+- **2026-04-08** — fix(gold): port Android QA fixes to iOS — defaults, decimals, lander, friction
+- **2026-04-08** — fix(gold): use theme fonts instead of raw Font.custom/system
+- **2026-04-07** — Merge pull request #1568 from Vance-Club/Update_analytics_app_version_format
+- **2026-04-07** — Merge remote-tracking branch 'origin/dev' into feature/wealth-module
+- **2026-04-07** — Feature/beneficiary revamp fixes (#1565)
+- **2026-04-07** — Cu-86d2gvf7e Aspora Guarantee M1 (#1561)
+- **2026-04-07** — fix(gold): Shreeyash design feedback — tabular numbers, remove borders, hide persistent subtitle
+- **2026-04-07** — Merge pull request #1571 from Vance-Club/fix/86d239qpw_send_tab_navbar
+- **2026-04-07** — fix(gold): add missing paymentInstrument to test factory helper
+- **2026-04-07** — fix: resolve 5 iOS CI build errors — theme API, optional unwrap, MainActor
+- **2026-04-07** — fix: increase test sleep to 1s for CI reliability (GoldLanderViewModelTests)
+- **2026-04-07** — fixed mapping parameters when calling the patch user onboarding api with legacy onboarding version (#1570)
+- **2026-04-07** — Merge pull request #1558 from Vance-Club/fix/86d23bux8_rates_comparision_load_time
+- **2026-04-07** — Merge branch 'feature/wealth-module' into feature/wealth-module-gold-buy-sell-flow
+- **2026-04-07** — fix(gold): add missing paymentInstrument to BuyReviewViewModelTests factory
+- **2026-04-07** — fix: relax flaky loadPrice invoke count assertion (== 1 → >= 1)
+- **2026-04-07** — feat(gold): add payment-instruments and invoice-download endpoints
+- **2026-04-07** — refactor(gold): rename paymentMode → paymentInstrument across API contract
 
 ## Feature Areas
 
-- **feat**: 3 commits
-- **fix**: 21 commits
+- **feat**: 2 commits
+- **fix**: 15 commits
 - **refactor**: 1 commits
-- **chore**: 2 commits
+- **chore**: 1 commits
 
 ## Frequently Modified Files (last 50 commits)
 
