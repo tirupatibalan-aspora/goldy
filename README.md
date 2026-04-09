@@ -72,17 +72,27 @@ This is enforced in CLAUDE.md. The Review Bot learns from real reviewer feedback
 
 ## Scripts
 
+### Automated (run by git hooks on every commit — zero manual effort)
+
 | Script | What |
 |--------|------|
-| `setup-memory-system.sh` | One-command setup (auto-detects repos) |
-| `test-goldy.sh` | Verify everything works (40+ checks) |
+| `log-commit.sh` | Creates structured changelog in `memory/changelogs/` |
+| `summarize.sh` | Refreshes per-project summary (14-day window, hot files) |
+| `generate-truth.sh` | Refreshes TRUTH.md (branches, alerts, activity) |
+
+These fire automatically via post-commit hooks. You never run them manually.
+
+### Manual (run when you need them)
+
+| Script | What |
+|--------|------|
+| `setup-memory-system.sh` | One-command setup (auto-detects repos, installs hooks, backfills) |
+| `test-goldy.sh` | Verify everything works (46 checks across both layers) |
 | `generate-report.sh` | Status report from git + memory |
 | `postreport.sh` | Post report to Slack (or terminal) |
-| `log-commit.sh` | Auto-changelog per commit |
-| `summarize.sh` | Per-project summaries |
-| `generate-truth.sh` | TRUTH.md (master state) |
-| `install-hooks.sh` | Install git hooks |
-| `backfill.sh` | Bootstrap from git history |
+| `add-reviewer.sh` | Onboard a new reviewer in one command |
+| `install-hooks.sh` | Reinstall git hooks (after fresh clone) |
+| `backfill.sh` | Bootstrap changelogs from existing git history |
 
 ## Status Reports
 
