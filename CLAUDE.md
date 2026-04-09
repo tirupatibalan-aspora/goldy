@@ -1,8 +1,11 @@
-# Session Start
+# Session Start — MANDATORY
 
-**On every new Claude Code session, run:** `./scripts/goldy-check.sh`
+**IMMEDIATELY on the very first user message of every new Claude Code session, before doing ANYTHING else:**
 
-This auto-detects new repos, installs missing hooks, backfills changelogs, and refreshes TRUTH.md if stale. Takes <5 seconds. Idempotent.
+1. Run `./scripts/goldy-check.sh` and show the output to the user
+2. Then respond to whatever the user asked
+
+This is non-negotiable. Even if the user says "hi", run the health check first. It takes <3 seconds.
 
 # Memory
 
