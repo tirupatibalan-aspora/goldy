@@ -26,6 +26,20 @@ echo "=== Goldy Setup ==="
 echo "Workspace: $WORKSPACE"
 echo ""
 
+# Step 0: Detect user via GitHub CLI / git config
+echo "Step 0: Detecting user..."
+source "$WORKSPACE/scripts/detect-user.sh"
+if [ -n "${GOLDY_USER_LOGIN:-}" ]; then
+  echo "  ✓ User: ${GOLDY_USER_NAME} (@${GOLDY_USER_LOGIN})"
+  echo "  ✓ Email: ${GOLDY_USER_EMAIL:-n/a}"
+  echo "  ✓ Git author: ${GOLDY_USER_GIT_NAME}"
+  echo "  ✓ Config saved to .goldy-user.conf"
+else
+  echo "  ⚠ Could not detect user. Install gh CLI or set git config user.name/email."
+  echo "  Reports will show all commits (unfiltered)."
+fi
+echo ""
+
 # Auto-detect repos
 source "$WORKSPACE/scripts/detect-projects.sh"
 

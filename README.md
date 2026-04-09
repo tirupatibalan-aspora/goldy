@@ -17,14 +17,14 @@ cd my-workspace
 git clone https://github.com/your-org/app-android.git
 git clone https://github.com/your-org/app-ios.git   # optional
 
-# 3. Setup (auto-detects your repos)
+# 3. Setup (auto-detects your repos + your GitHub identity)
 ./scripts/setup-memory-system.sh --backfill 30
 
 # 4. Verify everything works
 ./scripts/test-goldy.sh
 ```
 
-That's it. Goldy auto-detects every git repo you put inside it.
+That's it. Goldy auto-detects every git repo you put inside it and identifies you via GitHub CLI / git config. Reports, PRs, commits, and changelogs are automatically filtered to your work.
 
 ---
 
@@ -109,16 +109,23 @@ Claude knows about Goldy (via CLAUDE.md) — any natural phrasing works.
 **Or run directly:**
 
 ```bash
-./scripts/generate-report.sh                          # Last 24h → terminal
-./scripts/generate-report.sh --hours 168              # Last 7 days (weekly)
-./scripts/generate-report.sh --hours 72 --output markdown  # Last 3 days → saved to memory/reports/
+./scripts/generate-report.sh                          # Your commits (last 24h) → terminal
+./scripts/generate-report.sh --all                    # All team commits (unfiltered)
+./scripts/generate-report.sh --hours 168              # Your last 7 days (weekly)
+./scripts/generate-report.sh --hours 72 --output markdown  # Your last 3 days → saved to memory/reports/
 ./scripts/postreport.sh --channel C0XXXXX             # Post to Slack (needs SLACK_BOT_TOKEN)
 ```
 
+**User-aware by default:**
+Reports auto-detect your GitHub identity (via `gh api user` + `git config`) and filter to show only *your* commits, PRs, and changelogs. Use `--all` for team-wide view.
+
+User config is cached in `.goldy-user.conf` (auto-generated on first run, editable).
+
 **What's in a report:**
-- Per-repo: branch, commits, file change stats
+- Per-repo: your branch, your commits, file change stats
+- Your open Gold PRs with review status
 - Cross-platform alerts (from TRUTH.md)
-- Infrastructure: changelogs generated
+- Infrastructure: your changelogs generated
 - Review Bot: reviewers + patterns enforced
 
 All auto-generated from git history + Goldy memory. No manual data entry.

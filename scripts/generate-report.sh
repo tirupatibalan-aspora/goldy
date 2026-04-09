@@ -25,12 +25,21 @@ while [[ $# -gt 0 ]]; do
   case $1 in
     --hours) HOURS="$2"; shift 2 ;;
     --output) OUTPUT="$2"; shift 2 ;;
+    --all) SHOW_ALL_USERS=1; shift ;;
     *) echo "Unknown arg: $1"; exit 1 ;;
   esac
 done
 
 # Auto-detect projects
 source "$WORKSPACE/scripts/detect-projects.sh"
+
+# Detect user (for filtering commits/PRs to current user)
+SHOW_ALL_USERS="${SHOW_ALL_USERS:-0}"
+source "$WORKSPACE/scripts/detect-user.sh" 2>/dev/null || true
+AUTHOR_FILTER=()
+if [ "$SHOW_ALL_USERS" -eq 0 ] && [ -n "${GOLDY_USER_GIT_NAME:-}" ]; then
+  AUTHOR_FILTER=("--author=${GOLDY_USER_GIT_NAME}")
+fi
 
 if [ ${#GOLDY_PROJECTS[@]} -eq 0 ]; then
   echo "No projects detected. Nothing to report."
@@ -55,7 +64,11 @@ R=""
 
 # ── Header ────────────────────────────────────────────────────
 R+="**GOLDY STATUS REPORT**"$'\n'
-R+="**${DAY_NAME}, ${TODAY} at ${NOW}**"$'\n'
+if [ -n "${GOLDY_USER_NAME:-}" ] && [ "$SHOW_ALL_USERS" -eq 0 ]; then
+  R+="**${GOLDY_USER_NAME}** (@${GOLDY_USER_LOGIN}) | **${DAY_NAME}, ${TODAY} at ${NOW}**"$'\n'
+else
+  R+="**${DAY_NAME}, ${TODAY} at ${NOW}**"$'\n'
+fi
 R+="${SEP}"$'\n'
 R+=""$'\n'
 
@@ -82,7 +95,7 @@ for project in "${GOLDY_PROJECTS[@]}"; do
   R+=""$'\n'
 
   if [ -n "$YESTERDAY" ]; then
-    yesterday_commits=$(cd "$repo_dir" && git log --oneline --after="${YESTERDAY} 00:00" --before="${TODAY} 00:00" 2>/dev/null || echo "")
+    yesterday_commits=$(cd "$repo_dir" && git log --oneline ${AUTHOR_FILTER[@]+"${AUTHOR_FILTER[@]}"} --after="${YESTERDAY} 00:00" --before="${TODAY} 00:00" 2>/dev/null | grep -v '^[a-f0-9]* docs:' || echo "")
   else
     yesterday_commits=""
   fi
@@ -102,7 +115,7 @@ for project in "${GOLDY_PROJECTS[@]}"; do
   R+="**TODAY**"$'\n'
   R+=""$'\n'
 
-  today_commits=$(cd "$repo_dir" && git log --oneline --since="${TODAY} 00:00" 2>/dev/null || echo "")
+  today_commits=$(cd "$repo_dir" && git log --oneline ${AUTHOR_FILTER[@]+"${AUTHOR_FILTER[@]}"} --since="${TODAY} 00:00" 2>/dev/null | grep -v '^[a-f0-9]* docs:' || echo "")
 
   if [ -n "$today_commits" ]; then
     today_count=$(echo "$today_commits" | wc -l | tr -d ' ')
@@ -166,9 +179,20 @@ for project in "${GOLDY_PROJECTS[@]}"; do
     R+="  - **Latest version**: ${latest_tag}"$'\n'
   fi
 
-  # Total commits on current branch
-  total_on_branch=$(cd "$repo_dir" && git rev-list --count HEAD 2>/dev/null || echo "?")
-  R+="  - **Branch**: \`${branch}\` (${total_on_branch} commits)"$'\n'
+  # Feature branch commits (since diverging from dev/main/develop)
+  base_branch=""
+  for candidate in dev develop main; do
+    if cd "$repo_dir" && git rev-parse --verify "$candidate" &>/dev/null; then
+      base_branch="$candidate"
+      break
+    fi
+  done
+  if [ -n "$base_branch" ]; then
+    branch_commits=$(cd "$repo_dir" && git rev-list --count "${base_branch}..HEAD" 2>/dev/null || echo "?")
+    R+="  - **Branch**: \`${branch}\` (${branch_commits} commits ahead of ${base_branch})"$'\n'
+  else
+    R+="  - **Branch**: \`${branch}\`"$'\n'
+  fi
 
   # Last commit timestamp
   last_date=$(cd "$repo_dir" && git log -1 --date=format:'%Y-%m-%d %H:%M' --format='%cd' 2>/dev/null || echo "N/A")
@@ -264,8 +288,8 @@ else
 fi
 R+=""$'\n'
 
-# ── PR Status ─────────────────────────────────────────────────
-R+="**OPEN PRs**"$'\n'
+# ── PR Status (Gold module only) ─────────────────────────────
+R+="**GOLD PRs**"$'\n'
 R+=""$'\n'
 
 prs_found=0
@@ -275,17 +299,44 @@ for project in "${GOLDY_PROJECTS[@]}"; do
 
   # Check if gh CLI is available and repo has remote
   if command -v gh &>/dev/null; then
-    pr_list=$(cd "$repo_dir" && gh pr list --state open --limit 5 --json number,title,author,reviewDecision 2>/dev/null || echo "")
-    if [ -n "$pr_list" ] && [ "$pr_list" != "[]" ]; then
-      while IFS= read -r pr_line; do
-        [ -n "$pr_line" ] && R+="  - **${project}**: ${pr_line}"$'\n' && prs_found=1
-      done < <(cd "$repo_dir" && gh pr list --state open --limit 5 2>/dev/null || echo "")
+    # Only show Gold/wealth module PRs — filter by branch name
+    # Include author login for user filtering
+    gold_prs=$(cd "$repo_dir" && gh pr list --state open --limit 30 --json number,title,headRefName,url,reviewDecision,author 2>/dev/null || echo "[]")
+    if [ -n "$gold_prs" ] && [ "$gold_prs" != "[]" ]; then
+      while IFS='|' read -r number title branch url decision author_login; do
+        [ -z "$number" ] && continue
+        # Filter: only wealth/gold branches
+        case "$branch" in
+          *wealth*|*gold*) ;;
+          *) continue ;;
+        esac
+        # Filter: only current user's PRs (unless --all)
+        if [ "$SHOW_ALL_USERS" -eq 0 ] && [ -n "${GOLDY_USER_LOGIN:-}" ] && [ "$author_login" != "${GOLDY_USER_LOGIN}" ]; then
+          continue
+        fi
+        status=""
+        case "$decision" in
+          APPROVED) status=" ✓ Approved" ;;
+          CHANGES_REQUESTED) status=" ✗ Changes requested" ;;
+          REVIEW_REQUIRED) status=" ⏳ Review pending" ;;
+          *) status="" ;;
+        esac
+        R+="  - **${project}**: #${number} ${title}${status}"$'\n'
+        R+="    \`${branch}\` — ${url}"$'\n'
+        prs_found=1
+      done < <(echo "$gold_prs" | python3 -c "
+import json,sys
+for pr in json.load(sys.stdin):
+    author = pr.get('author',{}).get('login','') if isinstance(pr.get('author'), dict) else ''
+    d = pr.get('reviewDecision','') or ''
+    print(f\"{pr['number']}|{pr['title']}|{pr['headRefName']}|{pr['url']}|{d}|{author}\")
+" 2>/dev/null)
     fi
   fi
 done
 
 if [ "$prs_found" -eq 0 ]; then
-  R+="  - No open PRs found (or gh CLI not available)"$'\n'
+  R+="  - No open Gold PRs found"$'\n'
 fi
 R+=""$'\n'
 
@@ -297,9 +348,15 @@ total_changelogs=0
 for project in "${GOLDY_PROJECTS[@]}"; do
   changelog_dir="$WORKSPACE/memory/changelogs/$project"
   if [ -d "$changelog_dir" ]; then
-    c=$(find "$changelog_dir" -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
-    today_c=$(find "$changelog_dir" -name "${TODAY}*.md" 2>/dev/null | wc -l | tr -d ' ')
-    R+="  - **${project}**: ${c} total changelogs (${today_c} today)"$'\n'
+    # Filter changelogs by user if author info available
+    if [ "$SHOW_ALL_USERS" -eq 0 ] && [ -n "${GOLDY_USER_GIT_NAME:-}" ]; then
+      c=$( (grep -rl "| **Author** | ${GOLDY_USER_GIT_NAME}" "$changelog_dir" 2>/dev/null || true) | wc -l | tr -d ' ')
+      today_c=$( (find "$changelog_dir" -name "${TODAY}*.md" -exec grep -l "| **Author** | ${GOLDY_USER_GIT_NAME}" {} + 2>/dev/null || true) | wc -l | tr -d ' ')
+    else
+      c=$(find "$changelog_dir" -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+      today_c=$(find "$changelog_dir" -name "${TODAY}*.md" 2>/dev/null | wc -l | tr -d ' ')
+    fi
+    R+="  - **${project}**: ${c} changelogs (${today_c} today)"$'\n'
     total_changelogs=$((total_changelogs + c))
   fi
 done
