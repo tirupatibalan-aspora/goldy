@@ -1,0 +1,297 @@
+{
+  "reviewer": "Reviewer B (ReviewerB)",
+  "platform": "android",
+  "last_updated": "2026-03-26",
+  "source_prs": ["#XXXX", "#XXXX"],
+  "stats": {
+    "total_comments": 48,
+    "critical": 6,
+    "major": 14,
+    "minor": 5
+  },
+  "patterns": [
+    {
+      "id": "android-001",
+      "severity": "critical",
+      "category": "architecture",
+      "rule": "ALL ViewModels MUST extend BaseMviViewModel — never raw ViewModel()",
+      "bad_example": "class GoldBuyViewModel : ViewModel() { ... }",
+      "good_example": "class GoldBuyViewModel @Inject constructor(...) : BaseMviViewModel<State, Event, Command>(GoldBuyFeature) { ... }",
+      "source": "PR #XXXX, Comments #5 #16 #23 #29 #32 #38 #40 — Reviewer B: 'Please use MVI Base View model here. This vm not consistent with architecture'",
+      "files_affected": ["GoldBuyViewModel.kt", "GoldProcessingViewModel.kt", "GoldOrderReviewViewModel.kt", "SelectBankViewModel.kt", "GoldSellViewModel.kt", "GoldTransactionDetailViewModel.kt", "GoldTransactionListViewModel.kt"],
+      "frequency": 7
+    },
+    {
+      "id": "android-002",
+      "severity": "critical",
+      "category": "type-safety",
+      "rule": "Use enums for order statuses — never hardcoded strings like 'COMPLETED', 'ORDER_COMPLETED', 'FAILED'",
+      "bad_example": "statusState.uppercase() in listOf(\"COMPLETED\", \"ORDER_COMPLETED\")",
+      "good_example": "sealed interface OrderStatus { data object Completed : OrderStatus; data object OrderCompleted : OrderStatus }",
+      "source": "PR #XXXX, Comments #17 #18 #22 — Reviewer B: 'Please replace hardcoded strings with enum statuses'",
+      "files_affected": ["GoldOrderReviewFeature.kt", "GoldOrderReviewViewModel.kt", "GoldProcessingViewModel.kt"],
+      "frequency": 3
+    },
+    {
+      "id": "android-003",
+      "severity": "critical",
+      "category": "safety",
+      "rule": "Dangerous defaults — never hardcode currency 'AED' or country 'AE'. Use required fields or market-aware constants",
+      "bad_example": "currency = \"AED\", buyPrice = data?.buyPrice ?: BigDecimal.ZERO",
+      "good_example": "currency = market.currencyCode (required, not nullable)",
+      "source": "PR #XXXX, Comments #6 #25 #44 — Reviewer B: 'These defaults look dangerous, please use required fields. Also currency should not be hardcoded here'",
+      "files_affected": ["GoldBuyViewModel.kt", "AccountDetailsFeature.kt", "OnboardGoldUseCase.kt"],
+      "frequency": 3
+    },
+    {
+      "id": "android-004",
+      "severity": "critical",
+      "category": "compose-pattern",
+      "rule": "Screen composables must accept State + accept: (Event) -> Unit — never pass ViewModel directly",
+      "bad_example": "fun GoldTransactionDetailScreen(viewModel: GoldTransactionDetailViewModel)",
+      "good_example": "fun GoldTransactionDetailScreen(state: State, accept: (Event) -> Unit, modifier: Modifier = Modifier)",
+      "source": "PR #XXXX, Comments #35 #39 #45 — Reviewer B: 'Screens should accept State param and have preview. We should not pass view models to screens'",
+      "files_affected": ["GoldTransactionDetailScreen.kt", "GoldTransactionListScreen.kt", "GoldAmountEntryScreen.kt"],
+      "frequency": 3
+    },
+    {
+      "id": "android-005",
+      "severity": "critical",
+      "category": "compose-pattern",
+      "rule": "All screens must have @Preview composable and use AppScreen as root wrapper",
+      "bad_example": "fun AccountDetailsScreen(...) { Column { ... } }",
+      "good_example": "fun AccountDetailsScreen(...) { AppScreen { paddingValues -> ... } }\n@Preview\n@Composable\nfun AccountDetailsScreenPreview() { ... }",
+      "source": "PR #XXXX, Comments #3 #9 #10 #26 — Reviewer B: 'Can we add preview here?', 'It should use AppScreen and we should have preview here'",
+      "files_affected": ["GoldBuyScreen.kt", "GoldDocumentsSection.kt", "GoldExistingUserHeroSection.kt", "AccountDetailsScreen.kt"],
+      "frequency": 4
+    },
+    {
+      "id": "android-006",
+      "severity": "major",
+      "category": "architecture",
+      "rule": "Use SavedStateHandle for fragment arguments — never read arguments manually in Fragment",
+      "bad_example": "val orderId = arguments?.getString(ARG_ORDER_ID)\nviewModel.initialize(orderId)",
+      "good_example": "@HiltViewModel class VM @Inject constructor(savedStateHandle: SavedStateHandle) { val orderId = savedStateHandle.get<String>(ARG_ORDER_ID) }",
+      "source": "PR #XXXX, Comments #14 #24 #34 — Reviewer B: 'Please use SavedStateHandle here and inject it to ViewModel constructor'",
+      "files_affected": ["GoldProcessingFragment.kt", "GoldOrderReviewFragment.kt", "GoldTransactionDetailFragment.kt"],
+      "frequency": 3
+    },
+    {
+      "id": "android-007",
+      "severity": "major",
+      "category": "architecture",
+      "rule": "Use CoreCommands for toasts — not manual requireContext().showPlusToast()",
+      "bad_example": "requireContext().showPlusToast(nav.message, PlusToastType.ERROR)",
+      "good_example": "emit Command.CoreCommand.ShowToast(message)",
+      "source": "PR #XXXX, Comments #15 #19 — Reviewer B: 'Toasts we can show with CoreCommands'",
+      "files_affected": ["GoldProcessingFragment.kt", "GoldOrderReviewFeature.kt"],
+      "frequency": 2
+    },
+    {
+      "id": "android-008",
+      "severity": "major",
+      "category": "constants",
+      "rule": "Use constants with named params — never inline magic strings in use case calls",
+      "bad_example": "goldRepository.onboardUser(userId, \"AE\")",
+      "good_example": "goldRepository.onboardUser(userId = userId, countryCode = GoldConstants.UAE.countryCode)",
+      "source": "PR #XXXX, Comments #41 #44 — Reviewer B: 'Please do not use hardcoded - use constants and add comments', 'Please move this to constants and use named params'",
+      "files_affected": ["CreateBuyCartUseCase.kt", "OnboardGoldUseCase.kt"],
+      "frequency": 2
+    },
+    {
+      "id": "android-009",
+      "severity": "major",
+      "category": "type-safety",
+      "rule": "Use sealed class for request modes — replace if-else string construction",
+      "bad_example": "valueMode = if (isAmountMode) \"AMOUNT\" else \"WEIGHT\"",
+      "good_example": "sealed interface OrderMode { data class Amount(val amount: BigDecimal) : OrderMode; data class Weight(val weight: BigDecimal) : OrderMode }",
+      "source": "PR #XXXX, Comment #42 — Reviewer B: 'Please use sealed class for different modes Request.Amount or Request.Weight'",
+      "files_affected": ["FetchOrderSummaryUseCase.kt"],
+      "frequency": 1
+    },
+    {
+      "id": "android-010",
+      "severity": "major",
+      "category": "compose-pattern",
+      "rule": "Use Theme colors — never Color.White or Color.Black directly",
+      "bad_example": "color = Color.White",
+      "good_example": "color = Theme.colors.fillsSurfaceWhite",
+      "source": "PR #XXXX, Comment #8 — Reviewer B: 'Can we use colors from Theme?'",
+      "files_affected": ["GoldCoinsSection.kt"],
+      "frequency": 1
+    },
+    {
+      "id": "android-011",
+      "severity": "major",
+      "category": "compose-pattern",
+      "rule": "Use Theme typography — never hardcoded fontSize/fontWeight",
+      "bad_example": "fontSize = 15.sp, fontWeight = FontWeight.Medium",
+      "good_example": "style = Theme.typography.BodyMMedium",
+      "source": "PR #XXXX, Comment #20 — Reviewer B: 'We should not have hardcoded text styles. All styles should be specified on figma - here we need to use Typography'",
+      "files_affected": ["GoldOrderReviewScreen.kt"],
+      "frequency": 1
+    },
+    {
+      "id": "android-012",
+      "severity": "major",
+      "category": "compose-pattern",
+      "rule": "Use base TopBar component — don't create custom Row-based toolbars",
+      "bad_example": "Row(modifier = Modifier.fillMaxWidth()) { IconButton(onClick = onBack) { ... } Text(title) }",
+      "good_example": "PlusTopBarWithBack(title = title, onBack = onBack)",
+      "source": "PR #XXXX, Comment #27 — Reviewer B: 'Let's use TopBar component from base components'",
+      "files_affected": ["SelectBankScreen.kt"],
+      "frequency": 1
+    },
+    {
+      "id": "android-013",
+      "severity": "major",
+      "category": "compose-pattern",
+      "rule": "Use PlusButtonLarge/PlusButtonMedium for CTA buttons — never raw Box composable",
+      "bad_example": "Box(modifier = Modifier.clip(RoundedCornerShape(24.dp)).background(GoldColors.accent)) { Text(\"Continue\") }",
+      "good_example": "PlusButtonLarge(text = \"Continue\", state = ButtonState.ENABLED, onClick = onContinue)",
+      "source": "PR #XXXX, Comments #30 #31 — Reviewer B: 'Please use base components for Compose buttons'",
+      "files_affected": ["GoldRetentionBottomSheet.kt", "GoldWhySellingBottomSheet.kt"],
+      "frequency": 2
+    },
+    {
+      "id": "android-014",
+      "severity": "major",
+      "category": "performance",
+      "rule": "LazyColumn items must have key parameter for performance",
+      "bad_example": "items(state.frequentlyUsed) { BankItem(it) }",
+      "good_example": "items(state.frequentlyUsed, key = { it.id }) { BankItem(it) }",
+      "source": "PR #XXXX, Comment #28 — Reviewer B: 'Do we have id here? We need to use ids with Lazy lists for performance'",
+      "files_affected": ["SelectBankScreen.kt"],
+      "frequency": 1
+    },
+    {
+      "id": "android-015",
+      "severity": "major",
+      "category": "architecture",
+      "rule": "OkHttp interceptor for common headers — don't repeat X-User-Id/X-Country on every endpoint",
+      "bad_example": "@Header(\"X-User-Id\") userId: String, @Header(\"X-Country\") country: String on every Retrofit method",
+      "good_example": "OkHttp Interceptor that adds common headers automatically",
+      "source": "PR #XXXX, Comment #48 — Reviewer B: 'Can we add these headers on ok http client level once?'",
+      "files_affected": ["GoldService.kt"],
+      "frequency": 1
+    },
+    {
+      "id": "android-016",
+      "severity": "major",
+      "category": "ux",
+      "rule": "Handle empty states with a stub/placeholder UI — never silently return",
+      "bad_example": "if (transactions.isEmpty()) return",
+      "good_example": "if (transactions.isEmpty()) { EmptyStateStub(text = stringResource(R.string.gold_no_transactions)) }",
+      "source": "PR #XXXX, Comment #11 — Reviewer B: 'Please handle empty case with a stub.'",
+      "files_affected": ["GoldRecentTransactionsSection.kt"],
+      "frequency": 1
+    },
+    {
+      "id": "android-017",
+      "severity": "major",
+      "category": "type-safety",
+      "rule": "Don't use nullable when the value is always required in practice",
+      "bad_example": "beneficiaryAccountId: String?",
+      "good_example": "beneficiaryAccountId: String (if it's always present in the flow)",
+      "source": "PR #XXXX, Comment #43 — Reviewer B: 'Can it be null in reality?'",
+      "files_affected": ["InitiateOrderUseCase.kt"],
+      "frequency": 1
+    },
+    {
+      "id": "android-018",
+      "severity": "major",
+      "category": "architecture",
+      "rule": "Document fragile/complex code — especially JS evaluation in WebViews",
+      "bad_example": "evaluateJavascript checking for 'payment was successful' text with no comments",
+      "good_example": "// DECISION: Polling payment status via JS evaluation because...\n// This is fragile — if payment page text changes, detection breaks.\n// TODO: Replace with proper payment callback URL",
+      "source": "PR #XXXX, Comment #21 — Reviewer B: 'Please document this decision - this code is unclear and fragile'",
+      "files_affected": ["GoldOrderReviewScreen.kt"],
+      "frequency": 1
+    },
+    {
+      "id": "android-019",
+      "severity": "minor",
+      "category": "code-quality",
+      "rule": "Clean up legacy/backward-compatibility comments — delete dead code instead of marking it",
+      "bad_example": "// Legacy -- kept for backward compatibility",
+      "good_example": "Just delete it or refactor it properly",
+      "source": "PR #XXXX, Comment #12 — Reviewer B: 'Then we can cleanup the code'",
+      "files_affected": ["GoldHomeViewModel.kt"],
+      "frequency": 1
+    },
+    {
+      "id": "android-020",
+      "severity": "minor",
+      "category": "code-quality",
+      "rule": "Clean imports — no unused imports, use short imports not fully-qualified inline references",
+      "bad_example": "tech.vance.app.data_layer.network.gold.model.domain.GoldMarket.UAE used inline",
+      "good_example": "import tech.vance.app.data_layer.network.gold.model.domain.GoldMarket.UAE\n... then use UAE directly",
+      "source": "PR #XXXX, Comments #2 #7 #33 — Reviewer B: 'Please use short imports, it's hard to read these long imports'",
+      "files_affected": ["GoldBuyFeature.kt", "GoldBuyFragment.kt", "GoldSellFragment.kt"],
+      "frequency": 3
+    },
+    {
+      "id": "android-021",
+      "severity": "minor",
+      "category": "code-quality",
+      "rule": "Remove useless comments — code should be self-documenting",
+      "bad_example": "// Group transactions by date\nfun groupByDate(...)",
+      "good_example": "fun groupByDate(...) // the name is self-explanatory",
+      "source": "PR #XXXX, Comment #13 — Reviewer B: 'Useless comments - please clean it up'",
+      "files_affected": ["GoldTransactionGrouper.kt"],
+      "frequency": 1
+    },
+    {
+      "id": "android-022",
+      "severity": "minor",
+      "category": "code-quality",
+      "rule": "Large screens (1000+ lines) should be split into separate composable files by state/section",
+      "bad_example": "GoldTransactionDetailScreen.kt — 1,329 lines",
+      "good_example": "Split: GoldTransactionDetailScreen.kt + GoldTransactionSuccessHeader.kt + GoldTransactionTimeline.kt + GoldTransactionActions.kt",
+      "source": "PR #XXXX, Comment #37 — Reviewer B: 'This file is too big - please split by states and composable components'",
+      "files_affected": ["GoldTransactionDetailScreen.kt"],
+      "frequency": 1
+    },
+    {
+      "id": "android-023",
+      "severity": "minor",
+      "category": "code-quality",
+      "rule": "Add TODO for unimplemented callbacks — don't leave empty lambda bodies",
+      "bad_example": "onHelpClick = { }",
+      "good_example": "onHelpClick = { /* TODO: Wire to help screen */ }",
+      "source": "PR #XXXX, Comment #36 — Reviewer B: 'Should be todo here - otherwise we can forget to implement'",
+      "files_affected": ["GoldTransactionDetailScreen.kt"],
+      "frequency": 1
+    },
+    {
+      "id": "android-024",
+      "severity": "critical",
+      "category": "shared-code",
+      "rule": "NEVER modify base components (PlusButton, MainFragment) or build scripts (app.gradle.kts) — keep wealth module isolated",
+      "bad_example": "Modifying BasePlusButton from Button to Box implementation",
+      "good_example": "If PlusButton doesn't support your use case, create a Gold-specific variant inside ui/gold/components/",
+      "source": "PR #XXXX, Comments #1 #46 #47 + Reviewer B Slack: 'I'd prefer to avoid changes to base components (e.g., MainFragment, base button) and not force the resolution strategy in Gradle'",
+      "files_affected": ["PlusButton.kt", "MainFragment.kt", "app.gradle.kts"],
+      "frequency": 3
+    },
+    {
+      "id": "android-025",
+      "severity": "major",
+      "category": "architecture",
+      "rule": "Sync with develop branch — use existing patterns from recent modules (nre-nro) as reference",
+      "bad_example": "Writing new patterns without checking how develop branch handles it",
+      "good_example": "git fetch origin develop && git diff origin/develop -- app/src/main/java/tech/vance/app/ui/nre_nro/",
+      "source": "PR #XXXX + Reviewer B Slack (2026-03-23): 'Please sync your branches with develop. There are many useful patterns and solid architectural examples (in nre-nro package)'",
+      "files_affected": ["All Gold module files"],
+      "frequency": 1
+    }
+  ],
+  "reviewer_b_high_level_feedback": [
+    "Sync branches with develop — nre-nro package has gold-standard examples",
+    "Follow MVI architecture consistently — complex screens need unit tests",
+    "Document complex flows — create docs/ folder inside module with .md files",
+    "Use stricter contracts with backend — avoid nullable, default, and hardcoded values",
+    "Code outside wealth module should NOT be modified",
+    "Split iterations smaller — 16k lines is too hard to review"
+  ]
+}

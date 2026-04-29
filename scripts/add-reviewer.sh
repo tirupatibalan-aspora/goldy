@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Goldy — Add a new reviewer to the Review Bot
 # Usage:
-#   ./scripts/add-reviewer.sh --name sergei --github reviewer-b --platform android
-#   ./scripts/add-reviewer.sh --name paul --github reviewer-a --platform ios --pr 1520
+#   ./scripts/add-reviewer.sh --name reviewer-b --github reviewer-b-github --platform android
+#   ./scripts/add-reviewer.sh --name reviewer-a --github reviewer-a-github --platform ios --pr 1520
 #   ./scripts/add-reviewer.sh --name john --github john-dev --platform android --pr 1637 --pr 1548
 #
 # What it does:

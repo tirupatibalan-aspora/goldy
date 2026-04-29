@@ -1,8 +1,8 @@
 # Goldy
 
-**One brain. Multiple codebases. Zero wasted tokens.**
+**Cross-project memory for Claude Code. One brain. Multiple codebases. Zero wasted tokens.**
 
-Goldy is a shared knowledge base and automation toolkit that syncs cross-platform, multi-project development — changelogs, reviewer pattern enforcement (review bot), status reports, and health checks — across iOS, Android, or any repos. Clone it, drop your repos inside, run one command — done.
+Goldy gives Claude Code persistent memory that survives across sessions and spans multiple repos. It syncs cross-platform development — changelogs, reviewer pattern enforcement (review bot), status reports, and health checks — across iOS, Android, or any repos. Clone it, drop your repos inside, run one command — done.
 
 ---
 
@@ -204,7 +204,7 @@ Goldy includes an HTML dashboard at `docs/index.html` — deploy via GitHub Page
 **Preview:**
 ```
 ┌──────────────────────────────────────────────────────┐
-│  GOLDY — AI Project Manager              ● Live      │
+│  GOLDY — Cross-Project Memory            ● Live      │
 ├──────────┬───────────┬───────────────────────────────┤
 │ iOS      │ Android   │  Cross-Platform Alerts        │
 │ ━━━━━━━━ │ ━━━━━━━━  │  ⚠ API contract renamed       │

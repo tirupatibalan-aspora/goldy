@@ -71,7 +71,7 @@ Your Name, you@example.com. Works on Your App — describe your project here.
 ## Milestones
 | # | Name | Status | Branch |
 |---|------|--------|--------|
-| M1 | Gold Landing Page | ✅ Merged on both platforms (iOS PR #1484, Android PR #1512) | `feature/wealth-module-gold-onboarding` |
+| M1 | Gold Landing Page | ✅ Merged on both platforms (iOS PR #XXXX, Android PR #XXXX) | `feature/wealth-module-gold-onboarding` |
 | M2 | Buy & Sell Gold Flows | All screens built, pushed. Pending PRs. | `feature/wealth-module-gold-buy-sell-flow` |
 
 ## Tech Stack Summary

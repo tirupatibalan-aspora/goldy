@@ -4,8 +4,8 @@
 #
 # Sets these variables:
 #   GOLDY_USER_NAME     — display name (e.g., "Tirupati Balan")
-#   GOLDY_USER_LOGIN    — GitHub username (e.g., "tirupatibalan-aspora")
-#   GOLDY_USER_EMAIL    — email (e.g., "tirupati.balan@aspora.com")
+#   GOLDY_USER_LOGIN    — GitHub username (e.g., "your-github-username")
+#   GOLDY_USER_EMAIL    — email (e.g., "you@example.com")
 #   GOLDY_USER_GIT_NAME — git author name for commit filtering
 #
 # Reads from .goldy-user.conf if it exists (cached).

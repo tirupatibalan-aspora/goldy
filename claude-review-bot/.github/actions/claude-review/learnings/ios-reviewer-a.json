@@ -1,0 +1,146 @@
+{
+  "reviewer": "Reviewer A (ReviewerA)",
+  "platform": "ios",
+  "last_updated": "2026-03-26",
+  "source_prs": ["#XXXX", "#XXXX"],
+  "stats": {
+    "total_comments": 15,
+    "critical": 3,
+    "major": 7,
+    "minor": 2
+  },
+  "patterns": [
+    {
+      "id": "ios-001",
+      "severity": "critical",
+      "category": "performance",
+      "rule": "Never create DateFormatter or ISO8601DateFormatter per call — use static let singleton",
+      "bad_example": "func formatDate() { let formatter = ISO8601DateFormatter() ... }",
+      "good_example": "private static let isoFormatter: ISO8601DateFormatter = { let f = ISO8601DateFormatter(); f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]; return f }()",
+      "source": "PR #XXXX, Comments #12 #13 — Reviewer A: 'please stop creating Dateformatter and use a let instead'",
+      "files_affected": ["GoldPriceFormatter.swift", "GoldTransactionRowView.swift"],
+      "frequency": 2
+    },
+    {
+      "id": "ios-002",
+      "severity": "critical",
+      "category": "shared-code",
+      "rule": "NEVER modify shared/base files used by other modules — revert any changes to CurrencyFormatter, shared models, etc.",
+      "bad_example": "Modifying CurrencyFormatter.swift removingSpacesAroundSymbol() for Gold-specific AED formatting",
+      "good_example": "Create Gold-specific formatting in Core/Utils/Gold/GoldPriceFormatter.swift",
+      "source": "PR #XXXX, Comment #3 — Reviewer A: 'Revert all this change please. They are used through the whole project.'",
+      "files_affected": ["CurrencyFormatter.swift"],
+      "frequency": 1
+    },
+    {
+      "id": "ios-003",
+      "severity": "major",
+      "category": "type-safety",
+      "rule": "Use enums/constants for known string values — never hardcode 'GOLD', 'AED', error codes",
+      "bad_example": "metalType ?? \"GOLD\", currencyCode ?? \"AED\", errorCode == \"ONBOARDING_ALREADY_COMPLETE\"",
+      "good_example": "MetalType.gold.rawValue, Currency.aed, GoldErrorCode.onboardingComplete",
+      "source": "PR #XXXX, Comments #5 #8 #9 — Reviewer A: 'Don't you have an enum for GOLD?', 'Use a constant', 'use an enum for ONBOARDING_ALREADY_COMPLETE'",
+      "files_affected": ["BuyCart.swift", "GoldRepositoryImpl.swift"],
+      "frequency": 3
+    },
+    {
+      "id": "ios-004",
+      "severity": "major",
+      "category": "safety",
+      "rule": "Dangerous defaults — don't default currency/country to AED/AE. UK users would get wrong data. Make field required (failable init returns nil)",
+      "bad_example": "self.currencyCode = network.currencyCode ?? \"AED\"",
+      "good_example": "guard let currencyCode = network.currencyCode else { return nil }",
+      "source": "PR #XXXX, Comment #7 — Reviewer A: 'if the backend fail we will send wrong information to the user if we are in UK'",
+      "files_affected": ["GoldTransaction.swift"],
+      "frequency": 1
+    },
+    {
+      "id": "ios-005",
+      "severity": "major",
+      "category": "type-safety",
+      "rule": "Domain models should use typed enums, not raw strings — especially for status fields",
+      "bad_example": "let status: String",
+      "good_example": "let status: GoldOrderStatus",
+      "source": "PR #XXXX, Comment #6 — Reviewer A: 'Shouldn't it be a GoldOrderStatus?'",
+      "files_affected": ["GoldOrderResult.swift"],
+      "frequency": 1
+    },
+    {
+      "id": "ios-006",
+      "severity": "major",
+      "category": "architecture",
+      "rule": "Failable init should return nil for invalid data — empty string defaults hide backend failures",
+      "bad_example": "self.accountName = network.accountName ?? \"\"\nself.ibanNumber = network.ibanNumber ?? \"\"",
+      "good_example": "guard let accountName = network.accountName, !accountName.isEmpty else { return nil }",
+      "source": "PR #XXXX, Comment #4 — Reviewer A: 'does it make sense to have this item with no iban and no accountName?'",
+      "files_affected": ["BeneficiaryAccount.swift"],
+      "frequency": 1
+    },
+    {
+      "id": "ios-007",
+      "severity": "major",
+      "category": "localization",
+      "rule": "ALL user-visible strings must use Localizable.strings — including number defaults, currency formatting, error messages",
+      "bad_example": "Text(\"\\(transaction.currencyCode) \\(amount)\")\nif rawInput.isEmpty { return \"0\" }",
+      "good_example": "Text(R.string.localizable.goldTransactionAmount(transaction.currencyCode, formattedAmount))",
+      "source": "PR #XXXX, Comments #14 #15 — Reviewer A: 'localizable', 'Localizable'",
+      "files_affected": ["GoldTransactionRowView.swift", "BuyGoldViewModel.swift"],
+      "frequency": 2
+    },
+    {
+      "id": "ios-008",
+      "severity": "major",
+      "category": "constants",
+      "rule": "Use Constants for repeated header keys and magic strings",
+      "bad_example": "\"X-Country\": market.config.countryCode",
+      "good_example": "Headers.country: market.config.countryCode (where Headers is a constants enum)",
+      "source": "PR #XXXX, Comment #2 — Reviewer A: 'Please use a Constants for this key'",
+      "files_affected": ["CreateCartRequestBuilder.swift"],
+      "frequency": 1
+    },
+    {
+      "id": "ios-009",
+      "severity": "major",
+      "category": "architecture",
+      "rule": "Don't duplicate header logic — check if X-User-Id is already in a base request builder/interceptor",
+      "bad_example": "Manually adding X-User-Id header in every request builder",
+      "good_example": "Use base request builder that automatically includes common headers",
+      "source": "PR #XXXX, Comment #1 — Reviewer A: 'Don't we already have this information somewhere in the header?'",
+      "files_affected": ["BeneficiaryAccountsRequestBuilder.swift"],
+      "frequency": 1
+    },
+    {
+      "id": "ios-010",
+      "severity": "minor",
+      "category": "assets",
+      "rule": "No duplicate assets — check DesignKit/Illustration/Gold/ before adding to Gold/ imageset",
+      "bad_example": "gold_partner_goldwise in both DesignKit/Illustration/Gold/ AND Gold/",
+      "good_example": "Single source: either DesignKit or Gold, not both",
+      "source": "PR #XXXX, Comments #10 #11 — Reviewer A: 'You already have this asset', 'What is that?'",
+      "files_affected": ["Assets.xcassets"],
+      "frequency": 2
+    },
+    {
+      "id": "ios-011",
+      "severity": "minor",
+      "category": "assets",
+      "rule": "Heavy images should be done programmatically if possible",
+      "bad_example": "gold-certificate-bg.png (large file size)",
+      "good_example": "Programmatic gradient/pattern or compressed asset",
+      "source": "PR #XXXX, Comment Review #1 — Reviewer A: 'This one is very heavy. Can't we do it programmatically?'",
+      "files_affected": ["gold-certificate-bg.imageset"],
+      "frequency": 1
+    },
+    {
+      "id": "ios-012",
+      "severity": "critical",
+      "category": "performance",
+      "rule": "Static/singleton formatters — DateFormatter is one of the most expensive Foundation objects to instantiate",
+      "bad_example": "private static func makeISOFormatter() -> ISO8601DateFormatter { return ISO8601DateFormatter() }",
+      "good_example": "private static let isoFormatter = ISO8601DateFormatter()",
+      "source": "PR #XXXX + Reviewer A (Slack 2026-03-26): 'DateFormatter in Swift — is one of the most expensive objects to instantiate in Foundation. So please use Static / singleton per format'",
+      "files_affected": ["Any file using DateFormatter"],
+      "frequency": 2
+    }
+  ]
+}

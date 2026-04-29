@@ -399,7 +399,7 @@ for project in "${GOLDY_PROJECTS[@]}"; do
           a_run=$(echo "$artifact_info" | cut -f2)
           a_expired=$(echo "$artifact_info" | cut -f3)
           if [ "$a_expired" != "true" ] && [ -n "$a_name" ]; then
-            run_url="https://github.com/Vance-Club/vance-android/actions/runs/${a_run}"
+            run_url="https://github.com/your-org/your-android-app/actions/runs/${a_run}"
             R+="  - **Android APK**: \`${a_name}\`"$'\n'
             R+="    Download: ${run_url} → Artifacts"$'\n'
           fi

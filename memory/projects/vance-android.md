@@ -35,7 +35,7 @@
 - **Location**: app/ui/gold/ + data-layer/network/gold/
 - **Pattern**: MVI (GoldHomeFeature with State/Event/Command)
 - **Stats**: 76 Kotlin source files, 14 test files, 306 tests
-- **M1 (Landing Page)**: PR #1512 merged. 7 sections (Hero, Trust Badges, Returns Calculator, Value Cards, Comparison, FAQ, Partners)
+- **M1 (Landing Page)**: PR #XXXX merged. 7 sections (Hero, Trust Badges, Returns Calculator, Value Cards, Comparison, FAQ, Partners)
 - **M2 (Buy & Sell)**: All screens built, pushed to origin. Pending PR for Reviewer B.
 - **Chart**: Custom Figma-matched bar composables (Vico 2.4.3 evaluated, replaced with custom implementation for pixel-perfect Figma matching)
 - **Buy flow**: Buy entry, KYC sheet, Buy review — all with MVI + tests

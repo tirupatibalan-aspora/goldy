@@ -9,8 +9,8 @@
 ### M1 — Gold Landing Page ✅ MERGED
 - **Branch**: `feature/wealth-module-gold-onboarding` → merged
 - **Status**: QA in progress (build comparison running parallel)
-- **iOS**: PR #1465 approved by Reviewer A, merged. 64 files, 117 tests, 7 lander sections.
-- **Android**: PR #1512 approved by Reviewer B, merged. `feature/wealth-module-gold-onboarding` → `feature/wealth-module`. 40 files changed (+4,703 −244). Wired live gold price API, updated domain models with change/changePercent fields, 3 test files updated.
+- **iOS**: PR #XXXX approved by Reviewer A, merged. 64 files, 117 tests, 7 lander sections.
+- **Android**: PR #XXXX approved by Reviewer B, merged. `feature/wealth-module-gold-onboarding` → `feature/wealth-module`. 40 files changed (+4,703 −244). Wired live gold price API, updated domain models with change/changePercent fields, 3 test files updated.
 
 ### M2 — Buy & Sell Gold Flows 🚧 ALL SCREENS BUILT — PENDING PR
 - **Branch**: `feature/wealth-module-gold-buy-sell-flow` (pushed to origin)
@@ -65,8 +65,8 @@ Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold
 
 ## iOS
 ### M1 Branch (`feature/wealth-module-gold-onboarding`)
-- **PR #1465**: Approved by Reviewer A ✅, merged → `dev`
-- **PR URL**: https://github.com/your-org/app-ios/pull/1465
+- **PR #XXXX**: Approved by Reviewer A ✅, merged → `dev`
+- **PR URL**: https://github.com/your-org/app-ios/pull/XXXX
 
 ### M2 Branch (`feature/wealth-module-gold-buy-sell-flow`) — PUSHED
 - **Status**: All screens built, pushed to origin. Next: create PR for Reviewer A.
@@ -88,7 +88,7 @@ Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold
 - Unit tests: **453 total** — 102 foundation + 66 Lander + 37 BuyVM + 17 BuyReviewVM + 33 SellVM + 26 SellReviewVM + 15 SelectBankVM + 16 AccountDetailsVM + 23 SellFrictionFlow + misc
 - UI component standards: gold-ui-component-standards.md
 - Gold Landing Page: GoldLanderView replaced with Figma-matched design (7 sections: Hero, Trust Badges, Returns Calculator, Value Cards, Comparison, FAQ, Partners)
-- GoldLanderViewModel with calculator logic (step 500, min 500, max 1M, rates: 1Y ~8%, 3Y ~30%, 5Y ~60%)
+- GoldLanderViewModel with calculator logic (step 500, min 500, max 1M, compound rates: gold 8%/yr, FD 3.5%/yr)
 - Localization: 42 new keys for buy flow strings in en.lproj/Localizable.strings
 
 ### Pending (iOS)
@@ -101,7 +101,17 @@ Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold
 - Certificates view (placeholder)
 - M2 PR creation for Reviewer A's review
 
-### Recent Changes (iOS)
+### Recent Changes (iOS) — 2026-04-10
+- **Skip-KYC fix**: `isExistingUser` now requires `portfolio.totalWeight > 0` (not just `isOnboarded`). Bypassed users with 0 purchases see fresh lander with "Buy Gold" CTA.
+- **Vault tiers**: 12 tiers (was 11) — realigned to Designer D's spec (Figma 813:17138). Added bar-03 tier (≥50g). All assets present.
+- **Comparison table**: Redesigned to 2-column (Aspora Gold vs Physical Gold). Gold gradient strip, separators only in Physical Gold column, 20px horizontal padding.
+- **Calculator**: Compound interest (was flat). Bold circular dot underline. Single-line "Investment amount" label.
+- **Title gradient**: Exact CSS 104deg conversion with gradient stops (0.4695, 0.9246).
+- **Price lock timer**: Resets to 5:00 on every `onAppear` (buy + sell screens). Extracted `GoldConstants.priceLockDurationSeconds` constant.
+- **Stale price state**: Tooltip + orange pill after 3 consecutive API failures (Figma 2:39914).
+- **Hero section**: Updated trust badges, subtitle with 1.92 letter spacing, Figma help icon.
+- **All time strings localized** (Reviewer A's ios-007 compliance).
+- **21 vault tier tests passing**, Review Bot: 10/10.
 - **Live Price Polling**: 5s interval in GoldLanderViewModel (Task-based, cancellation-safe)
 - **ORDER_COMPLETED fix**: Added `.orderCompleted = "ORDER_COMPLETED"` to GoldOrderStatus enum
 - **Partner logos**: Arrived and exported to Assets.xcassets/Gold/
@@ -184,7 +194,7 @@ Review → (if long-term) → RetentionNudge → "Keep Gold" (back) / "Sell Gold
 
 ## Android
 ### M1 Branch (`feature/wealth-module-gold-onboarding`)
-- **PR #1512**: Approved by Reviewer B ✅, merged
+- **PR #XXXX**: Approved by Reviewer B ✅, merged
 - **Branch**: `feature/wealth-module-gold-onboarding` → `feature/wealth-module`
 
 ### M2 Branch (`feature/wealth-module-gold-buy-sell-flow`) — PUSHED

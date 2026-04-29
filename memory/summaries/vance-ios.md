@@ -2,57 +2,40 @@
 
 | Field | Value |
 |-------|-------|
-| **Branch** | `feature/wealth-module-gold-buy-sell-flow` |
-| **Last Commit** | 37f260ab8 fix(gold): use tier-based vault image instead of hardcoded locker |
-| **Last Activity** | 2026-04-09 |
-| **Total Changelogs** | 30 |
+| **Branch** | `feature/wealth-module-qa-fixes` |
+| **Last Commit** | aeeb5f702 docs: rename Goldy section — Cross-Project Memory for Claude Code |
+| **Last Activity** | 2026-04-29 |
+| **Total Changelogs** | 214 |
 
 ## Recent Changes (14 days)
 
-- **2026-04-09** — fix(gold): migrate to design system tokens — fonts, spacing, images
-- **2026-04-09** — fix(gold): use tier-based vault image instead of hardcoded locker
-- **2026-04-08** — fix(gold): port Android QA fixes to iOS — defaults, decimals, lander, friction
-- **2026-04-08** — fix(gold): use theme fonts instead of raw Font.custom/system
-- **2026-04-07** — Merge pull request #1568 from your-org/Update_analytics_app_version_format
-- **2026-04-07** — Merge remote-tracking branch 'origin/dev' into feature/wealth-module
-- **2026-04-07** — Feature/beneficiary revamp fixes (#1565)
-- **2026-04-07** — Cu-86d2gvf7e Aspora Guarantee M1 (#1561)
-- **2026-04-07** — fix(gold): Designer design feedback — tabular numbers, remove borders, hide persistent subtitle
-- **2026-04-07** — Merge pull request #1571 from your-org/fix/86d239qpw_send_tab_navbar
-- **2026-04-07** — fix(gold): add missing paymentInstrument to test factory helper
-- **2026-04-07** — fix: resolve 5 iOS CI build errors — theme API, optional unwrap, MainActor
-- **2026-04-07** — fix: increase test sleep to 1s for CI reliability (GoldLanderViewModelTests)
-- **2026-04-07** — fixed mapping parameters when calling the patch user onboarding api with legacy onboarding version (#1570)
-- **2026-04-07** — Merge pull request #1558 from your-org/fix/86d23bux8_rates_comparision_load_time
-- **2026-04-07** — Merge branch 'feature/wealth-module' into feature/wealth-module-gold-buy-sell-flow
-- **2026-04-07** — fix(gold): add missing paymentInstrument to BuyReviewViewModelTests factory
-- **2026-04-07** — fix: relax flaky loadPrice invoke count assertion (== 1 → >= 1)
-- **2026-04-07** — feat(gold): add payment-instruments and invoice-download endpoints
-- **2026-04-07** — refactor(gold): rename paymentMode → paymentInstrument across API contract
+- **2026-04-29** — docs: rename Goldy section — Cross-Project Memory for Claude Code
 
 ## Feature Areas
 
-- **feat**: 2 commits
-- **fix**: 15 commits
-- **refactor**: 1 commits
-- **chore**: 1 commits
+- **feat**: 32 commits
+- **fix**: 144 commits
+- **refactor**: 8 commits
+- **docs**: 3 commits
+- **test**: 2 commits
+- **chore**: 7 commits
 
 ## Frequently Modified Files (last 50 commits)
 
 ```
 49 
-5 VanceTests/Tests/Gold/GoldOrderUseCaseTests.swift
-5 VanceTests/Tests/Gold/GoldLanderViewModelTests.swift
-5 VanceTests/Tests/Gold/BuyReviewViewModelTests.swift
-5 VanceTests/Tests/Gold/BuyGoldViewModelTests.swift
-4 VanceTests/Tests/Gold/SellReviewViewModelTests.swift
-4 VanceTests/Tests/Gold/SellGoldViewModelTests.swift
-4 VanceTests/Tests/Gold/GoldTransactionDetailViewModelTests.swift
-3 VanceTests/Mock/MockGoldRepository.swift
-3 Aspora/UserInterface/Views/TabBar/SendTab/SendTabView.swift
-3 Aspora/UserInterface/Views/Gold/Processing/GoldProcessingView.swift
-3 Aspora/UserInterface/Views/Gold/Lander/GoldLanderView.swift
-3 Aspora/UserInterface/Views/Gold/GoldAmountEntryView.swift
-3 Aspora/UserInterface/Views/Gold/Buy/GoldSellBuyReviewView.swift
-3 Aspora/UserInterface/Views/Gold/Buy/BuyGoldViewModel.swift
+15 Aspora/UserInterface/Views/Gold/Sell/SellGoldViewModel.swift
+12 Aspora/UserInterface/Views/Gold/Buy/GoldSellBuyReviewViewModel.swift
+12 Aspora/UserInterface/Views/Gold/Buy/BuyGoldViewModel.swift
+9 Aspora/UserInterface/Views/TransactionDetails/TransactionTrackingDetailsView.swift
+8 Aspora/UserInterface/Views/Gold/Sell/GoldAccountDetailsView.swift
+7 Aspora/UserInterface/Views/Gold/Lander/GoldLanderViewModel.swift
+7 Aspora/Coordinator/Gold/GoldRoute.swift
+6 Aspora/UserInterface/Views/Gold/GoldAmountEntryView.swift
+6 Aspora/Router/Gold/GoldRouter.swift
+6 Aspora/Resources/en.lproj/Localizable.strings
+5 Aspora/UserInterface/Views/Gold/Processing/GoldProcessingViewModel.swift
+5 Aspora/Repository/Gold/GoldRepositoryImpl.swift
+4 VanceTests/Tests/Gold/AccountDetailsViewModelTests.swift
+4 Aspora/UserInterface/Views/Gold/Sell/GoldAccountDetailsViewModel.swift
 ```

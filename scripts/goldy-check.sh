@@ -119,7 +119,9 @@ ctx_bytes=0
 for f in "$WORKSPACE/CLAUDE.md" "$WORKSPACE/TRUTH.md"; do
   [ -f "$f" ] && ctx_bytes=$((ctx_bytes + $(file_size "$f")))
 done
-_memory_dir="$HOME/.claude/projects/-Users-$(whoami)-Documents-Aspora/memory"
+# Derive Claude memory dir from workspace path (replace / with -)
+_workspace_slug=$(echo "$WORKSPACE" | sed 's|^/||; s|/|-|g')
+_memory_dir="$HOME/.claude/projects/-${_workspace_slug}/memory"
 [ -f "$_memory_dir/MEMORY.md" ] && ctx_bytes=$((ctx_bytes + $(file_size "$_memory_dir/MEMORY.md")))
 ctx_k=$(( ctx_bytes / 4 / 1000 ))
 

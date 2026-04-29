@@ -5,7 +5,7 @@
 
 | | iOS | Android |
 |---|---|---|
-| **PR** | [#1520](https://github.com/your-org/app-ios/pull/XXX) | [#1548](https://github.com/your-org/app-android/pull/XXX) |
+| **PR** | [#XXXX](https://github.com/your-org/app-ios/pull/XXXX) | [#XXXX](https://github.com/your-org/app-android/pull/XXXX) |
 | **Branch** | `feature/wealth-module-gold-buy-sell-flow` | `feature/wealth-module-gold-buy-sell-flow` |
 | **Target** | `feature/wealth-module` | `feature/wealth-module` |
 | **Files** | 244 changed, +16,048 / -585 | 164 changed, +19,591 / -494 |
@@ -657,4 +657,4 @@ These standards were enforced across both platforms before PR submission:
 ---
 
 *Last updated: March 23, 2026*
-*Built with Claude via vibe coding — iOS PR #1520, Android PR #1548*
+*Built with Claude via vibe coding — iOS PR #XXXX, Android PR #XXXX*

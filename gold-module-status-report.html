@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goldy — Gold Module Status Report</title>
+<style>
+  :root {
+    --gold: #D4A843;
+    --gold-light: #F5E6B8;
+    --gold-dark: #8B6914;
+    --bg: #0D1117;
+    --card: #161B22;
+    --card-border: #30363D;
+    --text: #E6EDF3;
+    --text-muted: #8B949E;
+    --green: #3FB950;
+    --green-bg: rgba(63, 185, 80, 0.12);
+    --yellow: #D29922;
+    --yellow-bg: rgba(210, 153, 34, 0.12);
+    --red: #F85149;
+    --red-bg: rgba(248, 81, 73, 0.12);
+    --blue: #58A6FF;
+    --blue-bg: rgba(88, 166, 255, 0.12);
+    --purple: #BC8CFF;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 24px;
+    margin-bottom: 32px;
+    background: linear-gradient(135deg, rgba(212, 168, 67, 0.1) 0%, rgba(139, 105, 20, 0.05) 100%);
+    border: 1px solid rgba(212, 168, 67, 0.2);
+    border-radius: 16px;
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .header .subtitle {
+    font-size: 15px;
+    color: var(--text-muted);
+  }
+  .header .date {
+    font-size: 14px;
+    color: var(--gold-dark);
+    margin-top: 8px;
+    font-weight: 600;
+  }
+
+  /* Progress Rings Section */
+  .progress-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .progress-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+  }
+  .progress-card h3 {
+    font-size: 14px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .ring-container {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 16px;
+  }
+  .ring-container svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: #21262D; stroke-width: 10; }
+  .ring-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+  .ring-ios { stroke: var(--blue); }
+  .ring-android { stroke: var(--green); }
+  .ring-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    font-weight: 700;
+  }
+  .stat-row {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 8px;
+  }
+  .stat-item {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .stat-item strong {
+    color: var(--text);
+    font-size: 16px;
+    display: block;
+  }
+
+  /* Milestone Grid */
+  .milestone-section {
+    margin-bottom: 32px;
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .milestone-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .milestone-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .milestone-card .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .badge-merged { background: var(--green-bg); color: var(--green); }
+  .badge-building { background: var(--yellow-bg); color: var(--yellow); }
+  .badge-pending { background: var(--blue-bg); color: var(--blue); }
+  .milestone-card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .milestone-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* Platform Sections */
+  .platform-section {
+    margin-bottom: 32px;
+  }
+  .platform-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .platform-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .icon-ios { background: var(--blue-bg); color: var(--blue); }
+  .icon-android { background: var(--green-bg); color: var(--green); }
+
+  .status-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+  .status-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .status-card h5 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .status-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .status-card li {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+    line-height: 1.4;
+  }
+  .status-card li:last-child { border-bottom: none; }
+  .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 6px; }
+  .dot-green { background: var(--green); }
+  .dot-yellow { background: var(--yellow); }
+  .dot-red { background: var(--red); }
+
+  /* Screens Table */
+  .screens-section {
+    margin-bottom: 32px;
+  }
+  .screen-table {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    overflow: hidden;
+    border-collapse: collapse;
+  }
+  .screen-table th {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    padding: 14px 18px;
+    text-align: left;
+    background: rgba(22, 27, 34, 0.8);
+    border-bottom: 1px solid var(--card-border);
+  }
+  .screen-table td {
+    font-size: 13px;
+    padding: 12px 18px;
+    border-bottom: 1px solid rgba(48, 54, 61, 0.3);
+    color: var(--text-muted);
+  }
+  .screen-table tr:last-child td { border-bottom: none; }
+  .check { color: var(--green); font-weight: 600; }
+
+  /* Tests Section */
+  .tests-section {
+    margin-bottom: 32px;
+  }
+  .tests-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .test-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .test-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .test-card .total {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .test-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+  .test-bar-segment {
+    height: 6px;
+    border-radius: 3px;
+  }
+  .test-suite {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+  }
+  .test-suite span:last-child { color: var(--text); font-weight: 500; }
+
+  /* Recent Commits */
+  .commits-section {
+    margin-bottom: 32px;
+  }
+  .commit-list {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .commit-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 18px;
+    border-bottom: 1px solid rgba(48, 54, 61, 0.3);
+    align-items: flex-start;
+  }
+  .commit-item:last-child { border-bottom: none; }
+  .commit-hash {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--blue);
+    background: var(--blue-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .commit-msg {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .commit-platform {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .cp-ios { background: var(--blue-bg); color: var(--blue); }
+  .cp-android { background: var(--green-bg); color: var(--green); }
+
+  /* Blockers / Open Items */
+  .blockers-section {
+    margin-bottom: 32px;
+  }
+  .blocker-list {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .blocker-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 13px;
+    color: var(--text-muted);
+    border-bottom: 1px solid rgba(48, 54, 61, 0.3);
+  }
+  .blocker-item:last-child { border-bottom: none; }
+  .blocker-tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .tag-blocked { background: var(--red-bg); color: var(--red); }
+  .tag-waiting { background: var(--yellow-bg); color: var(--yellow); }
+  .tag-open { background: var(--blue-bg); color: var(--blue); }
+
+  /* Next Steps */
+  .next-section {
+    background: linear-gradient(135deg, rgba(212, 168, 67, 0.08) 0%, rgba(139, 105, 20, 0.04) 100%);
+    border: 1px solid rgba(212, 168, 67, 0.2);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+  .next-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .next-section ol {
+    padding-left: 20px;
+  }
+  .next-section li {
+    font-size: 14px;
+    color: var(--text-muted);
+    padding: 4px 0;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--card-border);
+  }
+
+  @media (max-width: 768px) {
+    .progress-section, .milestone-grid, .status-grid, .tests-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>Goldy — Gold Module Status</h1>
+  <div class="subtitle">Vance (Aspora) — Buy, Sell & Manage Gold Investments</div>
+  <div class="date">March 13, 2026 | Branch: feature/wealth-module-gold-buy-sell-flow</div>
+</div>
+
+<!-- Progress Rings -->
+<div class="progress-section">
+  <div class="progress-card">
+    <h3>iOS Progress</h3>
+    <div class="ring-container">
+      <svg viewBox="0 0 160 160" width="140" height="140">
+        <circle class="ring-bg" cx="80" cy="80" r="65"/>
+        <circle class="ring-fill ring-ios" cx="80" cy="80" r="65"
+          stroke-dasharray="408.4"
+          stroke-dashoffset="143"/>
+      </svg>
+      <div class="ring-label" style="color:var(--blue)">65%</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-item"><strong>100+</strong>Swift files</div>
+      <div class="stat-item"><strong>453</strong>Tests</div>
+      <div class="stat-item"><strong>10+</strong>Test suites</div>
+    </div>
+  </div>
+  <div class="progress-card">
+    <h3>Android Progress</h3>
+    <div class="ring-container">
+      <svg viewBox="0 0 160 160" width="140" height="140">
+        <circle class="ring-bg" cx="80" cy="80" r="65"/>
+        <circle class="ring-fill ring-android" cx="80" cy="80" r="65"
+          stroke-dasharray="408.4"
+          stroke-dashoffset="184"/>
+      </svg>
+      <div class="ring-label" style="color:var(--green)">55%</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-item"><strong>76</strong>Kotlin files</div>
+      <div class="stat-item"><strong>306</strong>Tests</div>
+      <div class="stat-item"><strong>14</strong>Test suites</div>
+    </div>
+  </div>
+</div>
+
+<!-- Milestones -->
+<div class="milestone-section">
+  <div class="section-title">Milestones</div>
+  <div class="milestone-grid">
+    <div class="milestone-card">
+      <span class="badge badge-merged">Merged</span>
+      <h4>M1 — Gold Landing Page</h4>
+      <p>iOS PR #XXXX — approved by Reviewer A, merged. Android PR #XXXX — approved by Reviewer B, merged. QA in progress. 7 lander sections, Returns Calculator, Figma-matched.</p>
+    </div>
+    <div class="milestone-card">
+      <span class="badge badge-pending">Pending PR</span>
+      <h4>M2 — Buy & Sell Gold Flows</h4>
+      <p>All 10 screens built on both platforms. 453 iOS tests, 306 Android tests. Pushed to origin. Pending: PR for Reviewer A (iOS) and Reviewer B (Android).</p>
+    </div>
+  </div>
+</div>
+
+<!-- Screen Completion Table -->
+<div class="screens-section">
+  <div class="section-title">M2 Screen Completion — 10 Screens</div>
+  <table class="screen-table">
+    <thead>
+      <tr>
+        <th>Screen</th>
+        <th>iOS</th>
+        <th>Android</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Buy Gold Entry</td><td class="check">Done</td><td class="check">Done</td><td>Numpad, presets, amount/weight toggle, price lock timer</td></tr>
+      <tr><td>KYC Bottom Sheet</td><td class="check">Done</td><td class="check">Done</td><td>First-time gate, 3 benefit rows, CTA</td></tr>
+      <tr><td>Buy Review</td><td class="check">Done</td><td class="check">Done</td><td>3% fee, bank selector, countdown timer</td></tr>
+      <tr><td>Success (GoldAdded)</td><td class="check">Done</td><td class="check">Done</td><td>Post-purchase confirmation</td></tr>
+      <tr><td>Sell Gold Entry</td><td class="check">Done</td><td class="check">Done</td><td>% presets, numpad, holdings badge</td></tr>
+      <tr><td>"Why?" Friction Sheet</td><td class="check">Done</td><td class="check">Done</td><td>Reason chips, animated overlay</td></tr>
+      <tr><td>Retention Sheet</td><td class="check">Done</td><td class="check">Done</td><td>Long-term user, profit stats + compounding</td></tr>
+      <tr><td>Select Bank</td><td class="check">Done</td><td class="check">Done</td><td>Search, A-Z grouping, availability badges</td></tr>
+      <tr><td>Account Details</td><td class="check">Done</td><td class="check">Done</td><td>8-18 digit input, test deposit note</td></tr>
+      <tr><td>Sell Review</td><td class="check">Done</td><td class="check">Done</td><td>Rate pill, AED 2 flat fee, payout card</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Platform Detail — iOS -->
+<div class="platform-section">
+  <div class="platform-header">
+    <div class="platform-icon icon-ios">i</div>
+    <div class="section-title" style="margin-bottom:0">iOS — M2 Buy & Sell Flows</div>
+  </div>
+  <div class="status-grid">
+    <div class="status-card">
+      <h5 style="color:var(--green)"><span class="dot dot-green"></span>Done</h5>
+      <ul>
+        <li>All 10 screens built (3 buy + 1 success + 6 sell + bank flow)</li>
+        <li>453 unit tests across 10+ suites</li>
+        <li>13 Figma assets exported and integrated</li>
+        <li>42 localization keys for buy flow</li>
+        <li>Sell friction flow fully wired</li>
+        <li>Retention nudge with growth chart</li>
+        <li>PR #XXXX (M1) merged by Reviewer A</li>
+      </ul>
+    </div>
+    <div class="status-card">
+      <h5 style="color:var(--yellow)"><span class="dot dot-yellow"></span>In Progress</h5>
+      <ul>
+        <li>M2 PR creation for Reviewer A's review</li>
+        <li>Wire isLongTermUser to SellReviewView</li>
+        <li>Sell presets: update 25/50/75/100% to Figma 10/20/40/Sell All</li>
+      </ul>
+    </div>
+    <div class="status-card">
+      <h5 style="color:var(--red)"><span class="dot dot-red"></span>Blockers</h5>
+      <ul>
+        <li>Partner logos — pending Figma export</li>
+        <li>Disclaimer copy — pending legal review</li>
+        <li>Wire Landing Page to real API data</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Platform Detail — Android -->
+<div class="platform-section">
+  <div class="platform-header">
+    <div class="platform-icon icon-android">A</div>
+    <div class="section-title" style="margin-bottom:0">Android — M2 Buy & Sell Flows</div>
+  </div>
+  <div class="status-grid">
+    <div class="status-card">
+      <h5 style="color:var(--green)"><span class="dot dot-green"></span>Done</h5>
+      <ul>
+        <li>All 10 screens built with MVI pattern</li>
+        <li>306 tests across 14 test suites</li>
+        <li>All hardcoded strings localized</li>
+        <li>Chart: Custom Figma-matched composables (Vico evaluated, replaced)</li>
+        <li>Reviewer B review: grouping logic extracted from UI</li>
+        <li>26 @Preview functions added (GoldScreenPreviews.kt)</li>
+        <li>PR #XXXX (M1) merged by Reviewer B</li>
+      </ul>
+    </div>
+    <div class="status-card">
+      <h5 style="color:var(--yellow)"><span class="dot dot-yellow"></span>In Progress</h5>
+      <ul>
+        <li>M2 PR creation for Reviewer B's review</li>
+        <li>Existing user hero: portfolio API integration</li>
+      </ul>
+    </div>
+    <div class="status-card">
+      <h5 style="color:var(--red)"><span class="dot dot-red"></span>Blockers</h5>
+      <ul>
+        <li>Partner logos — pending Figma export</li>
+        <li>Disclaimer copy — pending legal review</li>
+        <li>Wire Landing Page to real API data</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Test Coverage -->
+<div class="tests-section">
+  <div class="section-title">Test Coverage</div>
+  <div class="tests-grid">
+    <div class="test-card">
+      <h4 style="color:var(--blue)">iOS Tests</h4>
+      <div class="total" style="color:var(--blue)">453</div>
+      <div class="test-bar">
+        <div class="test-bar-segment" style="flex:37;background:var(--blue)"></div>
+        <div class="test-bar-segment" style="flex:17;background:#4DA3FF"></div>
+        <div class="test-bar-segment" style="flex:33;background:#7DBBFF"></div>
+        <div class="test-bar-segment" style="flex:26;background:#A3D1FF"></div>
+        <div class="test-bar-segment" style="flex:66;background:#3090E8"></div>
+        <div class="test-bar-segment" style="flex:102;background:#2070C0"></div>
+      </div>
+      <div class="test-suite"><span>BuyGoldViewModelTests</span><span>37</span></div>
+      <div class="test-suite"><span>BuyReviewViewModelTests</span><span>17</span></div>
+      <div class="test-suite"><span>SellGoldViewModelTests</span><span>33</span></div>
+      <div class="test-suite"><span>SellReviewViewModelTests</span><span>26</span></div>
+      <div class="test-suite"><span>SelectBankViewModelTests</span><span>15</span></div>
+      <div class="test-suite"><span>AccountDetailsViewModelTests</span><span>16</span></div>
+      <div class="test-suite"><span>SellFrictionFlowTests</span><span>23</span></div>
+      <div class="test-suite"><span>GoldLanderViewTests</span><span>66</span></div>
+      <div class="test-suite"><span>Foundation + misc</span><span>220</span></div>
+    </div>
+    <div class="test-card">
+      <h4 style="color:var(--green)">Android Tests</h4>
+      <div class="total" style="color:var(--green)">306</div>
+      <div class="test-bar">
+        <div class="test-bar-segment" style="flex:43;background:var(--green)"></div>
+        <div class="test-bar-segment" style="flex:18;background:#4DC866"></div>
+        <div class="test-bar-segment" style="flex:11;background:#6DD47D"></div>
+        <div class="test-bar-segment" style="flex:55;background:#2DA048"></div>
+        <div class="test-bar-segment" style="flex:33;background:#268F3E"></div>
+        <div class="test-bar-segment" style="flex:32;background:#1E7E34"></div>
+      </div>
+      <div class="test-suite"><span>GoldSellFeatureTest</span><span>43</span></div>
+      <div class="test-suite"><span>GoldSellReviewFeatureTest</span><span>18</span></div>
+      <div class="test-suite"><span>SelectBankFeatureTest</span><span>11</span></div>
+      <div class="test-suite"><span>AccountDetailsFeatureTest</span><span>13</span></div>
+      <div class="test-suite"><span>GoldHomeUpdateTest</span><span>33</span></div>
+      <div class="test-suite"><span>GoldLanderSectionTests</span><span>55</span></div>
+      <div class="test-suite"><span>GoldLanderSnapshotTests</span><span>18</span></div>
+      <div class="test-suite"><span>GoldRemoteDataSourceTest</span><span>32</span></div>
+      <div class="test-suite"><span>GoldAmountValidatorTest</span><span>21</span></div>
+      <div class="test-suite"><span>GoldDomainModelTest</span><span>16</span></div>
+      <div class="test-suite"><span>GoldConstantsTest</span><span>9</span></div>
+      <div class="test-suite"><span>GoldMarketTest</span><span>12</span></div>
+      <div class="test-suite"><span>GoldChartDataTest</span><span>14</span></div>
+      <div class="test-suite"><span>GoldUseCaseTest</span><span>11</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Commits -->
+<div class="commits-section">
+  <div class="section-title">Recent Commits</div>
+  <div class="commit-list">
+    <div class="commit-item">
+      <span class="commit-platform cp-ios">iOS</span>
+      <span class="commit-hash">ee13375</span>
+      <span class="commit-msg">Fix Order Summary request: use value_mode instead of buy_mode</span>
+    </div>
+    <div class="commit-item">
+      <span class="commit-platform cp-ios">iOS</span>
+      <span class="commit-hash">de0bfbe</span>
+      <span class="commit-msg">Fix Buy Cart & Order Summary: API uses snake_case, add CodingKeys</span>
+    </div>
+    <div class="commit-item">
+      <span class="commit-platform cp-ios">iOS</span>
+      <span class="commit-hash">bd96f05</span>
+      <span class="commit-msg">Wire Buy Flow APIs (Create Cart + Order Summary) and update Portfolio contract</span>
+    </div>
+    <div class="commit-item">
+      <span class="commit-platform cp-ios">iOS</span>
+      <span class="commit-hash">9725ec3</span>
+      <span class="commit-msg">Figma-match buy flow screens: KYC, Review, Success, Transaction Details</span>
+    </div>
+    <div class="commit-item">
+      <span class="commit-platform cp-android">AND</span>
+      <span class="commit-hash">add32e2</span>
+      <span class="commit-msg">Update existing user hero: gains badge, action buttons, Figma spacing</span>
+    </div>
+    <div class="commit-item">
+      <span class="commit-platform cp-android">AND</span>
+      <span class="commit-hash">a9f73d3</span>
+      <span class="commit-msg">Add X-User-Id header to portfolio endpoint</span>
+    </div>
+    <div class="commit-item">
+      <span class="commit-platform cp-android">AND</span>
+      <span class="commit-hash">41057841</span>
+      <span class="commit-msg">Fix blank screen on back-nav and replace hero assets with Figma exports</span>
+    </div>
+    <div class="commit-item">
+      <span class="commit-platform cp-android">AND</span>
+      <span class="commit-hash">6d76943</span>
+      <span class="commit-msg">Add existing user hero with portfolio API integration</span>
+    </div>
+  </div>
+</div>
+
+<!-- Open Items / Blockers -->
+<div class="blockers-section">
+  <div class="section-title">Open Items</div>
+  <div class="blocker-list">
+    <div class="blocker-item">
+      <span class="blocker-tag tag-waiting">Waiting</span>
+      <span>Partner logos — pending Figma export (both platforms)</span>
+    </div>
+    <div class="blocker-item">
+      <span class="blocker-tag tag-waiting">Waiting</span>
+      <span>Disclaimer copy — pending legal team review (both platforms)</span>
+    </div>
+    <div class="blocker-item">
+      <span class="blocker-tag tag-open">Open</span>
+      <span>Hero section — sticky/collapsible on scroll? (needs product sync)</span>
+    </div>
+    <div class="blocker-item">
+      <span class="blocker-tag tag-open">Open</span>
+      <span>Comparison table — Remote Config vs hardcoded (needs discussion)</span>
+    </div>
+    <div class="blocker-item">
+      <span class="blocker-tag tag-open">Open</span>
+      <span>iOS: Wire isLongTermUser to SellReviewView (route param needed)</span>
+    </div>
+    <div class="blocker-item">
+      <span class="blocker-tag tag-open">Open</span>
+      <span>iOS: Sell presets mismatch — current 25/50/75/100% vs Figma 10/20/40/Sell All</span>
+    </div>
+  </div>
+</div>
+
+<!-- Suggested Next Steps -->
+<div class="next-section">
+  <h3>Suggested Next Steps</h3>
+  <ol>
+    <li><strong>Create M2 PRs</strong> — iOS for Reviewer A, Android for Reviewer B. All screens built, tests passing, code pushed.</li>
+    <li><strong>Wire Landing Page to real API</strong> — gains percent, returns calculator, portfolio data (both platforms)</li>
+    <li><strong>iOS: Fix sell presets</strong> to match Figma (10/20/40/Sell All with "POPULAR" badge)</li>
+    <li><strong>iOS: Wire isLongTermUser</strong> through route to SellReviewView</li>
+    <li><strong>Follow up</strong> on partner logos (Figma export) and disclaimer (legal review)</li>
+  </ol>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  Generated by Goldy — AI Project Manager for Vance Gold Module<br>
+  March 13, 2026 | iOS 65% | Android 55% | 759 total tests across both platforms
+</div>
+
+</body>
+</html>
