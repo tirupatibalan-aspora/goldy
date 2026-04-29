@@ -7,6 +7,12 @@
 
 set -euo pipefail
 
+# Guard against recursive invocation (hook → summarize → test)
+if [ -n "${GOLDY_TEST_RUNNING:-}" ]; then
+  exit 0
+fi
+export GOLDY_TEST_RUNNING=1
+
 WORKSPACE="$(cd "$(dirname "$0")/.." && pwd)"
 PASS=0
 FAIL=0
@@ -196,7 +202,7 @@ for project in "${GOLDY_PROJECTS[@]}"; do
       pass "$project — $count changelogs"
 
       # Verify changelog format (check the latest one)
-      latest=$(ls -1t "$changelog_dir"/*.md 2>/dev/null | head -1)
+      latest=$(ls -1t "$changelog_dir"/*.md 2>/dev/null | head -1 || true)
       if [ -n "$latest" ]; then
         # Must have a heading
         if head -1 "$latest" | grep -q "^# "; then
@@ -493,11 +499,11 @@ echo "$report_output" | grep -qi "REVIEW BOT" && pass "Report shows review bot s
 report_file="$WORKSPACE/memory/reports/report_$(date '+%Y-%m-%d').md"
 if [ -f "$report_file" ] && [ -s "$report_file" ]; then
   pass "Markdown report saved to memory/reports/"
-  # Verify markdown report has structure
-  if grep -q "^#" "$report_file"; then
-    pass "Markdown report has headings"
+  # Verify markdown report has structure (uses **bold** or # headings)
+  if grep -qE "^(#|\*\*)" "$report_file"; then
+    pass "Markdown report has structure"
   else
-    fail "Markdown report missing headings"
+    fail "Markdown report missing structure"
   fi
 else
   fail "Markdown report not saved"
@@ -534,14 +540,16 @@ else
 fi
 
 # Test validation (missing args should fail)
-if "$WORKSPACE/scripts/add-reviewer.sh" 2>&1 | grep -q "ERROR"; then
+_rv_output=$("$WORKSPACE/scripts/add-reviewer.sh" 2>&1 || true)
+if echo "$_rv_output" | grep -q "ERROR"; then
   pass "add-reviewer.sh rejects missing args"
 else
   fail "add-reviewer.sh doesn't validate args"
 fi
 
 # Test platform validation
-if "$WORKSPACE/scripts/add-reviewer.sh" --name x --github x --platform web 2>&1 | grep -q "ERROR"; then
+_rv_output2=$("$WORKSPACE/scripts/add-reviewer.sh" --name x --github x --platform web 2>&1 || true)
+if echo "$_rv_output2" | grep -q "ERROR"; then
   pass "add-reviewer.sh rejects invalid platform"
 else
   fail "add-reviewer.sh doesn't validate platform"
@@ -596,7 +604,7 @@ section "19. Public Repo Safety"
 _secrets_found=0
 
 # Check for API keys / tokens in tracked files
-if git -C "$WORKSPACE" grep -lE "(sk-[a-zA-Z0-9]{20,}|xoxb-[0-9]+|ghp_[a-zA-Z0-9]+|AKIA[0-9A-Z]{16})" -- ':!.claude/' ':!vance-*' ':!goldy/' 2>/dev/null | head -1 | grep -q .; then
+if git -C "$WORKSPACE" grep -lE "(sk-[a-zA-Z0-9]{20,}|xoxb-[0-9]+|ghp_[a-zA-Z0-9]+|AKIA[0-9A-Z]{16})" -- . ':(exclude)vance-*' ':(exclude)goldy/' ':(exclude).claude/' 2>/dev/null | (head -1 || true) | grep -q .; then
   fail "Possible API key/token found in tracked files"
   _secrets_found=1
 else
@@ -624,7 +632,8 @@ if [ "$_hardcoded_paths" -eq 0 ]; then
 fi
 
 # Check learnings JSONs don't contain real PR URLs to private repos
-for f in "$learnings_dir"/*.json 2>/dev/null; do
+for f in "$learnings_dir"/*.json; do
+  [ -f "$f" ] || continue
   fname=$(basename "$f")
   if grep -qE "github\.com/[A-Z][a-zA-Z-]+/(vance|aspora)" "$f" 2>/dev/null; then
     fail "$fname contains private repo URL"
@@ -767,6 +776,14 @@ if [ ${#GOLDY_PROJECTS[@]} -gt 0 ]; then
   before_count=$(find "$WORKSPACE/memory/changelogs/$test_project" -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
 
   # Make a test commit (empty, with a marker message)
+  # Temporarily disable hook to avoid background noise during test
+  hook_file="$test_repo/.git/hooks/post-commit"
+  hook_backup=""
+  if [ -f "$hook_file" ]; then
+    hook_backup="${hook_file}.bak"
+    mv "$hook_file" "$hook_backup"
+  fi
+
   test_marker="goldy-test-$(date +%s)"
   if (cd "$test_repo" && git commit --allow-empty -m "test: $test_marker" -q 2>/dev/null); then
     pass "Created test commit in $test_project"
@@ -790,7 +807,7 @@ if [ ${#GOLDY_PROJECTS[@]} -gt 0 ]; then
     fi
 
     # Verify the new changelog contains our marker
-    latest_log=$(ls -1t "$WORKSPACE/memory/changelogs/$test_project/"*.md 2>/dev/null | head -1)
+    latest_log=$(ls -1t "$WORKSPACE/memory/changelogs/$test_project/"*.md 2>/dev/null | head -1 || true)
     if [ -n "$latest_log" ] && grep -q "$test_marker" "$latest_log"; then
       pass "Latest changelog contains test commit message"
     else
@@ -814,14 +831,22 @@ if [ ${#GOLDY_PROJECTS[@]} -gt 0 ]; then
       fail "TRUTH.md regeneration failed"
     fi
 
-    # Clean up: revert the test commit
+    # Clean up: revert the test commit and restore hook
     (cd "$test_repo" && git reset --soft HEAD~1 -q 2>/dev/null) || true
     # Remove the test changelog
     if [ -n "$latest_log" ] && grep -q "$test_marker" "$latest_log" 2>/dev/null; then
       rm -f "$latest_log"
     fi
+    # Restore hook
+    if [ -n "$hook_backup" ] && [ -f "$hook_backup" ]; then
+      mv "$hook_backup" "$hook_file"
+    fi
     pass "Cleaned up test commit and changelog"
   else
+    # Restore hook even if commit failed
+    if [ -n "$hook_backup" ] && [ -f "$hook_backup" ]; then
+      mv "$hook_backup" "$hook_file"
+    fi
     skip "End-to-end test — couldn't create test commit in $test_project"
   fi
 fi
