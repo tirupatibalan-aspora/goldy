@@ -11,6 +11,7 @@ __pycache__/
 # Local state (per-machine, not shared)
 .goldy-initialized
 .goldy-user.conf
+.goldy-install.conf
 
 # Sub-project repos (separate git repos, not tracked by Goldy)
 vance-ios/

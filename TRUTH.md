@@ -7,7 +7,7 @@
 | Project | Branch | Last Commit | Last Date | Changelogs |
 |---------|--------|-------------|-----------|------------|
 | vance-android | `feature/wealth-module-gold-qa-fixes` | 120363bff5 fix: Partners section — show only O Gold, update text labels per Figma | 2026-04-10 | 36 |
-| vance-ios | `feature/wealth-module-qa-fixes` | aeeb5f702 docs: rename Goldy section — Cross-Project Memory for Claude Code | 2026-04-29 | 214 |
+| vance-ios | `feature/wealth-module-qa-fixes` | 4c6e658c0 docs: update onboarding — reference Goldy setup wizard (./setup.sh) | 2026-04-29 | 215 |
 
 ## Cross-Platform Alerts
 
@@ -24,7 +24,7 @@ a6b43fe946 fix(gold): backstack navigation, sell Figma alignment, swipe-to-sell
 fa0e508f35 fix(gold): sell paymentMode BANK uppercase + entry button loading reset
 2099438ed7 feat(gold): wire success screen data + sell IBAN flow + transaction fixes
 d6a89a01cf fix(gold): transaction detail endpoint, loading state, back navigation
-b428f0769b fix: nri banking bug fixes (#XXXX)
+b428f0769b fix: nri banking bug fixes (#1603)
 4dadcacf40 fix(gold): review screen gradient, WebView dismiss, Lottie fullscreen, txn detail crash guard
 e4434dfb90 chore: add vance-kmm as git submodule + wire composite build
 edf7439ec4 fix(gold): review bot fixes — letterSpacing constant, Google Pay, dedupe colors
@@ -47,14 +47,14 @@ fa39a04ce feat: typed buy failure screens + updated sell copy
 77534f2f5 feat: use backend repeat_user flag to determine new vs existing user
 18ff2dae7 feat: shared price refresh via GoldPriceLockManager — IBAN pill gets refresh button
 0877070ae fix: create fresh cart after WebView dismiss — backend deletes cart on initiateOrder
-952ba6190 fix: address Reviewer A's P0/P1/P2 review comments — 10 fixes
+952ba6190 fix: address Paul's P0/P1/P2 review comments — 10 fixes
 898404209 feat: cart-first price lock — create cart on appear, refresh-only confirm
 48efff953 fix: reset shared priceLockManager in all countdown tests + refresh goldRouter on appear
 b04aeb8ed fix: BuyReviewVM tests — set shared priceLockManager before assertions
 784099679 fix: update SellFrictionFlowTests for selectBank/accountDetails API change
-8e225f405 fix: Designer S design feedback batch 2 — 12 Figma polish items
-9b884993d fix: Designer S design feedback — Figma polish across Gold module
-2d503e6a5 fix: address Reviewer A's review — DI for PriceLockManager, dedicated download session
+8e225f405 fix: Shreeyash design feedback batch 2 — 12 Figma polish items
+9b884993d fix: Shreeyash design feedback — Figma polish across Gold module
+2d503e6a5 fix: address Paul's review — DI for PriceLockManager, dedicated download session
 3b662b32a feat: IBAN verification — checkmark animation, snag sheet, max attempts disable
 1e7e07874 fix: MAX badge on presets, remove shimmer, HNI waitlist 404 fallback
 44abb80df feat: HNI waitlist API + shimmer button + error pill polish + gradient text fix
@@ -68,21 +68,22 @@ b04aeb8ed fix: BuyReviewVM tests — set shared priceLockManager before assertio
 0 commits)
 _No commits in last 7 days._
 
-### vance-ios (24 commits)
+### vance-ios (25 commits)
 ```
+4c6e658c0 docs: update onboarding — reference Goldy setup wizard (./setup.sh)
 aeeb5f702 docs: rename Goldy section — Cross-Project Memory for Claude Code
 1e19ddcf1 docs: add Goldy AI project manager section to onboarding guide
 bdec18fda docs: add Gold module onboarding guide for new iOS developers
 deefa958f feat: add deep link support for Gold buy with ValueMode and Value params
 6ba8c93a7 fix: sell-all precision issue + review screen anchor on price refresh
 8bfc79726 fix: preserve anchored value on review screen when price refreshes
-4995e35fe Merge pull request #XXXX from your-org/feature/wealth-module-gold-buy-sell-flow
+4995e35fe Merge pull request #1520 from Vance-Club/feature/wealth-module-gold-buy-sell-flow
 602d2a9dc fix: show total weight in grams on sell screen when in weight mode
 0d47a9469 fix: add shimmer to gold lander hero to prevent flicker on tab switch
 7759dbc9f fix: show decimal gains percent on gold lander (was truncated to Int)
 c753deb3b refactor: remove X-User-Id and X-Country headers from Gold API requests
 5268a6259 fix: prevent gold hero bg bleeding on transaction detail screen
-b27b9b321 fix: address Reviewer A's 5 critical review comments — safety + memory leaks
+b27b9b321 fix: address Paul's 5 critical review comments — safety + memory leaks
 b7d371fd4 fix: force WEIGHT value_mode when sell_all=true to avoid "Amount must be positive"
 234a5605e feat: add sell_all flag to order-preview request for full position liquidation
 7d8dc49f5 fix: preserve user's exact weight input on review screen to avoid 0.00001g rounding
@@ -166,20 +167,20 @@ eee3bdb2d fix: remove gram equivalent from minimum purchase/sell validation erro
 | Field | Value |
 |-------|-------|
 | **Branch** | `feature/wealth-module-qa-fixes` |
-| **Last Commit** | aeeb5f702 docs: rename Goldy section — Cross-Project Memory for Claude Code |
+| **Last Commit** | 4c6e658c0 docs: update onboarding — reference Goldy setup wizard (./setup.sh) |
 | **Last Activity** | 2026-04-29 |
-| **Total Changelogs** | 214 |
+| **Total Changelogs** | 215 |
 
 ## Recent Changes (14 days)
 
-- **2026-04-29** — docs: rename Goldy section — Cross-Project Memory for Claude Code
+- **2026-04-29** — docs: update onboarding — reference Goldy setup wizard (./setup.sh)
 
 ## Feature Areas
 
 - **feat**: 32 commits
 - **fix**: 144 commits
 - **refactor**: 8 commits
-- **docs**: 3 commits
+- **docs**: 4 commits
 - **test**: 2 commits
 - **chore**: 7 commits
 
@@ -189,17 +190,17 @@ eee3bdb2d fix: remove gram equivalent from minimum purchase/sell validation erro
 49 
 15 Aspora/UserInterface/Views/Gold/Sell/SellGoldViewModel.swift
 12 Aspora/UserInterface/Views/Gold/Buy/GoldSellBuyReviewViewModel.swift
-12 Aspora/UserInterface/Views/Gold/Buy/BuyGoldViewModel.swift
+11 Aspora/UserInterface/Views/Gold/Buy/BuyGoldViewModel.swift
 9 Aspora/UserInterface/Views/TransactionDetails/TransactionTrackingDetailsView.swift
 8 Aspora/UserInterface/Views/Gold/Sell/GoldAccountDetailsView.swift
 7 Aspora/UserInterface/Views/Gold/Lander/GoldLanderViewModel.swift
 7 Aspora/Coordinator/Gold/GoldRoute.swift
-6 Aspora/UserInterface/Views/Gold/GoldAmountEntryView.swift
 6 Aspora/Router/Gold/GoldRouter.swift
-6 Aspora/Resources/en.lproj/Localizable.strings
 5 Aspora/UserInterface/Views/Gold/Processing/GoldProcessingViewModel.swift
-5 Aspora/Repository/Gold/GoldRepositoryImpl.swift
+5 Aspora/UserInterface/Views/Gold/GoldAmountEntryView.swift
+5 Aspora/Resources/en.lproj/Localizable.strings
 4 VanceTests/Tests/Gold/AccountDetailsViewModelTests.swift
+4 GOLD_MODULE_ONBOARDING.md
 4 Aspora/UserInterface/Views/Gold/Sell/GoldAccountDetailsViewModel.swift
 ```
 
