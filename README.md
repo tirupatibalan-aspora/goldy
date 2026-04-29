@@ -13,18 +13,26 @@ Goldy gives Claude Code persistent memory that survives across sessions and span
 git clone https://github.com/tirupatibalan-aspora/goldy.git my-workspace
 cd my-workspace
 
-# 2. Drop your repos inside (one or many)
-git clone https://github.com/your-org/app-android.git
-git clone https://github.com/your-org/app-ios.git   # optional
+# 2. Run the setup wizard — it asks for your name, repos, and does the rest
+./setup.sh
+```
 
-# 3. Setup (auto-detects your repos + your GitHub identity)
+The wizard will:
+1. Ask your name, email, and GitHub username (auto-detects from `gh` CLI if installed)
+2. Ask for repo URLs to clone (paste one per line)
+3. Clone repos, install git hooks, backfill changelogs
+4. Generate TRUTH.md and summaries
+5. Verify everything works
+
+**For non-interactive / CI setup:**
+```bash
+# Manual alternative — clone repos yourself, then run:
+git clone https://github.com/your-org/app-ios.git
 ./scripts/setup-memory-system.sh --backfill 30
-
-# 4. Verify everything works
 ./scripts/test-goldy.sh
 ```
 
-That's it. Goldy auto-detects every git repo you put inside it and identifies you via GitHub CLI / git config. Reports, PRs, commits, and changelogs are automatically filtered to your work.
+Reports, PRs, commits, and changelogs are automatically filtered to your work.
 
 ---
 
